@@ -1,0 +1,43 @@
+{
+  "name": "@n3bula/n3bula-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build:all": "pnpm --filter=@n3bula/* run build",
+    "tpl": "n3bula create"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "pnpm@8.6.11",
+  "devDependencies": {
+    "@babel/core": "^7.22.11",
+    "@babel/plugin-transform-runtime": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "@babel/runtime": "^7.22.11",
+    "@microsoft/api-extractor": "^7.36.4",
+    "babel-loader": "^9.1.3",
+    "bundle-declarations-webpack-plugin": "^4.0.1",
+    "lerna": "^7.1.5",
+    "shx": "^0.3.4",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.22.11",
+    "@n3bula/template-creator": "workspace:^",
+    "@types/node": "^20.5.6",
+    "@types/webpack": "^5.28.2",
+    "ts-node": "^10.9.1"
+  }
+}

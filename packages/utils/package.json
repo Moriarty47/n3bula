@@ -1,0 +1,61 @@
+{
+  "name": "@n3bula/utils",
+  "version": "0.0.1",
+  "description": "A utils library for n3bula packages.",
+  "main": "./lib/umd/index.js",
+  "types": "./lib/esm/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/typings/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "module": "./lib/esm/index.js",
+      "require": "./lib/umd/index.js",
+      "default": "./lib/umd/index.js"
+    }
+  },
+  "files": [
+    "esm",
+    "umd"
+  ],
+  "targets": {
+    "main": {
+      "optimize": true
+    },
+    "module": {
+      "optimize": true
+    }
+  },
+  "scripts": {
+    "dev": "webpack --watch -c webpack.config.ts",
+    "build": "shx rm -rf lib/** && pnpm run build:umd && pnpm run build:esm && pnpm run build:extract-api",
+    "build:umd": "webpack -c webpack.config.ts",
+    "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m es6",
+    "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
+    "build:extract-api-local": "shx mkdir -p ./etc && npm run build:esm && api-extractor run -l"
+  },
+  "keywords": [
+    "utils",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/utils"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@n3bula/bin-tree</title>
+  <style>
+    html,
+    body {
+      background: #222222;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="../lib/bundle.min.js"></script>
+  <script>
+    const tree1 = {
+      "value": 1,
+      "left": null,
+      "right": {
+        "value": '2',
+        "left": {
+          "value": 3,
+          "left": null,
+          "right": null
+        },
+        "right": {
+          "value": 4,
+          "left": null,
+          "right": null
+        }
+      }
+    };
+    console.log(BinTree.print(tree1, {
+      minLength: 5,
+      marks: {
+        dash: '-',
+        lb: '^',
+        joint: '^'
+      }
+    }));
+    console.log(BinTree.print({
+      "val": "A",
+      "left": {
+        "val": "B",
+        "left": {
+          "val": "D",
+          "left": {
+            "val": "H",
+            "left": {
+              "val": "P",
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": "Q",
+              "left": null,
+              "right": null
+            }
+          },
+          "right": {
+            "val": "I",
+            "left": {
+              "val": "R",
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": "S",
+              "left": null,
+              "right": null
+            }
+          }
+        },
+        "right": {
+          "val": "E",
+          "left": {
+            "val": "J",
+            "left": {
+              "val": "T",
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": "U",
+              "left": null,
+              "right": null
+            }
+          },
+          "right": {
+            "val": "K",
+            "left": {
+              "val": "V",
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": "W",
+              "left": null,
+              "right": null
+            }
+          }
+        }
+      },
+      "right": {
+        "val": "C",
+        "left": {
+          "val": "F",
+          "left": {
+            "val": "L",
+            "left": {
+              "val": "X",
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": "Y",
+              "left": null,
+              "right": null
+            }
+          },
+          "right": {
+            "val": "M",
+            "left": {
+              "val": "Z",
+              "left": null,
+              "right": null
+            },
+            "right": null
+          }
+        },
+        "right": {
+          "val": "G",
+          "left": {
+            "val": "N",
+            "left": null,
+            "right": null
+          },
+          "right": {
+            "val": "O",
+            "left": null,
+            "right": null
+          }
+        }
+      }
+    }));
+  </script>
+</body>
+
+</html>

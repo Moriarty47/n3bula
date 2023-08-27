@@ -1,0 +1,47 @@
+{
+  "name": "@n3bula/template-creator",
+  "version": "0.0.1",
+  "description": "A CLI tool for creating library template.",
+  "main": "index.js",
+  "bin": {
+    "n3bula": "index.js"
+  },
+  "keywords": [
+    "template",
+    "creator",
+    "cli",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/template-creator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/template-creator.git"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@types/inquirer": "^8.2.6",
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "download-git-repo": "^3.0.2",
+    "handlebars": "^4.7.8",
+    "inquirer": "^8.2.6",
+    "log-symbols": "^5.1.0",
+    "mkdirp": "^3.0.1",
+    "ora": "^5.4.1",
+    "rimraf": "^5.0.1"
+  }
+}
