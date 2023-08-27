@@ -198,4 +198,5 @@ console.log(tree.left.left.left.print());
 
 ## License
 
-[The MIT License(MIT)](https://github.com/Moriarty47/@n3bula/blob/main/LICENSE)
+[The MIT License(MIT)](https://github.com/Moriarty47/n3bula/blob/main/LICENSE)
+

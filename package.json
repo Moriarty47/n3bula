@@ -6,7 +6,10 @@
   ],
   "scripts": {
     "build:all": "pnpm --filter=@n3bula/* run build",
-    "tpl": "n3bula create"
+    "tpl": "n3bula create",
+    "lerna": "lerna",
+    "lerna:c": "lerna changed",
+    "lerna:v": "lerna version --no-private"
   },
   "engines": {
     "node": ">=18",

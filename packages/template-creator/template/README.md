@@ -26,4 +26,4 @@ pnpm add @n3bula/{{packageName}}
 
 ## License
 
-[The MIT License(MIT)](https://github.com/Moriarty47/{{packageName}}/blob/main/LICENSE)
+[The MIT License(MIT)](https://github.com/Moriarty47/n3bula/blob/main/LICENSE)
