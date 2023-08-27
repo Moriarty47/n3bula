@@ -1,8 +1,12 @@
 {
-  "name": "@n3bula/n3bula-monorepo",
+  "name": "@n3bula/monorepo",
   "private": true,
   "workspaces": [
     "packages/*"
+  ],
+  "files": [
+    "packages/**",
+    "!node_modules"
   ],
   "scripts": {
     "build:all": "pnpm --filter=@n3bula/* run build",

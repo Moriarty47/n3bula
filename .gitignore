@@ -42,7 +42,7 @@ node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
-typings/
+# typings/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -110,6 +110,5 @@ dist
 # macOS cache
 .DS_Store
 
-# Bundled files
-lib
-temp
+# api-extractor
+tsdoc-metadata.json

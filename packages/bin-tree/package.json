@@ -2,12 +2,20 @@
   "name": "@n3bula/bin-tree",
   "version": "0.0.1",
   "description": "JavaScript library for creating a binary tree",
-  "main": "./lib/bundle.js",
+  "main": "index.js",
   "types": "./lib/bundle.d.ts",
   "scripts": {
     "dev": "webpack --watch --config webpack.config.js",
     "build": "webpack --config webpack.config.js"
   },
+  "files": [
+    "example",
+    "lib",
+    "public",
+    "*.js",
+    "src",
+    "tsconfig.json"
+  ],
   "keywords": [
     "binary",
     "tree",
@@ -21,10 +29,11 @@
       "email": "wang_jn_xian@163.com"
     }
   ],
-  "homepage": "https://github.com/Moriarty47/bin-tree",
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/bin-tree#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Moriarty47/bin-tree.git"
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/bin-tree"
   },
   "author": {
     "name": "Moriarty47",

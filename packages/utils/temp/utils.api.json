@@ -1,0 +1,654 @@
+{
+  "metadata": {
+    "toolPackage": "@microsoft/api-extractor",
+    "toolVersion": "7.36.4",
+    "schemaVersion": 1011,
+    "oldestForwardsCompatibleVersion": 1001,
+    "tsdocConfig": {
+      "$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+      "noStandardTags": true,
+      "tagDefinitions": [
+        {
+          "tagName": "@alpha",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@beta",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@defaultValue",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@decorator",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@deprecated",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@eventProperty",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@example",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@experimental",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@inheritDoc",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@internal",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@label",
+          "syntaxKind": "inline"
+        },
+        {
+          "tagName": "@link",
+          "syntaxKind": "inline",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@override",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@packageDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@param",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@privateRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@public",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@readonly",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@remarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@returns",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@sealed",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@see",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@throws",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@typeParam",
+          "syntaxKind": "block",
+          "allowMultiple": true
+        },
+        {
+          "tagName": "@virtual",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@betaDocumentation",
+          "syntaxKind": "modifier"
+        },
+        {
+          "tagName": "@internalRemarks",
+          "syntaxKind": "block"
+        },
+        {
+          "tagName": "@preapproved",
+          "syntaxKind": "modifier"
+        }
+      ],
+      "supportForTags": {
+        "@alpha": true,
+        "@beta": true,
+        "@defaultValue": true,
+        "@decorator": true,
+        "@deprecated": true,
+        "@eventProperty": true,
+        "@example": true,
+        "@experimental": true,
+        "@inheritDoc": true,
+        "@internal": true,
+        "@label": true,
+        "@link": true,
+        "@override": true,
+        "@packageDocumentation": true,
+        "@param": true,
+        "@privateRemarks": true,
+        "@public": true,
+        "@readonly": true,
+        "@remarks": true,
+        "@returns": true,
+        "@sealed": true,
+        "@see": true,
+        "@throws": true,
+        "@typeParam": true,
+        "@virtual": true,
+        "@betaDocumentation": true,
+        "@internalRemarks": true,
+        "@preapproved": true
+      },
+      "reportUnsupportedHtmlElements": false
+    }
+  },
+  "kind": "Package",
+  "canonicalReference": "@n3bula/utils!",
+  "docComment": "",
+  "name": "@n3bula/utils",
+  "preserveMemberOrder": false,
+  "members": [
+    {
+      "kind": "EntryPoint",
+      "canonicalReference": "@n3bula/utils!",
+      "name": "",
+      "preserveMemberOrder": false,
+      "members": [
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!_default:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "_default: "
+            },
+            {
+              "kind": "Content",
+              "text": "{\n    getType: (thing: unknown) => string;\n    isType: (thing: unknown, type: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ThingType",
+              "canonicalReference": "@n3bula/utils!~ThingType:type"
+            },
+            {
+              "kind": "Content",
+              "text": ") => boolean;\n    isNumber: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is number;\n    isString: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is string;\n    isArray: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is any[];\n    isObject: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is {};\n    isNullable: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is null | undefined;\n    is32Bit: (char: string, i: number) => boolean;\n    getCodePointLength: (str: string) => number;\n    isAllSameChar: (str: string, char: string) => boolean;\n    getCharLength: (str: string) => number;\n    padStart: (str: string, length: number, char: string) => string;\n    padEnd: (str: string, length: number, char: string) => string;\n    padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;\n    emptyPadStart: (length: number, str?: string, pad?: string) => string;\n}"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "_default",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 14
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!emptyPadStart:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "emptyPadStart: "
+            },
+            {
+              "kind": "Content",
+              "text": "(length: number, str?: string, pad?: string) => string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "emptyPadStart",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!getCharLength:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "getCharLength: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string) => number"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "getCharLength",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!getCodePointLength:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "getCodePointLength: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string) => number"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "getCodePointLength",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!getType:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "getType: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "getType",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!is32Bit:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "is32Bit: "
+            },
+            {
+              "kind": "Content",
+              "text": "(char: string, i: number) => boolean"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "is32Bit",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isAllSameChar:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isAllSameChar: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string, char: string) => boolean"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isAllSameChar",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isArray:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isArray: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is any[]"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isArray",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isNullable:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isNullable: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is null | undefined"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isNullable",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isNumber:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isNumber: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is number"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isNumber",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isObject:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isObject: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is {}"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isObject",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isString:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isString: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isString",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isType:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isType: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown, type: "
+            },
+            {
+              "kind": "Reference",
+              "text": "ThingType",
+              "canonicalReference": "@n3bula/utils!~ThingType:type"
+            },
+            {
+              "kind": "Content",
+              "text": ") => boolean"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isType",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!padEnd:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "padEnd: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string, length: number, char: string) => string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "padEnd",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!padStart:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "padStart: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string, length: number, char: string) => string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "padStart",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!padStartEnd:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "padStartEnd: "
+            },
+            {
+              "kind": "Content",
+              "text": "(str: string, length: number, char1?: string, char2?: string) => string"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "padStartEnd",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 2
+          }
+        }
+      ]
+    }
+  ]
+}

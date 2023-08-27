@@ -6,6 +6,10 @@
   "bin": {
     "n3bula": "index.js"
   },
+  "files": [
+    "lib",
+    "template"
+  ],
   "keywords": [
     "template",
     "creator",
@@ -18,10 +22,11 @@
       "email": "wang_jn_xian@163.com"
     }
   ],
-  "homepage": "https://github.com/Moriarty47/template-creator",
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/template-creator#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Moriarty47/template-creator.git"
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/template-creator"
   },
   "author": {
     "name": "Moriarty47",

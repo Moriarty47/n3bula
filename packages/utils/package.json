@@ -14,8 +14,12 @@
     }
   },
   "files": [
-    "esm",
-    "umd"
+    "example",
+    "etc",
+    "lib",
+    "src",
+    "*.js",
+    "*.json"
   ],
   "targets": {
     "main": {
