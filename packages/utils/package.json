@@ -35,7 +35,7 @@
     "build:umd": "webpack -c webpack.config.ts",
     "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m es6",
     "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
-    "build:extract-api-local": "shx mkdir -p ./etc && npm run build:esm && api-extractor run -l"
+    "build:extract-api-local": "shx mkdir -p ./etc && pnpm run build:esm && api-extractor run -l"
   },
   "keywords": [
     "utils",

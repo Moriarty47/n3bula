@@ -28,6 +28,8 @@ export const isNumber = (thing: unknown): thing is number => isType(thing, 'numb
 /** @public */
 export const isString = (thing: unknown): thing is string => isType(thing, 'string');
 /** @public */
+export const isSymbol = (thing: unknown): thing is symbol => isType(thing, 'symbol');
+/** @public */
 export const isArray = (thing: unknown): thing is any[] => isType(thing, 'array');
 /** @public */
 export const isObject = (thing: unknown): thing is {} => isType(thing, 'object');

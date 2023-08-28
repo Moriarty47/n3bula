@@ -20,7 +20,7 @@ return /******/ (() => { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.emptyPadStart = exports.padStartEnd = exports.padEnd = exports.padStart = exports.getCharLength = exports.isAllSameChar = exports.getCodePointLength = exports.is32Bit = exports.isNullable = exports.isObject = exports.isArray = exports.isString = exports.isNumber = exports.isType = exports.getType = void 0;
+exports.emptyPadStart = exports.padStartEnd = exports.padEnd = exports.padStart = exports.getCharLength = exports.isAllSameChar = exports.getCodePointLength = exports.is32Bit = exports.isNullable = exports.isObject = exports.isArray = exports.isSymbol = exports.isString = exports.isNumber = exports.isType = exports.getType = void 0;
 /** @public */
 var getType = function getType(thing) {
   return Object.prototype.toString.call(thing).slice(8, -1).toLowerCase();
@@ -41,6 +41,11 @@ var isString = function isString(thing) {
   return (0, exports.isType)(thing, 'string');
 };
 exports.isString = isString;
+/** @public */
+var isSymbol = function isSymbol(thing) {
+  return (0, exports.isType)(thing, 'symbol');
+};
+exports.isSymbol = isSymbol;
 /** @public */
 var isArray = function isArray(thing) {
   return (0, exports.isType)(thing, 'array');

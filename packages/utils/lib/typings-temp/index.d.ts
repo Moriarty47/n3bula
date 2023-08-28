@@ -22,6 +22,8 @@ export declare const isNumber: (thing: unknown) => thing is number;
 /** @public */
 export declare const isString: (thing: unknown) => thing is string;
 /** @public */
+export declare const isSymbol: (thing: unknown) => thing is symbol;
+/** @public */
 export declare const isArray: (thing: unknown) => thing is any[];
 /** @public */
 export declare const isObject: (thing: unknown) => thing is {};

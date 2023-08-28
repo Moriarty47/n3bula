@@ -58,6 +58,9 @@ export const isObject: (thing: unknown) => thing is {};
 export const isString: (thing: unknown) => thing is string;
 
 // @public (undocumented)
+export const isSymbol: (thing: unknown) => thing is symbol;
+
+// @public (undocumented)
 export const isType: (thing: unknown, type: ThingType) => boolean;
 
 // @public (undocumented)
@@ -71,7 +74,7 @@ export const padStartEnd: (str: string, length: number, char1?: string, char2?: 
 
 // Warnings were encountered during analysis:
 //
-// src/index.ts:88:3 - (ae-forgotten-export) The symbol "ThingType" needs to be exported by the entry point index.d.ts
+// src/index.ts:90:3 - (ae-forgotten-export) The symbol "ThingType" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

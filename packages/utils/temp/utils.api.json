@@ -549,6 +549,38 @@
         },
         {
           "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!isSymbol:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "isSymbol: "
+            },
+            {
+              "kind": "Content",
+              "text": "(thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is symbol"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "isSymbol",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
+          }
+        },
+        {
+          "kind": "Variable",
           "canonicalReference": "@n3bula/utils!isType:var",
           "docComment": "/**\n * @public\n */\n",
           "excerptTokens": [

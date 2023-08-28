@@ -24,6 +24,10 @@ export class BinTreeNode {
     return this.value;
   }
 
+  set val(val) {
+    this.value = val;
+  }
+
   print(options?: Parameters<typeof binTreePrinter>[1]) {
     return binTreePrinter(this as BiTreeNode, options);
   }

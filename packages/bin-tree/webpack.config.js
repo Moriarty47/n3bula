@@ -74,17 +74,23 @@ const config = {
       }),
     ],
   },
-  plugins: [
-    new DtsBundleWebpackPlugin({
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      outFile: 'bundle.d.ts',
-      compilationOptions: {
-        preferredConfigPath: path.resolve(__dirname, 'tsconfig.json'),
-      },
-      removeEmptyLines: true,
-      removeEmptyExports: true,
-    }),
-  ],
+  plugins: [],
 };
 
-module.exports = config;
+module.exports = (env) => {
+  if (!env.WEBPACK_WATCH) {
+    config.plugins.push(
+      new DtsBundleWebpackPlugin({
+        entry: path.resolve(__dirname, 'src/index.ts'),
+        outFile: 'bundle.d.ts',
+        compilationOptions: {
+          preferredConfigPath: path.resolve(__dirname, 'tsconfig.json'),
+        },
+        removeEmptyLines: true,
+        removeEmptyExports: true,
+      })
+    );
+  }
+
+  return config;
+};

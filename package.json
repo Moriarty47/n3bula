@@ -13,7 +13,8 @@
     "tpl": "n3bula create",
     "lerna": "lerna",
     "lerna:c": "lerna changed",
-    "lerna:v": "lerna version --no-private"
+    "lerna:v": "lerna version --no-private",
+    "lerna:pub": "lerna publish --no-private"
   },
   "engines": {
     "node": ">=18",

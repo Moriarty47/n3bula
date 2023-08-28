@@ -51,6 +51,9 @@ export declare const isObject: (thing: unknown) => thing is {};
 export declare const isString: (thing: unknown) => thing is string;
 
 /** @public */
+export declare const isSymbol: (thing: unknown) => thing is symbol;
+
+/** @public */
 export declare const isType: (thing: unknown, type: ThingType) => boolean;
 
 /** @public */

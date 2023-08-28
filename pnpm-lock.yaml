@@ -67,23 +67,7 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.88.2)
 
-  packages/bi-tree-creator: {}
-
-  packages/bi-tree-printer:
-    dependencies:
-      '@n3bula/utils':
-        specifier: workspace:^
-        version: link:../utils
-
   packages/bin-tree:
-    dependencies:
-      '@n3bula/utils':
-        specifier: workspace:^
-        version: link:../utils
-
-  packages/binary-tree-creator: {}
-
-  packages/binary-tree-printer:
     dependencies:
       '@n3bula/utils':
         specifier: workspace:^

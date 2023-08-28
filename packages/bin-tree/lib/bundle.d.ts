@@ -4,6 +4,7 @@ declare class BinTreeNode {
 	right: BinTreeNodeType;
 	constructor(value: BinTreeNodeValue, left?: BinTreeNodeType, right?: BinTreeNodeType);
 	get val(): BinTreeNodeValue;
+	set val(val: BinTreeNodeValue);
 	print(options?: Parameters<typeof binTreePrinter>[1]): string | null;
 	getSize(): number;
 	getLeafNodeSize(): number;
@@ -51,6 +52,7 @@ export type PrinterOptionMarks = {
 	joint: string;
 };
 export type PrinterOptions = {
+	type: "line" | "slash";
 	minLength: number;
 	marks: PrinterOptionMarks;
 };

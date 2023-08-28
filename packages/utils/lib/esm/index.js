@@ -7,6 +7,8 @@ export const isNumber = (thing) => isType(thing, 'number');
 /** @public */
 export const isString = (thing) => isType(thing, 'string');
 /** @public */
+export const isSymbol = (thing) => isType(thing, 'symbol');
+/** @public */
 export const isArray = (thing) => isType(thing, 'array');
 /** @public */
 export const isObject = (thing) => isType(thing, 'object');

@@ -93,66 +93,6 @@ function _createClass(Constructor, protoProps, staticProps) {
   });
   return Constructor;
 }
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js
-function _iterableToArrayLimit(r, l) {
-  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-  if (null != t) {
-    var e,
-      n,
-      i,
-      u,
-      a = [],
-      f = !0,
-      o = !1;
-    try {
-      if (i = (t = t.call(r)).next, 0 === l) {
-        if (Object(t) !== t) return;
-        f = !1;
-      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
-    } catch (r) {
-      o = !0, n = r;
-    } finally {
-      try {
-        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
-      } finally {
-        if (o) throw n;
-      }
-    }
-    return a;
-  }
-}
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-  return arr2;
-}
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/unsupportedIterableToArray.js
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/nonIterableRest.js
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/@babel+runtime@7.22.11/node_modules/@babel/runtime/helpers/esm/slicedToArray.js
-
-
-
-
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
 ;// CONCATENATED MODULE: ../utils/lib/esm/index.js
 /** @public */
 var getType = function getType(thing) {
@@ -163,12 +103,16 @@ var isType = function isType(thing, type) {
   return getType(thing) === type.toLowerCase();
 };
 /** @public */
-var isNumber = function isNumber(thing) {
+var esm_isNumber = function isNumber(thing) {
   return isType(thing, 'number');
 };
 /** @public */
-var isString = function isString(thing) {
+var esm_isString = function isString(thing) {
   return isType(thing, 'string');
+};
+/** @public */
+var isSymbol = function isSymbol(thing) {
+  return isType(thing, 'symbol');
 };
 /** @public */
 var isArray = function isArray(thing) {
@@ -179,7 +123,7 @@ var isObject = function isObject(thing) {
   return isType(thing, 'object');
 };
 /** @public */
-var isNullable = function isNullable(thing) {
+var esm_isNullable = function isNullable(thing) {
   return isType(thing, 'null') || isType(thing, 'undefined');
 };
 /** @public */
@@ -200,7 +144,7 @@ var isAllSameChar = function isAllSameChar(str, char) {
   return new RegExp("^(".concat(char, ")\\1*$")).test(str);
 };
 /** @public */
-var getCharLength = function getCharLength(str) {
+var esm_getCharLength = function getCharLength(str) {
   return str.replace(/[^\x00-\xff]/g, '  ').length;
 };
 /** @public */
@@ -234,15 +178,15 @@ var emptyPadStart = function emptyPadStart(length) {
 /* harmony default export */ const esm = ({
   getType: getType,
   isType: isType,
-  isNumber: isNumber,
-  isString: isString,
+  isNumber: esm_isNumber,
+  isString: esm_isString,
   isArray: isArray,
   isObject: isObject,
-  isNullable: isNullable,
+  isNullable: esm_isNullable,
   is32Bit: is32Bit,
   getCodePointLength: getCodePointLength,
   isAllSameChar: isAllSameChar,
-  getCharLength: getCharLength,
+  getCharLength: esm_getCharLength,
   padStart: padStart,
   padEnd: padEnd,
   padStartEnd: padStartEnd,
@@ -298,8 +242,8 @@ function levelOrderTraversal(tree) {
 ;// CONCATENATED MODULE: ./src/printer.ts
 
 
-
 var defaults = {
+  type: 'line',
   minLength: 2,
   marks: {
     dash: '━',
@@ -312,102 +256,246 @@ var defaults = {
 };
 var simpleMerge = function simpleMerge(source) {
   var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var newObj = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var merged = Object.assign({}, source);
   Object.keys(source).forEach(function (key) {
     if (isObject(source[key])) {
-      newObj[key] = simpleMerge(source[key], object[key], {});
+      merged[key] = simpleMerge(source[key], object[key]);
       return;
     }
-    newObj[key] = object[key] || source[key];
+    merged[key] = object[key] || source[key];
   });
-  return newObj;
+  return merged;
 };
+var SYMBOL_EMPTY = Symbol('Empty');
+var SYMBOL_SLASH = Symbol('/');
+var SYMBOL_BACKSLASH = Symbol('\\');
+var SYMBOL_SPACE = Symbol('Space');
 function binTreePrinter(tree) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var config = simpleMerge(defaults, options);
-  var _levelOrderTraversal = levelOrderTraversal(tree),
-    _levelOrderTraversal2 = _slicedToArray(_levelOrderTraversal, 4),
-    nodesArr = _levelOrderTraversal2[0],
-    treeDepth = _levelOrderTraversal2[1],
-    nodesNum = _levelOrderTraversal2[2],
-    maxNumber = _levelOrderTraversal2[3];
-  if (nodesArr.length === 1 && nodesArr[0][0] === EMPTY_CHAR) return null;
-  createMarksArr(nodesArr, config, treeDepth, nodesNum, maxNumber);
-  return generateTreeStr(nodesArr, config);
+  if (config.type === 'slash') {
+    return trianglePrint(tree, config);
+  }
+  return linePrint(tree, config);
+  // return tableLinePrint(tree, config);
 }
-function generateTreeStr(nodesArr, config) {
-  var marks = config.marks;
-  var treeStr = '';
-  nodesArr.forEach(function (nodes, idx) {
-    var branchStr = '';
-    if (idx === 0) {
-      branchStr += nodes.join('') + '\n';
-    } else {
-      var temp = '';
-      var useBranch = false;
-      nodes.forEach(function (node) {
-        var strLength = getCodePointLength(node);
-        var isSameEmptyChar = isAllSameChar(node, EMPTY_CHAR);
-        var isSameHashChar = isAllSameChar(node, HASH_CHAR);
-        if (!useBranch && isSameEmptyChar) {
-          branchStr += emptyPadStart(strLength, '', EMPTY_CHAR);
-        } else if (!useBranch && isSameHashChar) {
-          useBranch = true;
-          branchStr += padStartEnd(marks.lb, strLength, EMPTY_CHAR, marks.dash);
-        } else if (!useBranch && !isSameEmptyChar) {
-          useBranch = true;
-          branchStr += padStartEnd(marks.lt, strLength, EMPTY_CHAR, marks.dash);
-        } else if (useBranch && isSameEmptyChar) {
-          branchStr += padEnd(marks.dash, strLength, marks.dash);
-        } else if (useBranch && isSameHashChar) {
-          branchStr += strLength > 1 ? padStartEnd(marks.joint, strLength, marks.dash) : marks.joint;
-        } else if (useBranch && !isSameEmptyChar && !isSameHashChar) {
-          useBranch = false;
-          branchStr += padStartEnd(marks.rt, strLength, marks.dash, EMPTY_CHAR);
-        }
-        // current level data
-        temp += isSameHashChar ? emptyPadStart(strLength, '', EMPTY_CHAR) : node;
-      });
-      if (branchStr.endsWith(marks.dash)) {
-        //  deal with the right subtree is null
-        var turnStrIndex = branchStr.lastIndexOf(marks.joint);
-        var turnStr = branchStr.slice(0, turnStrIndex);
-        branchStr = turnStr + marks.rb;
+/**
+ * @description
+ * To draw like this, (n is level) , we have:
+ * - width = (2^(n-1)-1)*3+2^(n-1) = 2^(n+1)-3
+ * - height = 2^(n-1)
+ * ```txt
+ *             5
+ *       ┏━━━━━┻━━━━━┓
+ *       4···········6
+ *    ┏━━┛···········┗━━┓
+ *   211···············72
+ *
+ * ```
+ */
+function linePrint(tree, config) {
+  var treeDepth = getTreeDepth(tree);
+  var width = (2 << treeDepth - 1) - 1;
+  var height = 2 * treeDepth - 1;
+  var matrix = Array.from({
+    length: height
+  }, function () {
+    return Array(width).fill(SYMBOL_SPACE);
+  });
+  var maxLength = Math.max(findMaxLength(tree), config.minLength);
+  var props = {
+    treeDepth: treeDepth,
+    matrix: matrix,
+    config: config,
+    width: width,
+    height: height,
+    maxLength: maxLength
+  };
+  fillLineMatrix(tree, props, 0, (width - 1) / 2);
+  return drawLineTree(matrix, width, height, maxLength);
+}
+function drawLineTree(matrix, width, height, maxLength) {
+  var str = '';
+  for (var i = 0; i < height; i += 1) {
+    for (var j = 0; j < width; j += 1) {
+      var char = matrix[i][j];
+      if (char === SYMBOL_SPACE) {
+        str += padStartEnd(EMPTY_CHAR, maxLength, EMPTY_CHAR);
+      } else {
+        str += padStartEnd("".concat(char), maxLength, EMPTY_CHAR);
       }
-      branchStr += '\n' + temp + '\n';
     }
-    treeStr += branchStr;
-  });
-  return treeStr;
+    str += '\n';
+  }
+  return str;
 }
-function createMarksArr(nodesArr, config, treeDepth, nodesNum, maxNumber) {
-  var maxNumLen = Math.max(config.minLength, getCharLength(String(maxNumber)));
-  var maxNumberLength = maxNumLen % 2 === 0 ? maxNumLen + 1 : maxNumLen;
-  var emptySpace = emptyPadStart(maxNumberLength, '', EMPTY_CHAR);
-  var nodesLength = nodesNum;
-  var uniqueHashes = [];
-  nodesArr.forEach(function (nodes, level) {
-    var lvGap = Math.pow(2, treeDepth - level);
-    var lvNodes = Array(nodesNum).fill(emptySpace);
-    var nodeIdx = nodesLength = (nodesLength - 1) / 2;
-    nodes.forEach(function (node, idx) {
-      if (idx !== 0) {
-        var midIdx = nodeIdx + lvGap / 2;
-        if (node.includes(NULL_CHAR)) {
-          if (idx - 1 >= 0 && nodes[idx - 1].includes(NULL_CHAR)) {
-            uniqueHashes[midIdx] = true;
-          }
-        }
-        if (!uniqueHashes[midIdx]) {
-          uniqueHashes[midIdx] = true;
-          lvNodes[midIdx] = emptyPadStart(maxNumberLength, HASH_CHAR, HASH_CHAR);
-        }
-        nodeIdx += lvGap;
+function fillLineMatrix(tree, props, x,
+// node position
+y) {
+  var cx = 0;
+  var cLy = 0; // col
+  var cRy = 0; // col
+  if (tree) {
+    cx = x + 1; // current node branch line
+    props.matrix[x][y] = tree.val;
+    if (tree.left && tree.right) {
+      props.matrix[cx][y] = padStartEnd(props.config.marks.joint, props.maxLength, props.config.marks.dash);
+    } else if (tree.left && !tree.right) {
+      props.matrix[cx][y] = padStartEnd(props.config.marks.rb, props.maxLength, props.config.marks.dash, EMPTY_CHAR);
+    } else if (!tree.left && tree.right) {
+      props.matrix[cx][y] = padStartEnd(props.config.marks.lb, props.maxLength, EMPTY_CHAR, props.config.marks.dash);
+    }
+    var halfLineRange = Math.floor(Math.pow(2, props.treeDepth - 2 - x / 2));
+    if (tree.left) {
+      for (cLy = y - 1; cLy > y - halfLineRange; cLy -= 1) {
+        props.matrix[cx][cLy] = props.config.marks.dash.repeat(props.maxLength);
       }
-      lvNodes[nodeIdx] = padStartEnd(node.includes(NULL_CHAR) ? EMPTY_CHAR : node, maxNumberLength, EMPTY_CHAR);
-    });
-    nodesArr[level] = lvNodes;
+      props.matrix[cx][cLy] = padStartEnd(props.config.marks.lt, props.maxLength, EMPTY_CHAR, props.config.marks.dash);
+    }
+    if (tree.right) {
+      for (cRy = y + 1; cRy < y + halfLineRange; cRy += 1) {
+        props.matrix[cx][cRy] = props.config.marks.dash.repeat(props.maxLength);
+      }
+      props.matrix[cx][cRy] = padStartEnd(props.config.marks.rt, props.maxLength, props.config.marks.dash, EMPTY_CHAR);
+    }
+    cx += 1; // next node line
+    fillLineMatrix(tree.left, props, cx, cLy);
+    fillLineMatrix(tree.right, props, cx, cRy);
+  }
+}
+function findMaxLength(tree) {
+  var stack = [tree];
+  var maxLength = 0;
+  while (!stack.every(function (i) {
+    return !i;
+  })) {
+    var node = stack.shift();
+    if (node) {
+      var valLen = getCodePointLength("".concat(node.val));
+      if (maxLength < valLen) {
+        maxLength = valLen;
+      }
+      stack.push(node.left, node.right);
+    }
+  }
+  return maxLength % 2 === 1 ? maxLength : maxLength + 1;
+}
+/* ************************************************************************* */
+/**
+ *
+ * @description
+ * To draw like this, (n is level) , we have:
+ * - width = (2^(n-1)-1)*3+2^(n-1) = 2^(n+1)-3
+ * - height = 2^(n-1)
+ * ```txt
+ *         1
+ *        /·\
+ *       /···\
+ *      /·····\
+ *     2·······3
+ *    /·\·····/·\
+ *   4···5···6···7
+ * ```
+ * |char||function|
+ * |:-|:-|:-|
+ * |SYMBOL_SLASH||print '/'|
+ * |SYMBOL_BACKSLASH||print '\'|
+ * |SYMBOL_SPACE||print SPACE_CHAR|
+ * |char||print char|
+ */
+function trianglePrint(tree, config) {
+  var _preorderTraversal = preorderTraversal(tree),
+    maxLength = _preorderTraversal.maxLength;
+  var treeDepth = getTreeDepth(tree);
+  var width = (2 << treeDepth) - 3;
+  var height = (2 << treeDepth - 1) - 1;
+  var matrix = Array.from({
+    length: height
+  }, function () {
+    return Array(width).fill(SYMBOL_SPACE);
   });
+  fillMatrix(tree, matrix, width, height, 0, (width - 1) / 2);
+  console.log('maxLength', maxLength);
+  console.log(matrix);
+  return drawTriangleTree(matrix, width, height, maxLength);
+}
+function drawTriangleTree(matrix, width, height, maxLength) {
+  var str = '';
+  for (var i = 0; i < height; i += 1) {
+    for (var j = 0; j < width; j += 1) {
+      var char = matrix[i][j];
+      var temp = void 0;
+      if (char === SYMBOL_SLASH) {
+        temp = padStartEnd('/', maxLength, EMPTY_CHAR);
+      } else if (char === SYMBOL_BACKSLASH) {
+        temp = padStartEnd('\\', maxLength, EMPTY_CHAR);
+      } else if (char === SYMBOL_SPACE) {
+        temp = padStartEnd(EMPTY_CHAR, maxLength, EMPTY_CHAR);
+      } else if (!isSymbol(char)) {
+        var ch = "".concat(char);
+        temp = padStartEnd(ch, maxLength, EMPTY_CHAR);
+      }
+      str += temp;
+    }
+    str += '\n';
+  }
+  return str;
+}
+function caclHeightRange(x, y, height, direction) {
+  return y + (direction === 'l' ? -1 : 1) * Math.floor((height - x + 1) / 2);
+}
+/**
+ * @description
+ * If tree node has children, the index should be y±(height-x+1)/2
+ */
+function fillMatrix(tree, matrix, width, height, x, y) {
+  var cx = 0;
+  var cy = 0;
+  if (tree) {
+    matrix[x][y] = tree.val;
+    if (tree.left) {
+      cx = x + 1;
+      cy = y - 1;
+      var rangeL = caclHeightRange(x, y, height, 'l');
+      for (; cy > rangeL; cy -= 1, cx += 1) {
+        matrix[cx][cy] = SYMBOL_SLASH;
+      }
+    }
+    if (tree.right) {
+      cx = x + 1;
+      cy = y + 1;
+      var rangeR = caclHeightRange(x, y, height, 'r');
+      for (; cy < rangeR; cy += 1, cx += 1) {
+        matrix[cx][cy] = SYMBOL_BACKSLASH;
+      }
+    }
+    fillMatrix(tree.left, matrix, width, height, cx, caclHeightRange(x, y, height, 'l'));
+    fillMatrix(tree.right, matrix, width, height, cx, caclHeightRange(x, y, height, 'r'));
+  }
+}
+function preorderTraversal(tree) {
+  var data = [];
+  var stack = [tree];
+  var maxLength = 0;
+  while (!stack.every(function (i) {
+    return !i;
+  })) {
+    var node = stack.shift();
+    if (node) {
+      var valLen = getCodePointLength("".concat(node.val));
+      if (maxLength < valLen) {
+        maxLength = valLen;
+      }
+      data.push(node.val);
+      stack.push(node.left, node.right);
+    } else {
+      data.push(SYMBOL_EMPTY);
+    }
+  }
+  return {
+    maxLength: maxLength /* : maxLength % 2 === 1 ? maxLength : maxLength + 1 */,
+    data: data
+  };
 }
 ;// CONCATENATED MODULE: ./src/creator.ts
 
@@ -426,6 +514,9 @@ var BinTreeNode = /*#__PURE__*/function () {
     key: "val",
     get: function get() {
       return this.value;
+    },
+    set: function set(val) {
+      this.value = val;
     }
   }, {
     key: "print",
