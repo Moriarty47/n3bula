@@ -10,7 +10,7 @@ import { UnionWithException } from '@n3bula/utils';
 export const loadCSS: () => void;
 
 // @public (undocumented)
-const prettyJSONFormatter: (content: unknown, options?: Partial<PrettyJSONOptions>) => string;
+const prettyJSONFormatter: (content: unknown, options?: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>>) => string;
 export default prettyJSONFormatter;
 export { prettyJSONFormatter }
 
@@ -20,12 +20,10 @@ export type PrettyJSONOptions = {
     indent: number;
     matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
+    quoteKeys: boolean;
     singleQuote: boolean;
     trailingComma: boolean;
 };
-
-// @public (undocumented)
-export const render: (domID: string | HTMLElement, content: string) => void;
 
 // @public (undocumented)
 export const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
@@ -41,7 +39,7 @@ export const toText: (content: unknown, options?: Omit<Partial<PrettyJSONOptions
 
 // Warnings were encountered during analysis:
 //
-// src/index.ts:73:3 - (ae-forgotten-export) The symbol "presetMarks" needs to be exported by the entry point index.d.ts
+// src/index.ts:72:3 - (ae-forgotten-export) The symbol "presetMarks" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

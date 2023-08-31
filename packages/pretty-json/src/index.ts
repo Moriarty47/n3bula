@@ -20,8 +20,7 @@ export const loadCSS = () => {
   });
 };
 
-/** @public */
-export const render = (domID: string | HTMLElement, content: string) => {
+const render = (domID: string | HTMLElement, content: string) => {
   let dom: HTMLElement | null;
   if (typeof domID === 'string') {
     dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -69,8 +68,9 @@ export const toText = (content: unknown, options: Omit<Partial<PrettyJSONOptions
 export type PrettyJSONOptions = {
   output: 'html' | 'text';
   indent: number;
-  matrix: boolean,
-  htmlMarks: ReturnType<typeof presetMarks>,
+  matrix: boolean;
+  htmlMarks: ReturnType<typeof presetMarks>;
+  quoteKeys: boolean;
   singleQuote: boolean;
   trailingComma: boolean;
 };
@@ -79,12 +79,13 @@ const defaults: Omit<PrettyJSONOptions, 'htmlMarks'> = {
   output: 'html',
   indent: 2,
   matrix: false,
+  quoteKeys: false,
   singleQuote: false,
   trailingComma: true,
 };
 
 /** @public */
-export const prettyJSONFormatter = (content: unknown, options: Partial<PrettyJSONOptions> = {}): string => {
+export const prettyJSONFormatter = (content: unknown, options: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>> = {}): string => {
   const config = simpleMerge<PrettyJSONOptions>(defaults as PrettyJSONOptions, options);
   config.htmlMarks = presetMarks(config);
   if (config.matrix) {
@@ -132,6 +133,11 @@ const presetMarks = (options: PrettyJSONOptions) => {
   const LT = isHTML ? '&lt;' : '<';
   const GT = isHTML ? '&gt;' : '>';
 
+  const STRING = (value: string) => typeMark(`${QUOTE}${value}${QUOTE}`, 'string');
+  const OBJECTKEY = options.quoteKeys
+    ? STRING
+    : (value: string) => typeMark(`${value}`, 'string');
+
   return {
     typeMark,
     TAB: '\t',
@@ -151,12 +157,13 @@ const presetMarks = (options: PrettyJSONOptions) => {
     DATE: (value: Date) => typeMark(value.toString(), 'mark'),
     ERROR: (value: string) => typeMark(value, 'error'),
     ITALIC: (value: string) => typeMark(value, 'italic'),
-    STRING: (value: string) => typeMark(`${QUOTE}${value}${QUOTE}`, 'string'),
+    STRING,
     NUMBER: (value: number) => typeMark(`${value}`, 'number'),
     SYMBOL: (value: symbol) => typeMark(value.toString(), 'symbol'),
     BIGINT: (value: bigint) => typeMark(`${value.toString()}n`, 'bigint'),
     BOOLEAN: (value: boolean) => typeMark(value ? 'true' : 'false', 'boolean'),
     FUNCTION: (value: string) => typeMark(value, 'function'),
+    OBJECTKEY,
   };
 };
 
@@ -330,7 +337,7 @@ function objectFormatter(
 
   for (let i = 0, len = keys.length; i < len; i += 1) {
     const key = typeof keys[i] === 'string'
-      ? htmlMarks.STRING(keys[i] as string)
+      ? htmlMarks.OBJECTKEY(keys[i] as string)
       : htmlMarks.SYMBOL(keys[i] as symbol);
     str += `${htmlMarks.SPACE.repeat(indent * level)}${key}${htmlMarks.SEMI}${mainFormatter(input[keys[i]], options, level + 1, cacheMap)}`;
     if (i < len - 1) {

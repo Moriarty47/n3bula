@@ -44,10 +44,11 @@ declare const presetMarks: (options: PrettyJSONOptions) => {
     BIGINT: (value: bigint) => string;
     BOOLEAN: (value: boolean) => string;
     FUNCTION: (value: string) => string;
+    OBJECTKEY: (value: string) => string;
 };
 
 /** @public */
-declare const prettyJSONFormatter: (content: unknown, options?: Partial<PrettyJSONOptions>) => string;
+declare const prettyJSONFormatter: (content: unknown, options?: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>>) => string;
 export default prettyJSONFormatter;
 export { prettyJSONFormatter }
 
@@ -57,12 +58,10 @@ export declare type PrettyJSONOptions = {
     indent: number;
     matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
+    quoteKeys: boolean;
     singleQuote: boolean;
     trailingComma: boolean;
 };
-
-/** @public */
-export declare const render: (domID: string | HTMLElement, content: string) => void;
 
 /** @public */
 export declare const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {

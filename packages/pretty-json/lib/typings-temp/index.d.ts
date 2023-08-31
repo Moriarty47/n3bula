@@ -2,8 +2,6 @@ import { type UnionWithException } from '@n3bula/utils';
 /** @public */
 export declare const loadCSS: () => void;
 /** @public */
-export declare const render: (domID: string | HTMLElement, content: string) => void;
-/** @public */
 export declare const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
     value: string;
     render(domID: string | HTMLElement): void;
@@ -19,11 +17,12 @@ export type PrettyJSONOptions = {
     indent: number;
     matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
+    quoteKeys: boolean;
     singleQuote: boolean;
     trailingComma: boolean;
 };
 /** @public */
-export declare const prettyJSONFormatter: (content: unknown, options?: Partial<PrettyJSONOptions>) => string;
+export declare const prettyJSONFormatter: (content: unknown, options?: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>>) => string;
 export default prettyJSONFormatter;
 type MarkType = UnionWithException<[
     'string',
@@ -65,5 +64,6 @@ declare const presetMarks: (options: PrettyJSONOptions) => {
     BIGINT: (value: bigint) => string;
     BOOLEAN: (value: boolean) => string;
     FUNCTION: (value: string) => string;
+    OBJECTKEY: (value: string) => string;
 };
 //# sourceMappingURL=index.d.ts.map

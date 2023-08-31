@@ -17,8 +17,7 @@ export const loadCSS = () => {
         });
     });
 };
-/** @public */
-export const render = (domID, content) => {
+const render = (domID, content) => {
     let dom;
     if (typeof domID === 'string') {
         dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -58,6 +57,7 @@ const defaults = {
     output: 'html',
     indent: 2,
     matrix: false,
+    quoteKeys: false,
     singleQuote: false,
     trailingComma: true,
 };
@@ -87,6 +87,10 @@ const presetMarks = (options) => {
         : typeMark('"', 'mark');
     const LT = isHTML ? '&lt;' : '<';
     const GT = isHTML ? '&gt;' : '>';
+    const STRING = (value) => typeMark(`${QUOTE}${value}${QUOTE}`, 'string');
+    const OBJECTKEY = options.quoteKeys
+        ? STRING
+        : (value) => typeMark(`${value}`, 'string');
     return {
         typeMark,
         TAB: '\t',
@@ -106,12 +110,13 @@ const presetMarks = (options) => {
         DATE: (value) => typeMark(value.toString(), 'mark'),
         ERROR: (value) => typeMark(value, 'error'),
         ITALIC: (value) => typeMark(value, 'italic'),
-        STRING: (value) => typeMark(`${QUOTE}${value}${QUOTE}`, 'string'),
+        STRING,
         NUMBER: (value) => typeMark(`${value}`, 'number'),
         SYMBOL: (value) => typeMark(value.toString(), 'symbol'),
         BIGINT: (value) => typeMark(`${value.toString()}n`, 'bigint'),
         BOOLEAN: (value) => typeMark(value ? 'true' : 'false', 'boolean'),
         FUNCTION: (value) => typeMark(value, 'function'),
+        OBJECTKEY,
     };
 };
 function isPrimaryObject(input) {
@@ -251,7 +256,7 @@ function objectFormatter(input, options, level, cacheMap) {
     let str = `${htmlMarks.OBJECTLT}${htmlMarks.LINEBREAK}`;
     for (let i = 0, len = keys.length; i < len; i += 1) {
         const key = typeof keys[i] === 'string'
-            ? htmlMarks.STRING(keys[i])
+            ? htmlMarks.OBJECTKEY(keys[i])
             : htmlMarks.SYMBOL(keys[i]);
         str += `${htmlMarks.SPACE.repeat(indent * level)}${key}${htmlMarks.SEMI}${mainFormatter(input[keys[i]], options, level + 1, cacheMap)}`;
         if (i < len - 1) {

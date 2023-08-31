@@ -219,12 +219,21 @@
             },
             {
               "kind": "Reference",
+              "text": "Omit",
+              "canonicalReference": "!Omit:type"
+            },
+            {
+              "kind": "Content",
+              "text": "<"
+            },
+            {
+              "kind": "Reference",
               "text": "PrettyJSONOptions",
               "canonicalReference": "@n3bula/pretty-json!PrettyJSONOptions:type"
             },
             {
               "kind": "Content",
-              "text": ">) => string"
+              "text": ", 'htmlMarks'>>) => string"
             }
           ],
           "fileUrlPath": "src/index.ts",
@@ -233,7 +242,7 @@
           "name": "prettyJSONFormatter",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 6
+            "endIndex": 8
           }
         },
         {
@@ -265,7 +274,7 @@
             },
             {
               "kind": "Content",
-              "text": ">;\n    singleQuote: boolean;\n    trailingComma: boolean;\n}"
+              "text": ">;\n    quoteKeys: boolean;\n    singleQuote: boolean;\n    trailingComma: boolean;\n}"
             },
             {
               "kind": "Content",
@@ -278,38 +287,6 @@
           "typeTokenRange": {
             "startIndex": 1,
             "endIndex": 6
-          }
-        },
-        {
-          "kind": "Variable",
-          "canonicalReference": "@n3bula/pretty-json!render:var",
-          "docComment": "/**\n * @public\n */\n",
-          "excerptTokens": [
-            {
-              "kind": "Content",
-              "text": "render: "
-            },
-            {
-              "kind": "Content",
-              "text": "(domID: string | "
-            },
-            {
-              "kind": "Reference",
-              "text": "HTMLElement",
-              "canonicalReference": "!HTMLElement:interface"
-            },
-            {
-              "kind": "Content",
-              "text": ", content: string) => void"
-            }
-          ],
-          "fileUrlPath": "src/index.ts",
-          "isReadonly": true,
-          "releaseTag": "Public",
-          "name": "render",
-          "variableTypeTokenRange": {
-            "startIndex": 1,
-            "endIndex": 4
           }
         },
         {

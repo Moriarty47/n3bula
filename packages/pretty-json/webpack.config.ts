@@ -1,6 +1,7 @@
 import path from 'path';
 import { Configuration } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 
 const config: Configuration = {
@@ -53,12 +54,17 @@ const config: Configuration = {
       },
       {
         test: /\.css$/,
-        use: ['raw-loader']
+        type: 'asset/source'
       }
     ],
   },
   devtool: 'source-map',
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, 'src/json.css'), to: path.resolve(__dirname, 'lib/esm') }
+      ]
+    })
   ],
   optimization: {
     sideEffects: false,

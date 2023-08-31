@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "Pretty JSON data into HTML.",
   "main": "./lib/umd/index.js",
-  "types": "./lib/esm/index.js",
+  "types": "./lib/typings/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib/typings/index.d.ts",

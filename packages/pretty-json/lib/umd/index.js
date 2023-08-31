@@ -51,7 +51,7 @@ var __importStar = this && this.__importStar || function (mod) {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.prettyJSONFormatter = exports.toText = exports.toHTML = exports.render = exports.loadCSS = void 0;
+exports.prettyJSONFormatter = exports.toText = exports.toHTML = exports.loadCSS = void 0;
 var utils_1 = __webpack_require__(309);
 var IS_CSS_LOADED = Symbol('is_CSS_Loaded');
 var DOM_CACHE = new Map();
@@ -60,7 +60,7 @@ var loadCSS = function loadCSS() {
   if (window && window[IS_CSS_LOADED]) return;
   var style = document.createElement('style');
   Promise.resolve().then(function () {
-    return __importStar(__webpack_require__(430));
+    return __importStar(__webpack_require__(894));
   }).then(function (value) {
     style.textContent = value["default"];
     document.head.appendChild(style);
@@ -73,8 +73,7 @@ var loadCSS = function loadCSS() {
   });
 };
 exports.loadCSS = loadCSS;
-/** @public */
-var render = function render(domID, content) {
+var _render = function render(domID, content) {
   var dom;
   if (typeof domID === 'string') {
     dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -89,7 +88,6 @@ var render = function render(domID, content) {
     dom.appendChild(pre);
   }
 };
-exports.render = render;
 /** @public */
 var toHTML = function toHTML(content) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -99,7 +97,7 @@ var toHTML = function toHTML(content) {
   return {
     value: result,
     render: function render(domID) {
-      (0, exports.render)(domID, result);
+      _render(domID, result);
     }
   };
 };
@@ -113,7 +111,7 @@ var toText = function toText(content) {
   return {
     value: result,
     render: function render(domID) {
-      (0, exports.render)(domID, result);
+      _render(domID, result);
     }
   };
 };
@@ -122,6 +120,7 @@ var defaults = {
   output: 'html',
   indent: 2,
   matrix: false,
+  quoteKeys: false,
   singleQuote: false,
   trailingComma: true
 };
@@ -150,6 +149,12 @@ var presetMarks = function presetMarks(options) {
   var QUOTE = options.singleQuote ? typeMark('\'', 'mark') : typeMark('"', 'mark');
   var LT = isHTML ? '&lt;' : '<';
   var GT = isHTML ? '&gt;' : '>';
+  var STRING = function STRING(value) {
+    return typeMark("".concat(QUOTE).concat(value).concat(QUOTE), 'string');
+  };
+  var OBJECTKEY = options.quoteKeys ? STRING : function (value) {
+    return typeMark("".concat(value), 'string');
+  };
   return {
     typeMark: typeMark,
     TAB: '\t',
@@ -175,9 +180,7 @@ var presetMarks = function presetMarks(options) {
     ITALIC: function ITALIC(value) {
       return typeMark(value, 'italic');
     },
-    STRING: function STRING(value) {
-      return typeMark("".concat(QUOTE).concat(value).concat(QUOTE), 'string');
-    },
+    STRING: STRING,
     NUMBER: function NUMBER(value) {
       return typeMark("".concat(value), 'number');
     },
@@ -192,7 +195,8 @@ var presetMarks = function presetMarks(options) {
     },
     FUNCTION: function FUNCTION(value) {
       return typeMark(value, 'function');
-    }
+    },
+    OBJECTKEY: OBJECTKEY
   };
 };
 function isPrimaryObject(input) {
@@ -342,7 +346,7 @@ function objectFormatter(input, options, level, cacheMap) {
   cacheMap.set(input, true);
   var str = "".concat(htmlMarks.OBJECTLT).concat(htmlMarks.LINEBREAK);
   for (var i = 0, len = keys.length; i < len; i += 1) {
-    var key = typeof keys[i] === 'string' ? htmlMarks.STRING(keys[i]) : htmlMarks.SYMBOL(keys[i]);
+    var key = typeof keys[i] === 'string' ? htmlMarks.OBJECTKEY(keys[i]) : htmlMarks.SYMBOL(keys[i]);
     str += "".concat(htmlMarks.SPACE.repeat(indent * level)).concat(key).concat(htmlMarks.SEMI).concat(mainFormatter(input[keys[i]], options, level + 1, cacheMap));
     if (i < len - 1) {
       str += "".concat(htmlMarks.COMMA).concat(htmlMarks.LINEBREAK);
@@ -612,14 +616,10 @@ exports["default"] = {
 
 /***/ }),
 
-/***/ 430:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 894:
+/***/ ((module) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (".json-container {\n  font-family: menlo, consolas, monospace;\n  font-style: normal;\n  font-weight: bold;\n  line-height: 1.4em;\n  font-size: 0.9rem;\n  transition: background-color 400ms;\n}\n\na.json-link {\n  text-decoration: none;\n  border-bottom: 1px solid;\n  outline: none;\n}\n\na.json-link:hover {\n  background-color: transparent;\n  outline: none;\n}\n\nol.json-lines {\n  white-space: normal;\n  padding-inline-start: 3em;\n  margin: 0px;\n}\n\nol.json-lines>li {\n  white-space: pre;\n  text-indent: 0.7em;\n  line-height: 1.5em;\n  padding: 0px;\n}\n\nol.json-lines>li::marker {\n  font-family: system-ui, sans-serif;\n  font-weight: normal;\n}\n\n.json-normal {\n  font-weight: normal;\n}\n\n.json-italic {\n  font-style: italic;\n}\n\n.json-key,\n.json-string,\n.json-number,\n.json-boolean,\n.json-null,\n.json-mark,\na.json-link,\nol.json-lines>li {\n  transition: all 400ms;\n}\n\n.json-container {\n  color: #ffffff;\n}\n\n.json-key {\n  color: indianred;\n}\n\n.json-error {\n  color: #ED6C89;\n}\n\n.json-string {\n  color: khaki;\n}\n\n.json-number {\n  color: deepskyblue;\n}\n\n.json-array {\n  color: limegreen;\n}\n\n.json-object {\n  color: chocolate;\n}\n\n.json-boolean {\n  color: mediumseagreen;\n}\n\n.json-symbol {\n  color: #6AD1C7;\n}\n\n.json-function {\n  font-weight: bold;\n  color: silver;\n}\n\n.json-function-identifier {\n  color: #E59A6F;\n}\n\n.json-function-name {\n  color: #90DAE6;\n}\n\n.json-bigint {\n  color: #ABABAB;\n}\n\n.json-null {\n  color: darkorange;\n}\n\n.json-undefined {\n  color: silver;\n}\n\n.json-mark {\n  color: silver;\n}\n\na.json-link {\n  color: mediumorchid;\n}\n\na.json-link:visited {\n  color: slategray;\n}\n\na.json-link:hover {\n  color: violet;\n}\n\na.json-link:active {\n  color: slategray;\n}\n\nol.json-lines>li::marker {\n  color: silver;\n}\n\nol.json-lines>li:nth-child(odd) {\n  background-color: #222222;\n}\n\nol.json-lines>li:nth-child(even) {\n  background-color: #161616;\n}\n\nol.json-lines>li:hover {\n  background-color: dimgray;\n}");
+module.exports = ".json-container {\n  font-family: menlo, consolas, monospace;\n  font-style: normal;\n  font-weight: bold;\n  line-height: 1.4em;\n  font-size: 0.9rem;\n  transition: background-color 400ms;\n}\n\na.json-link {\n  text-decoration: none;\n  border-bottom: 1px solid;\n  outline: none;\n}\n\na.json-link:hover {\n  background-color: transparent;\n  outline: none;\n}\n\nol.json-lines {\n  white-space: normal;\n  padding-inline-start: 3em;\n  margin: 0px;\n}\n\nol.json-lines>li {\n  white-space: pre;\n  text-indent: 0.7em;\n  line-height: 1.5em;\n  padding: 0px;\n}\n\nol.json-lines>li::marker {\n  font-family: system-ui, sans-serif;\n  font-weight: normal;\n}\n\n.json-normal {\n  font-weight: normal;\n}\n\n.json-italic {\n  font-style: italic;\n}\n\n.json-key,\n.json-string,\n.json-number,\n.json-boolean,\n.json-null,\n.json-mark,\na.json-link,\nol.json-lines>li {\n  transition: all 400ms;\n}\n\n.json-container {\n  color: #ffffff;\n}\n\n.json-key {\n  color: indianred;\n}\n\n.json-error {\n  color: #ED6C89;\n}\n\n.json-string {\n  color: khaki;\n}\n\n.json-number {\n  color: deepskyblue;\n}\n\n.json-array {\n  color: limegreen;\n}\n\n.json-object {\n  color: chocolate;\n}\n\n.json-boolean {\n  color: mediumseagreen;\n}\n\n.json-symbol {\n  color: #6AD1C7;\n}\n\n.json-function {\n  font-weight: bold;\n  color: silver;\n}\n\n.json-function-identifier {\n  color: #E59A6F;\n}\n\n.json-function-name {\n  color: #90DAE6;\n}\n\n.json-bigint {\n  color: #ABABAB;\n}\n\n.json-null {\n  color: darkorange;\n}\n\n.json-undefined {\n  color: silver;\n}\n\n.json-mark {\n  color: silver;\n}\n\na.json-link {\n  color: mediumorchid;\n}\n\na.json-link:visited {\n  color: slategray;\n}\n\na.json-link:hover {\n  color: violet;\n}\n\na.json-link:active {\n  color: slategray;\n}\n\nol.json-lines>li::marker {\n  color: silver;\n}\n\nol.json-lines>li:nth-child(odd) {\n  background-color: #222222;\n}\n\nol.json-lines>li:nth-child(even) {\n  background-color: #161616;\n}\n\nol.json-lines>li:hover {\n  background-color: dimgray;\n}";
 
 /***/ })
 
@@ -648,35 +648,6 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	
