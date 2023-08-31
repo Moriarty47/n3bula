@@ -4,7 +4,7 @@
   font-weight: bold;
   line-height: 1.4em;
   font-size: 0.9rem;
-  transition: background-color 400ms;
+  transition: background-color 100ms;
 }
 
 a.json-link {
@@ -52,7 +52,7 @@ ol.json-lines>li::marker {
 .json-mark,
 a.json-link,
 ol.json-lines>li {
-  transition: all 400ms;
+  transition: all 100ms;
 }
 
 .json-container {

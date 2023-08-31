@@ -18,12 +18,15 @@ export { prettyJSONFormatter }
 export type PrettyJSONOptions = {
     output: 'html' | 'text';
     indent: number;
-    matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
     quoteKeys: boolean;
     singleQuote: boolean;
+    oneLineArray: boolean;
     trailingComma: boolean;
 };
+
+// @public (undocumented)
+export const render: (domID: string | HTMLElement, content: string) => void;
 
 // @public (undocumented)
 export const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
@@ -39,7 +42,7 @@ export const toText: (content: unknown, options?: Omit<Partial<PrettyJSONOptions
 
 // Warnings were encountered during analysis:
 //
-// src/index.ts:72:3 - (ae-forgotten-export) The symbol "presetMarks" needs to be exported by the entry point index.d.ts
+// src/index.ts:71:3 - (ae-forgotten-export) The symbol "presetMarks" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

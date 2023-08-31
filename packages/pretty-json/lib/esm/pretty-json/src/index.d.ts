@@ -1,6 +1,7 @@
 import { type UnionWithException } from '@n3bula/utils';
 /** @public */
 export declare const loadCSS: () => void;
+export declare const render: (domID: string | HTMLElement, content: string) => void;
 /** @public */
 export declare const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
     value: string;
@@ -15,10 +16,10 @@ export declare const toText: (content: unknown, options?: Omit<Partial<PrettyJSO
 export type PrettyJSONOptions = {
     output: 'html' | 'text';
     indent: number;
-    matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
     quoteKeys: boolean;
     singleQuote: boolean;
+    oneLineArray: boolean;
     trailingComma: boolean;
 };
 /** @public */

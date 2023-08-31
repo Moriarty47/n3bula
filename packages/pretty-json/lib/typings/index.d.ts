@@ -56,12 +56,14 @@ export { prettyJSONFormatter }
 export declare type PrettyJSONOptions = {
     output: 'html' | 'text';
     indent: number;
-    matrix: boolean;
     htmlMarks: ReturnType<typeof presetMarks>;
     quoteKeys: boolean;
     singleQuote: boolean;
+    oneLineArray: boolean;
     trailingComma: boolean;
 };
+
+export declare const render: (domID: string | HTMLElement, content: string) => void;
 
 /** @public */
 export declare const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {

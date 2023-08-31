@@ -17,7 +17,7 @@ export const loadCSS = () => {
         });
     });
 };
-const render = (domID, content) => {
+export const render = (domID, content) => {
     let dom;
     if (typeof domID === 'string') {
         dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -56,21 +56,23 @@ export const toText = (content, options = {}) => {
 const defaults = {
     output: 'html',
     indent: 2,
-    matrix: false,
     quoteKeys: false,
-    singleQuote: false,
+    singleQuote: true,
+    oneLineArray: false,
     trailingComma: true,
 };
 /** @public */
 export const prettyJSONFormatter = (content, options = {}) => {
     const config = simpleMerge(defaults, options);
     config.htmlMarks = presetMarks(config);
-    if (config.matrix) {
-        if (isMatrix(content)) {
-            return matrixFormatter(content, config);
-        }
-        else {
-            throw new TypeError('Input should be a matrix.');
+    if (isArray(content)) {
+        if (config.oneLineArray) {
+            if (hasArrayChildren(content)) {
+                return flat2ArrayFormatter(content, config);
+            }
+            else {
+                return flatArrayFormatter(content, config);
+            }
         }
     }
     return mainFormatter(content, config);
@@ -122,18 +124,15 @@ const presetMarks = (options) => {
 function isPrimaryObject(input) {
     return ['string', 'number', 'boolean'].includes(getType(input));
 }
-function isMatrix(arr) {
-    if (!isArray(arr))
-        return false;
-    const colLen = arr[0].length;
-    return !arr.some(ar => !isArray(ar) || ar.length !== colLen);
+function hasArrayChildren(arr) {
+    return arr.some(ar => isArray(ar));
 }
-function findMatrixMaxLength(matrix) {
-    const rowLen = matrix.length;
-    const colLen = matrix[0].length;
+function findArrayMaxLength(arr) {
+    const rowLen = arr.length;
+    const colLen = arr[0].length;
     let maxLength = 0;
     for (let i = 0; i < rowLen; i += 1) {
-        const row = matrix[i];
+        const row = arr[i];
         for (let j = 0; j < colLen; j += 1) {
             const ele = `${row[j]}`;
             if (ele.length > maxLength) {
@@ -143,22 +142,23 @@ function findMatrixMaxLength(matrix) {
     }
     return maxLength;
 }
-function matrixFormatter(input, options) {
+function flatArrayFormatter(input, options) {
+    const { htmlMarks } = options;
+    const rowLen = input.length;
+    let str = '';
+    str = `${htmlMarks.ARRAYLT} `;
+    for (let i = 0; i < rowLen; i += 1) {
+        const arrStr = mainFormatter(input[i], options);
+        str += `${arrStr}${i < rowLen - 1 ? htmlMarks.COMMA : ''} `;
+    }
+    str += `${htmlMarks.ARRAYRT}`;
+    return str;
+}
+function flat2ArrayFormatter(input, options) {
     const { htmlMarks, indent, output } = options;
     const rowLen = input.length;
     let str = '';
-    if (output === 'text') {
-        const space = ' ';
-        const gap = space.repeat(2);
-        const colLen = input[0].length;
-        const rowIdxLength = `${rowLen}`.length;
-        const maxLength = findMatrixMaxLength(input);
-        str = `${padStart(space, rowIdxLength, space)}${gap}${Array.from({ length: colLen }, (_, i) => padEnd('' + i, maxLength, space)).join(gap)}${gap}${htmlMarks.LINEBREAK}`;
-        for (let i = 0; i < rowLen; i += 1) {
-            str += `${padStart('' + i, rowIdxLength, space)}${gap}${input[i].map(item => padEnd('' + item, maxLength, space)).join(gap)}${gap}${htmlMarks.LINEBREAK}`;
-        }
-    }
-    else {
+    if (output === 'html') {
         str = `${htmlMarks.ARRAYLT}${htmlMarks.LINEBREAK}`;
         const convert = (item) => {
             if (typeof item === 'string') {
@@ -167,9 +167,26 @@ function matrixFormatter(input, options) {
             return htmlMarks.NUMBER(item);
         };
         for (let i = 0; i < rowLen; i += 1) {
-            str += `${htmlMarks.SPACE.repeat(indent)}${htmlMarks.ARRAYLT} ${input[i].map(convert).join(', ')} ${htmlMarks.ARRAYRT}${htmlMarks.COMMA}${htmlMarks.LINEBREAK}`;
+            const arrStr = isArray(input[i])
+                ? `${htmlMarks.ARRAYLT} ${input[i].map(convert).join(', ')} ${htmlMarks.ARRAYRT}`
+                : mainFormatter(input[i], options, 2);
+            str += `${htmlMarks.SPACE.repeat(indent)}${arrStr}${htmlMarks.COMMA}${htmlMarks.LINEBREAK}`;
         }
         str += `${htmlMarks.ARRAYRT}${htmlMarks.LINEBREAK}`;
+    }
+    else {
+        const space = ' ';
+        const gap = space.repeat(2);
+        const colLen = input[0].length;
+        const rowIdxLength = `${rowLen}`.length;
+        const maxLength = findArrayMaxLength(input);
+        str = `${padStart(space, rowIdxLength, space)}${gap}${Array.from({ length: colLen }, (_, i) => padEnd('' + i, maxLength, space)).join(gap)}${gap}${htmlMarks.LINEBREAK}`;
+        for (let i = 0; i < rowLen; i += 1) {
+            const arrStr = isArray(input[i])
+                ? input[i].map(item => padEnd('' + item, maxLength, space)).join(gap)
+                : mainFormatter(input[i], options);
+            str += `${padStart('' + i, rowIdxLength, space)}${gap}${arrStr}${gap}${htmlMarks.LINEBREAK}`;
+        }
     }
     return str;
 }

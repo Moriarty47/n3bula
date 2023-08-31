@@ -256,7 +256,7 @@
             },
             {
               "kind": "Content",
-              "text": "{\n    output: 'html' | 'text';\n    indent: number;\n    matrix: boolean;\n    htmlMarks: "
+              "text": "{\n    output: 'html' | 'text';\n    indent: number;\n    htmlMarks: "
             },
             {
               "kind": "Reference",
@@ -274,7 +274,7 @@
             },
             {
               "kind": "Content",
-              "text": ">;\n    quoteKeys: boolean;\n    singleQuote: boolean;\n    trailingComma: boolean;\n}"
+              "text": ">;\n    quoteKeys: boolean;\n    singleQuote: boolean;\n    oneLineArray: boolean;\n    trailingComma: boolean;\n}"
             },
             {
               "kind": "Content",
@@ -287,6 +287,38 @@
           "typeTokenRange": {
             "startIndex": 1,
             "endIndex": 6
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/pretty-json!render:var",
+          "docComment": "",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "render: "
+            },
+            {
+              "kind": "Content",
+              "text": "(domID: string | "
+            },
+            {
+              "kind": "Reference",
+              "text": "HTMLElement",
+              "canonicalReference": "!HTMLElement:interface"
+            },
+            {
+              "kind": "Content",
+              "text": ", content: string) => void"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "render",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 4
           }
         },
         {

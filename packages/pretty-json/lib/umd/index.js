@@ -51,7 +51,7 @@ var __importStar = this && this.__importStar || function (mod) {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.prettyJSONFormatter = exports.toText = exports.toHTML = exports.loadCSS = void 0;
+exports.prettyJSONFormatter = exports.toText = exports.toHTML = exports.render = exports.loadCSS = void 0;
 var utils_1 = __webpack_require__(309);
 var IS_CSS_LOADED = Symbol('is_CSS_Loaded');
 var DOM_CACHE = new Map();
@@ -73,7 +73,7 @@ var loadCSS = function loadCSS() {
   });
 };
 exports.loadCSS = loadCSS;
-var _render = function render(domID, content) {
+var render = function render(domID, content) {
   var dom;
   if (typeof domID === 'string') {
     dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -88,6 +88,7 @@ var _render = function render(domID, content) {
     dom.appendChild(pre);
   }
 };
+exports.render = render;
 /** @public */
 var toHTML = function toHTML(content) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -97,7 +98,7 @@ var toHTML = function toHTML(content) {
   return {
     value: result,
     render: function render(domID) {
-      _render(domID, result);
+      (0, exports.render)(domID, result);
     }
   };
 };
@@ -111,7 +112,7 @@ var toText = function toText(content) {
   return {
     value: result,
     render: function render(domID) {
-      _render(domID, result);
+      (0, exports.render)(domID, result);
     }
   };
 };
@@ -119,9 +120,9 @@ exports.toText = toText;
 var defaults = {
   output: 'html',
   indent: 2,
-  matrix: false,
   quoteKeys: false,
-  singleQuote: false,
+  singleQuote: true,
+  oneLineArray: false,
   trailingComma: true
 };
 /** @public */
@@ -129,11 +130,13 @@ var prettyJSONFormatter = function prettyJSONFormatter(content) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var config = (0, utils_1.simpleMerge)(defaults, options);
   config.htmlMarks = presetMarks(config);
-  if (config.matrix) {
-    if (isMatrix(content)) {
-      return matrixFormatter(content, config);
-    } else {
-      throw new TypeError('Input should be a matrix.');
+  if ((0, utils_1.isArray)(content)) {
+    if (config.oneLineArray) {
+      if (hasArrayChildren(content)) {
+        return flat2ArrayFormatter(content, config);
+      } else {
+        return flatArrayFormatter(content, config);
+      }
     }
   }
   return mainFormatter(content, config);
@@ -202,19 +205,17 @@ var presetMarks = function presetMarks(options) {
 function isPrimaryObject(input) {
   return ['string', 'number', 'boolean'].includes((0, utils_1.getType)(input));
 }
-function isMatrix(arr) {
-  if (!(0, utils_1.isArray)(arr)) return false;
-  var colLen = arr[0].length;
-  return !arr.some(function (ar) {
-    return !(0, utils_1.isArray)(ar) || ar.length !== colLen;
+function hasArrayChildren(arr) {
+  return arr.some(function (ar) {
+    return (0, utils_1.isArray)(ar);
   });
 }
-function findMatrixMaxLength(matrix) {
-  var rowLen = matrix.length;
-  var colLen = matrix[0].length;
+function findArrayMaxLength(arr) {
+  var rowLen = arr.length;
+  var colLen = arr[0].length;
   var maxLength = 0;
   for (var i = 0; i < rowLen; i += 1) {
-    var row = matrix[i];
+    var row = arr[i];
     for (var j = 0; j < colLen; j += 1) {
       var ele = "".concat(row[j]);
       if (ele.length > maxLength) {
@@ -224,29 +225,25 @@ function findMatrixMaxLength(matrix) {
   }
   return maxLength;
 }
-function matrixFormatter(input, options) {
+function flatArrayFormatter(input, options) {
+  var htmlMarks = options.htmlMarks;
+  var rowLen = input.length;
+  var str = '';
+  str = "".concat(htmlMarks.ARRAYLT, " ");
+  for (var i = 0; i < rowLen; i += 1) {
+    var arrStr = mainFormatter(input[i], options);
+    str += "".concat(arrStr).concat(i < rowLen - 1 ? htmlMarks.COMMA : '', " ");
+  }
+  str += "".concat(htmlMarks.ARRAYRT);
+  return str;
+}
+function flat2ArrayFormatter(input, options) {
   var htmlMarks = options.htmlMarks,
     indent = options.indent,
     output = options.output;
   var rowLen = input.length;
   var str = '';
-  if (output === 'text') {
-    var space = ' ';
-    var gap = space.repeat(2);
-    var colLen = input[0].length;
-    var rowIdxLength = "".concat(rowLen).length;
-    var maxLength = findMatrixMaxLength(input);
-    str = "".concat((0, utils_1.padStart)(space, rowIdxLength, space)).concat(gap).concat(Array.from({
-      length: colLen
-    }, function (_, i) {
-      return (0, utils_1.padEnd)('' + i, maxLength, space);
-    }).join(gap)).concat(gap).concat(htmlMarks.LINEBREAK);
-    for (var i = 0; i < rowLen; i += 1) {
-      str += "".concat((0, utils_1.padStart)('' + i, rowIdxLength, space)).concat(gap).concat(input[i].map(function (item) {
-        return (0, utils_1.padEnd)('' + item, maxLength, space);
-      }).join(gap)).concat(gap).concat(htmlMarks.LINEBREAK);
-    }
-  } else {
+  if (output === 'html') {
     str = "".concat(htmlMarks.ARRAYLT).concat(htmlMarks.LINEBREAK);
     var convert = function convert(item) {
       if (typeof item === 'string') {
@@ -254,10 +251,28 @@ function matrixFormatter(input, options) {
       }
       return htmlMarks.NUMBER(item);
     };
-    for (var _i = 0; _i < rowLen; _i += 1) {
-      str += "".concat(htmlMarks.SPACE.repeat(indent)).concat(htmlMarks.ARRAYLT, " ").concat(input[_i].map(convert).join(', '), " ").concat(htmlMarks.ARRAYRT).concat(htmlMarks.COMMA).concat(htmlMarks.LINEBREAK);
+    for (var i = 0; i < rowLen; i += 1) {
+      var arrStr = (0, utils_1.isArray)(input[i]) ? "".concat(htmlMarks.ARRAYLT, " ").concat(input[i].map(convert).join(', '), " ").concat(htmlMarks.ARRAYRT) : mainFormatter(input[i], options, 2);
+      str += "".concat(htmlMarks.SPACE.repeat(indent)).concat(arrStr).concat(htmlMarks.COMMA).concat(htmlMarks.LINEBREAK);
     }
     str += "".concat(htmlMarks.ARRAYRT).concat(htmlMarks.LINEBREAK);
+  } else {
+    var space = ' ';
+    var gap = space.repeat(2);
+    var colLen = input[0].length;
+    var rowIdxLength = "".concat(rowLen).length;
+    var maxLength = findArrayMaxLength(input);
+    str = "".concat((0, utils_1.padStart)(space, rowIdxLength, space)).concat(gap).concat(Array.from({
+      length: colLen
+    }, function (_, i) {
+      return (0, utils_1.padEnd)('' + i, maxLength, space);
+    }).join(gap)).concat(gap).concat(htmlMarks.LINEBREAK);
+    for (var _i = 0; _i < rowLen; _i += 1) {
+      var _arrStr = (0, utils_1.isArray)(input[_i]) ? input[_i].map(function (item) {
+        return (0, utils_1.padEnd)('' + item, maxLength, space);
+      }).join(gap) : mainFormatter(input[_i], options);
+      str += "".concat((0, utils_1.padStart)('' + _i, rowIdxLength, space)).concat(gap).concat(_arrStr).concat(gap).concat(htmlMarks.LINEBREAK);
+    }
   }
   return str;
 }
@@ -619,7 +634,7 @@ exports["default"] = {
 /***/ 894:
 /***/ ((module) => {
 
-module.exports = ".json-container {\n  font-family: menlo, consolas, monospace;\n  font-style: normal;\n  font-weight: bold;\n  line-height: 1.4em;\n  font-size: 0.9rem;\n  transition: background-color 400ms;\n}\n\na.json-link {\n  text-decoration: none;\n  border-bottom: 1px solid;\n  outline: none;\n}\n\na.json-link:hover {\n  background-color: transparent;\n  outline: none;\n}\n\nol.json-lines {\n  white-space: normal;\n  padding-inline-start: 3em;\n  margin: 0px;\n}\n\nol.json-lines>li {\n  white-space: pre;\n  text-indent: 0.7em;\n  line-height: 1.5em;\n  padding: 0px;\n}\n\nol.json-lines>li::marker {\n  font-family: system-ui, sans-serif;\n  font-weight: normal;\n}\n\n.json-normal {\n  font-weight: normal;\n}\n\n.json-italic {\n  font-style: italic;\n}\n\n.json-key,\n.json-string,\n.json-number,\n.json-boolean,\n.json-null,\n.json-mark,\na.json-link,\nol.json-lines>li {\n  transition: all 400ms;\n}\n\n.json-container {\n  color: #ffffff;\n}\n\n.json-key {\n  color: indianred;\n}\n\n.json-error {\n  color: #ED6C89;\n}\n\n.json-string {\n  color: khaki;\n}\n\n.json-number {\n  color: deepskyblue;\n}\n\n.json-array {\n  color: limegreen;\n}\n\n.json-object {\n  color: chocolate;\n}\n\n.json-boolean {\n  color: mediumseagreen;\n}\n\n.json-symbol {\n  color: #6AD1C7;\n}\n\n.json-function {\n  font-weight: bold;\n  color: silver;\n}\n\n.json-function-identifier {\n  color: #E59A6F;\n}\n\n.json-function-name {\n  color: #90DAE6;\n}\n\n.json-bigint {\n  color: #ABABAB;\n}\n\n.json-null {\n  color: darkorange;\n}\n\n.json-undefined {\n  color: silver;\n}\n\n.json-mark {\n  color: silver;\n}\n\na.json-link {\n  color: mediumorchid;\n}\n\na.json-link:visited {\n  color: slategray;\n}\n\na.json-link:hover {\n  color: violet;\n}\n\na.json-link:active {\n  color: slategray;\n}\n\nol.json-lines>li::marker {\n  color: silver;\n}\n\nol.json-lines>li:nth-child(odd) {\n  background-color: #222222;\n}\n\nol.json-lines>li:nth-child(even) {\n  background-color: #161616;\n}\n\nol.json-lines>li:hover {\n  background-color: dimgray;\n}";
+module.exports = ".json-container {\n  font-family: menlo, consolas, monospace;\n  font-style: normal;\n  font-weight: bold;\n  line-height: 1.4em;\n  font-size: 0.9rem;\n  transition: background-color 100ms;\n}\n\na.json-link {\n  text-decoration: none;\n  border-bottom: 1px solid;\n  outline: none;\n}\n\na.json-link:hover {\n  background-color: transparent;\n  outline: none;\n}\n\nol.json-lines {\n  white-space: normal;\n  padding-inline-start: 3em;\n  margin: 0px;\n}\n\nol.json-lines>li {\n  white-space: pre;\n  text-indent: 0.7em;\n  line-height: 1.5em;\n  padding: 0px;\n}\n\nol.json-lines>li::marker {\n  font-family: system-ui, sans-serif;\n  font-weight: normal;\n}\n\n.json-normal {\n  font-weight: normal;\n}\n\n.json-italic {\n  font-style: italic;\n}\n\n.json-key,\n.json-string,\n.json-number,\n.json-boolean,\n.json-null,\n.json-mark,\na.json-link,\nol.json-lines>li {\n  transition: all 100ms;\n}\n\n.json-container {\n  color: #ffffff;\n}\n\n.json-key {\n  color: indianred;\n}\n\n.json-error {\n  color: #ED6C89;\n}\n\n.json-string {\n  color: khaki;\n}\n\n.json-number {\n  color: deepskyblue;\n}\n\n.json-array {\n  color: limegreen;\n}\n\n.json-object {\n  color: chocolate;\n}\n\n.json-boolean {\n  color: mediumseagreen;\n}\n\n.json-symbol {\n  color: #6AD1C7;\n}\n\n.json-function {\n  font-weight: bold;\n  color: silver;\n}\n\n.json-function-identifier {\n  color: #E59A6F;\n}\n\n.json-function-name {\n  color: #90DAE6;\n}\n\n.json-bigint {\n  color: #ABABAB;\n}\n\n.json-null {\n  color: darkorange;\n}\n\n.json-undefined {\n  color: silver;\n}\n\n.json-mark {\n  color: silver;\n}\n\na.json-link {\n  color: mediumorchid;\n}\n\na.json-link:visited {\n  color: slategray;\n}\n\na.json-link:hover {\n  color: violet;\n}\n\na.json-link:active {\n  color: slategray;\n}\n\nol.json-lines>li::marker {\n  color: silver;\n}\n\nol.json-lines>li:nth-child(odd) {\n  background-color: #222222;\n}\n\nol.json-lines>li:nth-child(even) {\n  background-color: #161616;\n}\n\nol.json-lines>li:hover {\n  background-color: dimgray;\n}";
 
 /***/ })
 

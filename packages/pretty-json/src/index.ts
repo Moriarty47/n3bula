@@ -20,7 +20,7 @@ export const loadCSS = () => {
   });
 };
 
-const render = (domID: string | HTMLElement, content: string) => {
+export const render = (domID: string | HTMLElement, content: string) => {
   let dom: HTMLElement | null;
   if (typeof domID === 'string') {
     dom = DOM_CACHE.get(domID) || document.getElementById(domID);
@@ -68,19 +68,19 @@ export const toText = (content: unknown, options: Omit<Partial<PrettyJSONOptions
 export type PrettyJSONOptions = {
   output: 'html' | 'text';
   indent: number;
-  matrix: boolean;
   htmlMarks: ReturnType<typeof presetMarks>;
   quoteKeys: boolean;
   singleQuote: boolean;
+  oneLineArray: boolean;
   trailingComma: boolean;
 };
 
 const defaults: Omit<PrettyJSONOptions, 'htmlMarks'> = {
   output: 'html',
   indent: 2,
-  matrix: false,
   quoteKeys: false,
-  singleQuote: false,
+  singleQuote: true,
+  oneLineArray: false,
   trailingComma: true,
 };
 
@@ -88,11 +88,13 @@ const defaults: Omit<PrettyJSONOptions, 'htmlMarks'> = {
 export const prettyJSONFormatter = (content: unknown, options: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>> = {}): string => {
   const config = simpleMerge<PrettyJSONOptions>(defaults as PrettyJSONOptions, options);
   config.htmlMarks = presetMarks(config);
-  if (config.matrix) {
-    if (isMatrix(content)) {
-      return matrixFormatter(content, config);
-    } else {
-      throw new TypeError('Input should be a matrix.');
+  if (isArray(content)) {
+    if (config.oneLineArray) {
+      if (hasArrayChildren(content)) {
+        return flat2ArrayFormatter(content, config);
+      } else {
+        return flatArrayFormatter(content, config);
+      }
     }
   }
   return mainFormatter(content, config);
@@ -171,18 +173,16 @@ function isPrimaryObject(input: unknown): input is string | number | boolean {
   return ['string', 'number', 'boolean'].includes(getType(input));
 }
 
-function isMatrix(arr: unknown): arr is any[][] {
-  if (!isArray(arr)) return false;
-  const colLen = arr[0].length;
-  return !arr.some(ar => !isArray(ar) || ar.length !== colLen);
+function hasArrayChildren(arr: any[]): boolean {
+  return arr.some(ar => isArray(ar));
 }
 
-function findMatrixMaxLength(matrix: any[][]): number {
-  const rowLen = matrix.length;
-  const colLen = matrix[0].length;
+function findArrayMaxLength(arr: any[][]): number {
+  const rowLen = arr.length;
+  const colLen = arr[0].length;
   let maxLength = 0;
   for (let i = 0; i < rowLen; i += 1) {
-    const row = matrix[i];
+    const row = arr[i];
     for (let j = 0; j < colLen; j += 1) {
       const ele = `${row[j]}`;
       if (ele.length > maxLength) {
@@ -193,25 +193,29 @@ function findMatrixMaxLength(matrix: any[][]): number {
   return maxLength;
 }
 
-function matrixFormatter(input: any[][], options: PrettyJSONOptions): string {
+function flatArrayFormatter(input: any[], options: PrettyJSONOptions): string {
+  const { htmlMarks } = options;
+  const rowLen = input.length;
+  let str = '';
+
+  str = `${htmlMarks.ARRAYLT} `;
+
+  for (let i = 0; i < rowLen; i += 1) {
+    const arrStr = mainFormatter(input[i], options);
+    str += `${arrStr}${i < rowLen - 1 ? htmlMarks.COMMA : ''} `;
+  }
+
+  str += `${htmlMarks.ARRAYRT}`;
+
+  return str;
+}
+
+function flat2ArrayFormatter(input: any[][], options: PrettyJSONOptions): string {
   const { htmlMarks, indent, output } = options;
   const rowLen = input.length;
   let str = '';
 
-  if (output === 'text') {
-    const space = ' ';
-    const gap = space.repeat(2);
-    const colLen = input[0].length;
-    const rowIdxLength = `${rowLen}`.length;
-    const maxLength = findMatrixMaxLength(input);
-
-    str = `${padStart(space, rowIdxLength, space)}${gap}${Array.from({ length: colLen }, (_, i) => padEnd('' + i, maxLength, space)).join(gap)
-      }${gap}${htmlMarks.LINEBREAK}`;
-
-    for (let i = 0; i < rowLen; i += 1) {
-      str += `${padStart('' + i, rowIdxLength, space)}${gap}${input[i].map(item => padEnd('' + item, maxLength, space)).join(gap)}${gap}${htmlMarks.LINEBREAK}`;
-    }
-  } else {
+  if (output === 'html') {
     str = `${htmlMarks.ARRAYLT}${htmlMarks.LINEBREAK}`;
 
     const convert = (item: string | number): string => {
@@ -222,10 +226,29 @@ function matrixFormatter(input: any[][], options: PrettyJSONOptions): string {
     };
 
     for (let i = 0; i < rowLen; i += 1) {
-      str += `${htmlMarks.SPACE.repeat(indent)}${htmlMarks.ARRAYLT} ${input[i].map(convert).join(', ')} ${htmlMarks.ARRAYRT}${htmlMarks.COMMA}${htmlMarks.LINEBREAK}`;
+      const arrStr = isArray(input[i])
+        ? `${htmlMarks.ARRAYLT} ${input[i].map(convert).join(', ')} ${htmlMarks.ARRAYRT}`
+        : mainFormatter(input[i], options, 2);
+      str += `${htmlMarks.SPACE.repeat(indent)}${arrStr}${htmlMarks.COMMA}${htmlMarks.LINEBREAK}`;
     }
 
     str += `${htmlMarks.ARRAYRT}${htmlMarks.LINEBREAK}`;
+  } else {
+    const space = ' ';
+    const gap = space.repeat(2);
+    const colLen = input[0].length;
+    const rowIdxLength = `${rowLen}`.length;
+    const maxLength = findArrayMaxLength(input);
+
+    str = `${padStart(space, rowIdxLength, space)}${gap}${Array.from({ length: colLen }, (_, i) => padEnd('' + i, maxLength, space)).join(gap)
+      }${gap}${htmlMarks.LINEBREAK}`;
+
+    for (let i = 0; i < rowLen; i += 1) {
+      const arrStr = isArray(input[i])
+        ? input[i].map(item => padEnd('' + item, maxLength, space)).join(gap)
+        : mainFormatter(input[i], options);
+      str += `${padStart('' + i, rowIdxLength, space)}${gap}${arrStr}${gap}${htmlMarks.LINEBREAK}`;
+    }
   }
 
   return str;

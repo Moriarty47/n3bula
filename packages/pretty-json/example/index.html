@@ -23,13 +23,15 @@
     map.set({ a: 1, c: 2, d: true, b: [1, '3'] }, { b: false });
     map.set(map, map);
     prettyJson.toHTML(map).render('app');
+    prettyJson.toHTML([1, 2, '3'],
+      { oneLineArray: true }).render('app');
     prettyJson.toHTML([
       [1, 2, 3],
       [4, '5', 6],
-      [7, 8, 9],
+      [8, 9],
+      1,
     ], {
-      matrix: true,
-      singleQuote: true,
+      oneLineArray: true,
     }).render('app');
     const symbolKey = Symbol.for('key');
     const o = {
