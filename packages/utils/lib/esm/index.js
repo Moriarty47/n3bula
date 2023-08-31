@@ -7,13 +7,60 @@ export const isNumber = (thing) => isType(thing, 'number');
 /** @public */
 export const isString = (thing) => isType(thing, 'string');
 /** @public */
+export const isBoolean = (thing) => isType(thing, 'boolean');
+/** @public */
+export const isBigInt = (thing) => isType(thing, 'bigint');
+/** @public */
 export const isSymbol = (thing) => isType(thing, 'symbol');
+/** @public */
+export const isNull = (thing) => isType(thing, 'null');
+/** @public */
+export const isUndefined = (thing) => isType(thing, 'undefined');
+/** @public */
+export const isNullable = (thing) => isNull(thing) || isUndefined(thing);
+/** @public */
+export const isPrimary = (thing) => {
+    if (thing !== null && (typeof thing === 'object' || typeof thing === 'function'))
+        return false;
+    return true;
+};
 /** @public */
 export const isArray = (thing) => isType(thing, 'array');
 /** @public */
+export const isFunction = (thing) => isType(thing, 'function');
+/** @public */
 export const isObject = (thing) => isType(thing, 'object');
 /** @public */
-export const isNullable = (thing) => isType(thing, 'null') || isType(thing, 'undefined');
+export const capitalize = (str = '') => {
+    if (!str)
+        return '';
+    const firstLetter = str.slice(0, 1) || '';
+    const rest = str.slice(1);
+    return String(firstLetter).toUpperCase() + rest;
+};
+/** @public */
+export const decapitalize = (str = '') => {
+    if (!str)
+        return '';
+    const firstLetter = str.slice(0, 1) || '';
+    const rest = str.slice(1);
+    return String(firstLetter).toLowerCase() + rest;
+};
+/** @public */
+export const camel2kebab = (str = '') => {
+    if (!str)
+        return '';
+    return (str || '')
+        .replace(/([A-Z])(\w)/g, (_, p1, p2) => `-${p1.toLowerCase()}${p2}`)
+        .replace(/_/gm, '-');
+};
+/** @public */
+export const kebab2camel = (str = '') => {
+    if (!str)
+        return '';
+    return (str || '')
+        .replace(/[-_](\w)/g, (_, p1) => p1.toUpperCase());
+};
 /** @public */
 export const is32Bit = (char, i) => {
     return char.codePointAt(i) > 0xffff;
@@ -60,6 +107,18 @@ export const padStartEnd = (str, length, char1 = '', char2 = char1) => {
 export const emptyPadStart = (length, str = '', pad = '') => {
     return padStart(str, length, pad);
 };
+/** @public */
+export const simpleMerge = (source, object = {}) => {
+    const merged = Object.assign({}, source);
+    Object.keys(source).forEach(key => {
+        if (isObject(source[key])) {
+            merged[key] = simpleMerge(source[key], object[key]);
+            return;
+        }
+        merged[key] = (object[key] || source[key]);
+    });
+    return merged;
+};
 export default {
     getType,
     isType,
@@ -76,5 +135,6 @@ export default {
     padEnd,
     padStartEnd,
     emptyPadStart,
+    simpleMerge,
 };
 //# sourceMappingURL=index.js.map

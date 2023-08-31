@@ -94,6 +94,51 @@ export class BinTreeNode {
     return _find(this, data);
   }
 
+  findBottomEdgeNode(direction: 'l' | 'r' = 'l') {
+    const queue: BinTreeNodeType[] = [this];
+    let node: BinTreeNodeType;
+    if (direction === 'l') {
+      while (queue.length) {
+        node = queue.shift()!;
+        node.right && queue.push(node.right);
+        node.left && queue.push(node.left);
+      }
+      return node!.val;
+    } else {
+      while (queue.length) {
+        node = queue.shift()!;
+        node.left && queue.push(node.left);
+        node.right && queue.push(node.right);
+      }
+      return node!.val;
+    }
+  }
+
+  deleteBSTNode(data: BinTreeNodeValue) {
+    if (this.isValidBST()) {
+      const _delete = (tree: BinTreeNodeType, val: BinTreeNodeValue): BinTreeNodeType => {
+        if (!tree || !val) return null;
+        if (val > tree.val!) {
+          tree.right = _delete(tree.right, val);
+        } else if (val < tree.val!) {
+          tree.left = _delete(tree.left, val);
+        } else {
+          if (!tree.left) return tree.right;
+          if (!tree.right) return tree.left;
+          let node = tree.right;
+          while (node.left) {
+            node = node.left;
+          }
+          node.left = tree.left;
+          tree = tree.right;
+        }
+        return tree;
+      };
+      return _delete(this, data);
+    }
+    return 'Not a valid BST';
+  }
+
   preorderTraversal(): BinTreeNodeValue[] {
     const traversal = (node: BinTreeNodeType, treeData: BinTreeNodeValue[] = []): BinTreeNodeValue[] => {
       if (!node) return treeData;

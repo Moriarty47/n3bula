@@ -9,18 +9,106 @@
 		root["N3bulaUtils"] = factory();
 })(this, () => {
 return /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 88:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ 316:
+/***/ ((module) => {
+
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(o);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(316);
+/* harmony import */ var _babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0__);
 
 
 
-Object.defineProperty(exports, "__esModule", ({
+Object.defineProperty(__webpack_exports__, "__esModule", ({
   value: true
 }));
-exports.emptyPadStart = exports.padStartEnd = exports.padEnd = exports.padStart = exports.getCharLength = exports.isAllSameChar = exports.getCodePointLength = exports.is32Bit = exports.isNullable = exports.isObject = exports.isArray = exports.isSymbol = exports.isString = exports.isNumber = exports.isType = exports.getType = void 0;
+exports.simpleMerge = exports.emptyPadStart = exports.padStartEnd = exports.padEnd = exports.padStart = exports.getCharLength = exports.isAllSameChar = exports.getCodePointLength = exports.is32Bit = exports.kebab2camel = exports.camel2kebab = exports.decapitalize = exports.capitalize = exports.isObject = exports.isFunction = exports.isArray = exports.isPrimary = exports.isNullable = exports.isUndefined = exports.isNull = exports.isSymbol = exports.isBigInt = exports.isBoolean = exports.isString = exports.isNumber = exports.isType = exports.getType = void 0;
 /** @public */
 var getType = function getType(thing) {
   return Object.prototype.toString.call(thing).slice(8, -1).toLowerCase();
@@ -42,25 +130,92 @@ var isString = function isString(thing) {
 };
 exports.isString = isString;
 /** @public */
+var isBoolean = function isBoolean(thing) {
+  return (0, exports.isType)(thing, 'boolean');
+};
+exports.isBoolean = isBoolean;
+/** @public */
+var isBigInt = function isBigInt(thing) {
+  return (0, exports.isType)(thing, 'bigint');
+};
+exports.isBigInt = isBigInt;
+/** @public */
 var isSymbol = function isSymbol(thing) {
   return (0, exports.isType)(thing, 'symbol');
 };
 exports.isSymbol = isSymbol;
+/** @public */
+var isNull = function isNull(thing) {
+  return (0, exports.isType)(thing, 'null');
+};
+exports.isNull = isNull;
+/** @public */
+var isUndefined = function isUndefined(thing) {
+  return (0, exports.isType)(thing, 'undefined');
+};
+exports.isUndefined = isUndefined;
+/** @public */
+var isNullable = function isNullable(thing) {
+  return (0, exports.isNull)(thing) || (0, exports.isUndefined)(thing);
+};
+exports.isNullable = isNullable;
+/** @public */
+var isPrimary = function isPrimary(thing) {
+  if (thing !== null && (_babel_runtime_helpers_typeof__WEBPACK_IMPORTED_MODULE_0___default()(thing) === 'object' || typeof thing === 'function')) return false;
+  return true;
+};
+exports.isPrimary = isPrimary;
 /** @public */
 var isArray = function isArray(thing) {
   return (0, exports.isType)(thing, 'array');
 };
 exports.isArray = isArray;
 /** @public */
+var isFunction = function isFunction(thing) {
+  return (0, exports.isType)(thing, 'function');
+};
+exports.isFunction = isFunction;
+/** @public */
 var isObject = function isObject(thing) {
   return (0, exports.isType)(thing, 'object');
 };
 exports.isObject = isObject;
 /** @public */
-var isNullable = function isNullable(thing) {
-  return (0, exports.isType)(thing, 'null') || (0, exports.isType)(thing, 'undefined');
+var capitalize = function capitalize() {
+  var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  if (!str) return '';
+  var firstLetter = str.slice(0, 1) || '';
+  var rest = str.slice(1);
+  return String(firstLetter).toUpperCase() + rest;
 };
-exports.isNullable = isNullable;
+exports.capitalize = capitalize;
+/** @public */
+var decapitalize = function decapitalize() {
+  var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  if (!str) return '';
+  var firstLetter = str.slice(0, 1) || '';
+  var rest = str.slice(1);
+  return String(firstLetter).toLowerCase() + rest;
+};
+exports.decapitalize = decapitalize;
+/** @public */
+var camel2kebab = function camel2kebab() {
+  var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  if (!str) return '';
+  return (str || '').replace(/([A-Z])(\w)/g, function (_, p1, p2) {
+    return "-".concat(p1.toLowerCase()).concat(p2);
+  }).replace(/_/gm, '-');
+};
+exports.camel2kebab = camel2kebab;
+/** @public */
+var kebab2camel = function kebab2camel() {
+  var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  if (!str) return '';
+  return (str || '').replace(/[-_](\w)/g, function (_, p1) {
+    return p1.toUpperCase();
+  });
+};
+exports.kebab2camel = kebab2camel;
 /** @public */
 var is32Bit = function is32Bit(_char, i) {
   return _char.codePointAt(i) > 0xffff;
@@ -118,6 +273,20 @@ var emptyPadStart = function emptyPadStart(length) {
   return (0, exports.padStart)(str, length, pad);
 };
 exports.emptyPadStart = emptyPadStart;
+/** @public */
+var simpleMerge = function simpleMerge(source) {
+  var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var merged = Object.assign({}, source);
+  Object.keys(source).forEach(function (key) {
+    if ((0, exports.isObject)(source[key])) {
+      merged[key] = (0, exports.simpleMerge)(source[key], object[key]);
+      return;
+    }
+    merged[key] = object[key] || source[key];
+  });
+  return merged;
+};
+exports.simpleMerge = simpleMerge;
 exports["default"] = {
   getType: exports.getType,
   isType: exports.isType,
@@ -133,20 +302,11 @@ exports["default"] = {
   padStart: exports.padStart,
   padEnd: exports.padEnd,
   padStartEnd: exports.padStartEnd,
-  emptyPadStart: exports.emptyPadStart
+  emptyPadStart: exports.emptyPadStart,
+  simpleMerge: exports.simpleMerge
 };
+})();
 
-/***/ })
-
-/******/ 	});
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__[88](0, __webpack_exports__);
-/******/ 	
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;

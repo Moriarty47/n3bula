@@ -5,9 +5,9 @@ import {
 } from './utils';
 import {
   padStartEnd,
-  isObject,
   isSymbol,
   getCodePointLength,
+  simpleMerge,
 } from '@n3bula/utils';
 
 export type PrinterOptionMarks = {
@@ -38,28 +38,6 @@ const defaults: PrinterOptions = {
   }
 };
 
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends {} ? DeepPartial<T[P]> : T[P];
-};
-
-const simpleMerge = <T extends Record<string, any>>(
-  source: T,
-  object: DeepPartial<T> = {},
-): T => {
-  const merged: T = { ...source };
-  (Object.keys(source) as (keyof T)[]).forEach(key => {
-    if (isObject(source[key])) {
-      merged[key] = simpleMerge(
-        source[key],
-        object[key] as DeepPartial<T[keyof T]>,
-      );
-      return;
-    }
-    merged[key] = (object[key] || source[key]) as T[keyof T];
-  });
-  return merged;
-};
-
 const SYMBOL_EMPTY = Symbol('Empty');
 const SYMBOL_SLASH = Symbol('/');
 const SYMBOL_BACKSLASH = Symbol('\\');
@@ -80,8 +58,8 @@ export default function binTreePrinter(tree: BiTreeNode, options: Partial<Printe
 /**
  * @description
  * To draw like this, (n is level) , we have:
- * - width = (2^(n-1)-1)*3+2^(n-1) = 2^(n+1)-3
- * - height = 2^(n-1)
+ * - width = 2^(n-1)-1
+ * - height = 2^n-1
  * ```txt
  *             5          
  *       ┏━━━━━┻━━━━━┓    

@@ -5,6 +5,15 @@
 ```ts
 
 // @public (undocumented)
+export const camel2kebab: (str?: string) => string;
+
+// @public (undocumented)
+export const capitalize: (str?: string) => string;
+
+// @public (undocumented)
+export const decapitalize: (str?: string) => string;
+
+// @public (undocumented)
 const _default: {
     getType: (thing: unknown) => string;
     isType: (thing: unknown, type: ThingType) => boolean;
@@ -21,6 +30,7 @@ const _default: {
     padEnd: (str: string, length: number, char: string) => string;
     padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;
     emptyPadStart: (length: number, str?: string, pad?: string) => string;
+    simpleMerge: <T extends Record<string, any>>(source: T, object?: DeepPartial<T>) => T;
 };
 export default _default;
 
@@ -46,6 +56,18 @@ export const isAllSameChar: (str: string, char: string) => boolean;
 export const isArray: (thing: unknown) => thing is any[];
 
 // @public (undocumented)
+export const isBigInt: (thing: unknown) => thing is bigint;
+
+// @public (undocumented)
+export const isBoolean: (thing: unknown) => thing is boolean;
+
+// @public (undocumented)
+export const isFunction: (thing: unknown) => thing is () => void;
+
+// @public (undocumented)
+export const isNull: (thing: unknown) => thing is null;
+
+// @public (undocumented)
 export const isNullable: (thing: unknown) => thing is null | undefined;
 
 // @public (undocumented)
@@ -53,6 +75,11 @@ export const isNumber: (thing: unknown) => thing is number;
 
 // @public (undocumented)
 export const isObject: (thing: unknown) => thing is {};
+
+// Warning: (ae-forgotten-export) The symbol "PrimaryType" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const isPrimary: (thing: unknown) => thing is PrimaryType;
 
 // @public (undocumented)
 export const isString: (thing: unknown) => thing is string;
@@ -64,6 +91,12 @@ export const isSymbol: (thing: unknown) => thing is symbol;
 export const isType: (thing: unknown, type: ThingType) => boolean;
 
 // @public (undocumented)
+export const isUndefined: (thing: unknown) => thing is undefined;
+
+// @public (undocumented)
+export const kebab2camel: (str?: string) => string;
+
+// @public (undocumented)
 export const padEnd: (str: string, length: number, char: string) => string;
 
 // @public (undocumented)
@@ -72,9 +105,16 @@ export const padStart: (str: string, length: number, char: string) => string;
 // @public (undocumented)
 export const padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;
 
+// @public (undocumented)
+export const simpleMerge: <T extends Record<string, any>>(source: T, object?: DeepPartial<T>) => T;
+
+// @public (undocumented)
+export type UnionWithException<T extends (string | number)[]> = (Readonly<T>)[number] | (string & {});
+
 // Warnings were encountered during analysis:
 //
-// src/index.ts:90:3 - (ae-forgotten-export) The symbol "ThingType" needs to be exported by the entry point index.d.ts
+// src/index.ts:156:3 - (ae-forgotten-export) The symbol "ThingType" needs to be exported by the entry point index.d.ts
+// src/index.ts:156:3 - (ae-forgotten-export) The symbol "DeepPartial" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
