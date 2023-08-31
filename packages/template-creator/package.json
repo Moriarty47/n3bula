@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/template-creator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A CLI tool for creating library template.",
   "main": "index.js",
   "bin": {
