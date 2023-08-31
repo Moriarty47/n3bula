@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@n3bula/pretty-json</title>
+  <style>
+    html,
+    body {
+      background: #222222;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="../lib/umd/index.min.js"></script>
+  <script>
+    console.log(prettyJson);
+    const map = new Map();
+    map.set('a', 6);
+    map.set({ a: 1, c: 2, d: true, b: [1, '3'] }, { b: false });
+    map.set(map, map);
+    prettyJson.toHTML(map).render('app');
+    prettyJson.toHTML([
+      [1, 2, 3],
+      [4, '5', 6],
+      [7, 8, 9],
+    ], {
+      matrix: true,
+      singleQuote: true,
+    }).render('app');
+    const symbolKey = Symbol.for('key');
+    const o = {
+      [symbolKey]: Symbol.for('key'),
+      xfd: [1, '2', null, false, [4, 5, [6]]],
+      a: '1',
+      test: function test(app) {
+        console.log(app);
+      },
+      as: function (app) {
+        console.log(app);
+      },
+      arrow: () => { },
+      b: 2,
+      c: true,
+      d: {
+        a: 1,
+        b: new String('3'),
+        c: Symbol('sdf'),
+        d: {
+          a: 234,
+          b: 'asdf',
+          c: false
+        }
+      },
+      g: NaN,
+      asdfasfd: 'asdfadsfzcv',
+    };
+    o.xfd[5] = o;
+    o.f = o;
+    prettyJson.toHTML(o, {
+      indent: 6,
+    }).render('app');
+  </script>
+</body>
+
+</html>

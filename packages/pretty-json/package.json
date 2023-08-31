@@ -1,0 +1,72 @@
+{
+  "name": "@n3bula/pretty-json",
+  "version": "0.0.1",
+  "description": "Pretty JSON data into HTML.",
+  "main": "./lib/umd/index.js",
+  "types": "./lib/esm/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/typings/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "module": "./lib/esm/index.js",
+      "require": "./lib/umd/index.js",
+      "default": "./lib/umd/index.js"
+    }
+  },
+  "files": [
+    "example",
+    "etc",
+    "lib",
+    "src",
+    "*.js",
+    "*.json"
+  ],
+  "targets": {
+    "main": {
+      "optimize": true
+    },
+    "module": {
+      "optimize": true
+    }
+  },
+  "scripts": {
+    "dev": "webpack --watch -c webpack.config.ts",
+    "build": "shx rm -rf lib/** && pnpm run build:umd && pnpm run build:esm && pnpm run build:extract-api",
+    "build:umd": "webpack -c webpack.config.ts",
+    "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m esnext",
+    "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
+    "build:extract-api-local": "shx mkdir -p ./etc && api-extractor run -l"
+  },
+  "keywords": [
+    "pretty",
+    "JSON",
+    "format",
+    "fomatter",
+    "colorize",
+    "HTML"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/pretty-json#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/pretty-json"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@n3bula/utils": "workspace:^"
+  }
+}

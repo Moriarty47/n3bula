@@ -1,0 +1,69 @@
+import { type UnionWithException } from '@n3bula/utils';
+/** @public */
+export declare const loadCSS: () => void;
+/** @public */
+export declare const render: (domID: string | HTMLElement, content: string) => void;
+/** @public */
+export declare const toHTML: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
+    value: string;
+    render(domID: string | HTMLElement): void;
+};
+/** @public */
+export declare const toText: (content: unknown, options?: Omit<Partial<PrettyJSONOptions>, 'output'>) => {
+    value: string;
+    render(domID: string | HTMLElement): void;
+};
+/** @public */
+export type PrettyJSONOptions = {
+    output: 'html' | 'text';
+    indent: number;
+    matrix: boolean;
+    htmlMarks: ReturnType<typeof presetMarks>;
+    singleQuote: boolean;
+    trailingComma: boolean;
+};
+/** @public */
+export declare const prettyJSONFormatter: (content: unknown, options?: Partial<PrettyJSONOptions>) => string;
+export default prettyJSONFormatter;
+type MarkType = UnionWithException<[
+    'string',
+    'number',
+    'boolean',
+    'symbol',
+    'bigInt',
+    'null',
+    'undefined',
+    'array',
+    'object',
+    'date',
+    'regexp',
+    'function',
+    'mark'
+]>;
+declare const presetMarks: (options: PrettyJSONOptions) => {
+    typeMark: (value: string | number | boolean, type: MarkType) => string;
+    TAB: string;
+    QUOTE: string;
+    SPACE: string;
+    LINEBREAK: string;
+    SEMI: string;
+    ARROW: string;
+    COMMA: string;
+    ARRAYLT: string;
+    ARRAYRT: string;
+    OBJECTLT: string;
+    OBJECTRT: string;
+    NULL: string;
+    UNDEFINED: string;
+    CIRCULAR_ERROR: string;
+    DATE: (value: Date) => string;
+    ERROR: (value: string) => string;
+    ITALIC: (value: string) => string;
+    STRING: (value: string) => string;
+    NUMBER: (value: number) => string;
+    SYMBOL: (value: symbol) => string;
+    BIGINT: (value: bigint) => string;
+    BOOLEAN: (value: boolean) => string;
+    FUNCTION: (value: string) => string;
+};
+//# sourceMappingURL=index.d.ts.map

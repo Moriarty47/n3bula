@@ -1,0 +1,47 @@
+export function getType(thing: any): string;
+export function isType(thing: any, type: any): boolean;
+export function isNumber(thing: any): boolean;
+export function isString(thing: any): boolean;
+export function isBoolean(thing: any): boolean;
+export function isBigInt(thing: any): boolean;
+export function isSymbol(thing: any): boolean;
+export function isNull(thing: any): boolean;
+export function isUndefined(thing: any): boolean;
+export function isNullable(thing: any): boolean;
+export function isPrimary(thing: any): boolean;
+export function isArray(thing: any): boolean;
+export function isFunction(thing: any): boolean;
+export function isObject(thing: any): boolean;
+export function capitalize(str?: string): string;
+export function decapitalize(str?: string): string;
+export function camel2kebab(str?: string): string;
+export function kebab2camel(str?: string): string;
+export function is32Bit(char: any, i: any): boolean;
+export function getCodePointLength(str: any): number;
+export function isAllSameChar(str: any, char: any): boolean;
+export function getCharLength(str: any): any;
+export function padStart(str: any, length: any, char: any): any;
+export function padEnd(str: any, length: any, char: any): any;
+export function padStartEnd(str: any, length: any, char1?: string, char2?: string): string;
+export function emptyPadStart(length: any, str?: string, pad?: string): any;
+export function simpleMerge(source: any, object?: {}): any;
+declare namespace _default {
+    export { getType };
+    export { isType };
+    export { isNumber };
+    export { isString };
+    export { isArray };
+    export { isObject };
+    export { isNullable };
+    export { is32Bit };
+    export { getCodePointLength };
+    export { isAllSameChar };
+    export { getCharLength };
+    export { padStart };
+    export { padEnd };
+    export { padStartEnd };
+    export { emptyPadStart };
+    export { simpleMerge };
+}
+export default _default;
+//# sourceMappingURL=index.d.ts.map
