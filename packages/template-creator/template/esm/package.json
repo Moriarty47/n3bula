@@ -1,0 +1,62 @@
+{
+  "name": "@n3bula/{{packageName}}",
+  "version": "{{packageVersion}}",
+  "description": "{{libarayDesc}}",
+  "main": "./lib/umd/index.js",
+  "types": "./lib/esm/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/typings/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "module": "./lib/esm/index.js",
+      "require": "./lib/umd/index.js",
+      "default": "./lib/umd/index.js"
+    }
+  },
+  "files": [
+    "example",
+    "etc",
+    "lib",
+    "src",
+    "*.js",
+    "*.json"
+  ],
+  "targets": {
+    "main": {
+      "optimize": true
+    },
+    "module": {
+      "optimize": true
+    }
+  },
+  "scripts": {
+    "dev": "webpack --watch -c webpack.config.ts",
+    "build": "shx rm -rf lib/** && pnpm run build:umd && pnpm run build:esm && pnpm run build:extract-api",
+    "build:umd": "webpack -c webpack.config.ts",
+    "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m es6",
+    "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
+    "build:extract-api-local": "shx mkdir -p ./etc && pnpm run build:esm && api-extractor run -l"
+  },
+  "keywords": [{{{packageKeywords}}}],
+  "contributors": [
+    {
+      "name": "{{gitAuthor}}",
+      "email": "{{gitAuthorEmail}}"
+    }
+  ],
+  "homepage": "https://github.com/{{gitAuthor}}/n3bula/tree/main/packages/{{packageName}}#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/{{gitAuthor}}/n3bula.git",
+    "directory": "packages/{{packageName}}"
+  },
+  "author": {
+    "name": "{{gitAuthor}}",
+    "email": "{{gitAuthorEmail}}"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

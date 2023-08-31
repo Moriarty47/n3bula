@@ -1,6 +1,6 @@
 # `@n3bula/{{packageName}}`
 
-### A tool used for printing a binary tree structure in a visualizing way.
+### {{libarayDesc}}
 
 ## Install
 

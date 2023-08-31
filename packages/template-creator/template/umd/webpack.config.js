@@ -3,7 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const DtsBundleWebpackPlugin = require('bundle-declarations-webpack-plugin').default;
 
 /** @type {import('webpack').Configuration} */
-module.exports = {
+const config = {
   mode: 'production',
   entry: {
     'bundle': './src/index.ts',
@@ -74,13 +74,23 @@ module.exports = {
       })
     ]
   },
-  plugins: [
-    new DtsBundleWebpackPlugin({
-      entry: './src/index.ts',
-      outFile: 'bundle.d.ts',
-      compilationOptions: {
-        preferredConfigPath: path.resolve(__dirname, 'tsconfig.json')
-      }
-    })
-  ]
+  plugins: [],
+};
+
+module.exports = (env) => {
+  if (!env.WEBPACK_WATCH) {
+    config.plugins.push(
+      new DtsBundleWebpackPlugin({
+        entry: path.resolve(__dirname, 'src/index.ts'),
+        outFile: 'bundle.d.ts',
+        compilationOptions: {
+          preferredConfigPath: path.resolve(__dirname, 'tsconfig.json'),
+        },
+        removeEmptyLines: true,
+        removeEmptyExports: true,
+      })
+    );
+  }
+
+  return config;
 };

@@ -52,11 +52,11 @@ function compileDir(
     if (err) {
       throw err;
     }
+    fileNames = fileNames.filter(file => !['node_modules', '.DS_Store'].some(f => file.includes(f)));
     const length = fileNames.length;
     resolve.sum += length;
     for (let i = 0; i < length; i += 1) {
       const file = fileNames[i];
-      if (file.includes('node_modules')) continue;
       const filePath = path.join(dirTplPath, file);
       const destFilePath = path.join(dirDestFilePath, file);
       const isDirectory = fs.statSync(filePath).isDirectory();

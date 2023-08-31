@@ -10,7 +10,7 @@ const { decapitalize, camel2kebab, kebab2camel } = require('./utils');
 const usePackagePath = (pt, name) => path.resolve(pt, `./packages/${name}`);
 
 function create(cwd, templateData, resolve, reject) {
-  const { packageName } = templateData;
+  const { packageName, templateType } = templateData;
   const spinner = ora(
     `The package ${packageName} is generating.....`
   ).start();
@@ -18,7 +18,7 @@ function create(cwd, templateData, resolve, reject) {
 
   mkdirp(packagePath)
     .then(async () => {
-      const tplPath = path.join(__dirname, '../template');
+      const tplPath = path.join(__dirname, '../template/', templateType);
 
       await dirTplCompile(tplPath, templateData, packagePath);
       setTimeout(() => {
@@ -47,6 +47,13 @@ module.exports = (cwd, packageName, options) => new Promise((resolve, reject) =>
     const gitUserEmail = userEmail && userEmail.toString().trim();
 
     inquirer.prompt([
+      {
+        type: 'list',
+        name: 'templateType',
+        message: `Which template do you need?`,
+        choices: ['esm', 'umd'],
+        default: 'esm',
+      },
       {
         type: 'input',
         name: 'packageName',
