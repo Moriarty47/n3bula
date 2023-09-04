@@ -1,3 +1,9 @@
+import debounceFn from './debounce';
+import throttleFn from './throttle';
+/** @public */
+export const debounce = debounceFn;
+/** @public */
+export const throttle = throttleFn;
 /** @public */
 export const getType = (thing) => Object.prototype.toString.call(thing).slice(8, -1).toLowerCase();
 /** @public */
@@ -124,9 +130,15 @@ export default {
     isType,
     isNumber,
     isString,
+    isBoolean,
+    isBigInt,
+    isSymbol,
+    isNull,
+    isUndefined,
+    isNullable,
+    isPrimary,
     isArray,
     isObject,
-    isNullable,
     is32Bit,
     getCodePointLength,
     isAllSameChar,
@@ -136,5 +148,7 @@ export default {
     padStartEnd,
     emptyPadStart,
     simpleMerge,
+    debounce: debounceFn,
+    throttle: throttleFn,
 };
 //# sourceMappingURL=index.js.map

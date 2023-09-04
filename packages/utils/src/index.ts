@@ -1,3 +1,11 @@
+import debounceFn from './debounce';
+import throttleFn from './throttle';
+
+/** @public */
+export const debounce = debounceFn;
+/** @public */
+export const throttle = throttleFn;
+
 /** @public */
 export type UnionWithException<T extends (string | number)[]> = (Readonly<T>)[number] | (string & {});
 
@@ -160,9 +168,15 @@ export default {
   isType,
   isNumber,
   isString,
+  isBoolean,
+  isBigInt,
+  isSymbol,
+  isNull,
+  isUndefined,
+  isNullable,
+  isPrimary,
   isArray,
   isObject,
-  isNullable,
   is32Bit,
   getCodePointLength,
   isAllSameChar,
@@ -172,4 +186,6 @@ export default {
   padStartEnd,
   emptyPadStart,
   simpleMerge,
+  debounce: debounceFn,
+  throttle: throttleFn,
 };

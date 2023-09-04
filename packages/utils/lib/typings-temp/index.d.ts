@@ -1,3 +1,9 @@
+import debounceFn from './debounce';
+import throttleFn from './throttle';
+/** @public */
+export declare const debounce: typeof debounceFn;
+/** @public */
+export declare const throttle: typeof throttleFn;
 /** @public */
 export type UnionWithException<T extends (string | number)[]> = (Readonly<T>)[number] | (string & {});
 type ThingType = UnionWithException<[
@@ -77,9 +83,15 @@ declare const _default: {
     isType: (thing: unknown, type: ThingType) => boolean;
     isNumber: (thing: unknown) => thing is number;
     isString: (thing: unknown) => thing is string;
+    isBoolean: (thing: unknown) => thing is boolean;
+    isBigInt: (thing: unknown) => thing is bigint;
+    isSymbol: (thing: unknown) => thing is symbol;
+    isNull: (thing: unknown) => thing is null;
+    isUndefined: (thing: unknown) => thing is undefined;
+    isNullable: (thing: unknown) => thing is null | undefined;
+    isPrimary: (thing: unknown) => thing is PrimaryType;
     isArray: (thing: unknown) => thing is any[];
     isObject: (thing: unknown) => thing is {};
-    isNullable: (thing: unknown) => thing is null | undefined;
     is32Bit: (char: string, i: number) => boolean;
     getCodePointLength: (str: string) => number;
     isAllSameChar: (str: string, char: string) => boolean;
@@ -89,6 +101,8 @@ declare const _default: {
     padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;
     emptyPadStart: (length: number, str?: string, pad?: string) => string;
     simpleMerge: <T extends Record<string, any>>(source: T, object?: DeepPartial<T>) => T;
+    debounce: typeof debounceFn;
+    throttle: typeof throttleFn;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

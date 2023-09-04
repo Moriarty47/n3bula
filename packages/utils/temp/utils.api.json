@@ -210,7 +210,79 @@
             },
             {
               "kind": "Content",
-              "text": " is string;\n    isArray: (thing: unknown) => "
+              "text": " is string;\n    isBoolean: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is boolean;\n    isBigInt: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is bigint;\n    isSymbol: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is symbol;\n    isNull: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is null;\n    isUndefined: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is undefined;\n    isNullable: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is null | undefined;\n    isPrimary: (thing: unknown) => "
+            },
+            {
+              "kind": "Reference",
+              "text": "thing",
+              "canonicalReference": "@n3bula/utils!~thing"
+            },
+            {
+              "kind": "Content",
+              "text": " is "
+            },
+            {
+              "kind": "Reference",
+              "text": "PrimaryType",
+              "canonicalReference": "@n3bula/utils!~PrimaryType:type"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    isArray: (thing: unknown) => "
             },
             {
               "kind": "Reference",
@@ -228,16 +300,7 @@
             },
             {
               "kind": "Content",
-              "text": " is {};\n    isNullable: (thing: unknown) => "
-            },
-            {
-              "kind": "Reference",
-              "text": "thing",
-              "canonicalReference": "@n3bula/utils!~thing"
-            },
-            {
-              "kind": "Content",
-              "text": " is null | undefined;\n    is32Bit: (char: string, i: number) => boolean;\n    getCodePointLength: (str: string) => number;\n    isAllSameChar: (str: string, char: string) => boolean;\n    getCharLength: (str: string) => number;\n    padStart: (str: string, length: number, char: string) => string;\n    padEnd: (str: string, length: number, char: string) => string;\n    padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;\n    emptyPadStart: (length: number, str?: string, pad?: string) => string;\n    simpleMerge: <T extends "
+              "text": " is {};\n    is32Bit: (char: string, i: number) => boolean;\n    getCodePointLength: (str: string) => number;\n    isAllSameChar: (str: string, char: string) => boolean;\n    getCharLength: (str: string) => number;\n    padStart: (str: string, length: number, char: string) => string;\n    padEnd: (str: string, length: number, char: string) => string;\n    padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;\n    emptyPadStart: (length: number, str?: string, pad?: string) => string;\n    simpleMerge: <T extends "
             },
             {
               "kind": "Reference",
@@ -255,7 +318,25 @@
             },
             {
               "kind": "Content",
-              "text": "<T>) => T;\n}"
+              "text": "<T>) => T;\n    debounce: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "debounceFn",
+              "canonicalReference": "@n3bula/utils!~debounce_2:function"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n    throttle: typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "throttleFn",
+              "canonicalReference": "@n3bula/utils!~throttle_2:function"
+            },
+            {
+              "kind": "Content",
+              "text": ";\n}"
             }
           ],
           "fileUrlPath": "src/index.ts",
@@ -264,7 +345,7 @@
           "name": "_default",
           "variableTypeTokenRange": {
             "startIndex": 1,
-            "endIndex": 18
+            "endIndex": 36
           }
         },
         {
@@ -311,6 +392,34 @@
           "variableTypeTokenRange": {
             "startIndex": 1,
             "endIndex": 2
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!debounce:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "debounce: "
+            },
+            {
+              "kind": "Content",
+              "text": "typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "debounceFn",
+              "canonicalReference": "@n3bula/utils!~debounce_2:function"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "debounce",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
           }
         },
         {
@@ -1026,6 +1135,34 @@
           "variableTypeTokenRange": {
             "startIndex": 1,
             "endIndex": 6
+          }
+        },
+        {
+          "kind": "Variable",
+          "canonicalReference": "@n3bula/utils!throttle:var",
+          "docComment": "/**\n * @public\n */\n",
+          "excerptTokens": [
+            {
+              "kind": "Content",
+              "text": "throttle: "
+            },
+            {
+              "kind": "Content",
+              "text": "typeof "
+            },
+            {
+              "kind": "Reference",
+              "text": "throttleFn",
+              "canonicalReference": "@n3bula/utils!~throttle_2:function"
+            }
+          ],
+          "fileUrlPath": "src/index.ts",
+          "isReadonly": true,
+          "releaseTag": "Public",
+          "name": "throttle",
+          "variableTypeTokenRange": {
+            "startIndex": 1,
+            "endIndex": 3
           }
         },
         {

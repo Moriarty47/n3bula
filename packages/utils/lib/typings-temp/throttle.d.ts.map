@@ -1,0 +1,1 @@
+{"version":3,"file":"throttle.d.ts","sourceRoot":"","sources":["../../src/throttle.ts"],"names":[],"mappings":"AACA,OAAiB,EACf,KAAK,eAAe,EACpB,KAAK,YAAY,EAClB,MAAM,YAAY,CAAC;AAEpB,KAAK,eAAe,GAAG,eAAe,CAAC;AAEvC,KAAK,YAAY,GAAG,YAAY,CAAC;AAEjC,MAAM,CAAC,OAAO,UAAU,QAAQ,CAAC,IAAI,EAAE,YAAY,EAAE,KAAK,EAAE,MAAM,EAAE,OAAO,EAAE,eAAe,gBAkB3F"}

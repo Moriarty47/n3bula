@@ -5,6 +5,20 @@ export declare const camel2kebab: (str?: string) => string;
 export declare const capitalize: (str?: string) => string;
 
 /** @public */
+export declare const debounce: typeof debounce_2;
+
+/** @public */
+declare function debounce_2(func: DebounceFunc, delay: number, options: DebounceOptions): DebounceFunc;
+
+declare type DebounceFunc = (...rest: any[]) => void;
+
+declare type DebounceOptions = {
+    leading: boolean;
+    trailing: boolean;
+    maxDelay: number;
+};
+
+/** @public */
 export declare const decapitalize: (str?: string) => string;
 
 declare type DeepPartial<T> = {
@@ -16,9 +30,15 @@ declare const _default: {
     isType: (thing: unknown, type: ThingType) => boolean;
     isNumber: (thing: unknown) => thing is number;
     isString: (thing: unknown) => thing is string;
+    isBoolean: (thing: unknown) => thing is boolean;
+    isBigInt: (thing: unknown) => thing is bigint;
+    isSymbol: (thing: unknown) => thing is symbol;
+    isNull: (thing: unknown) => thing is null;
+    isUndefined: (thing: unknown) => thing is undefined;
+    isNullable: (thing: unknown) => thing is null | undefined;
+    isPrimary: (thing: unknown) => thing is PrimaryType;
     isArray: (thing: unknown) => thing is any[];
     isObject: (thing: unknown) => thing is {};
-    isNullable: (thing: unknown) => thing is null | undefined;
     is32Bit: (char: string, i: number) => boolean;
     getCodePointLength: (str: string) => number;
     isAllSameChar: (str: string, char: string) => boolean;
@@ -28,6 +48,8 @@ declare const _default: {
     padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;
     emptyPadStart: (length: number, str?: string, pad?: string) => string;
     simpleMerge: <T extends Record<string, any>>(source: T, object?: DeepPartial<T>) => T;
+    debounce: typeof debounce_2;
+    throttle: typeof throttle_2;
 };
 export default _default;
 
@@ -119,6 +141,15 @@ declare type ThingType = UnionWithException<[
 'regexp',
 'function'
 ]>;
+
+/** @public */
+export declare const throttle: typeof throttle_2;
+
+declare function throttle_2(func: ThrottleFunc, delay: number, options: ThrottleOptions): DebounceFunc;
+
+declare type ThrottleFunc = DebounceFunc;
+
+declare type ThrottleOptions = DebounceOptions;
 
 /** @public */
 export declare type UnionWithException<T extends (string | number)[]> = (Readonly<T>)[number] | (string & {});
