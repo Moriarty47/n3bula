@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/pretty-json",
-  "version": "0.0.5-alpha.0",
+  "version": "0.0.5-alpha.1",
   "description": "Pretty JSON data into HTML.",
   "main": "./lib/umd/index.js",
   "types": "./lib/typings/index.d.ts",
