@@ -49,8 +49,11 @@ function createTemplate(config) {
     templateDir.forEach(srcPt => {
       const filename = path.relative(templateDirPath, srcPt);
 
+      let dstPt = path.join(dst, filename);
       const stat = statSync(srcPt);
-      const dstPt = path.join(dst, filename);
+      if (filename === 'gitignore.template') {
+        dstPt = path.join(dst, '.gitignore');
+      }
       if (stat.isDirectory()) {
         mkdirSync(dstPt, { recursive: true });
       } else if (filename.includes('package.json')) {
@@ -60,9 +63,12 @@ function createTemplate(config) {
       } else {
         copyFileSync(srcPt, dstPt);
         spinner.text = `Create file ${dstPt}`;
+        console.log(spinner.text);
       }
       i++;
     });
+
+    throw 1;
 
     if (i !== templateDir.length) {
       log.error('Something went wrong.');
