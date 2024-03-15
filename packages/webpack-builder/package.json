@@ -37,10 +37,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "ora": "^5.4.0",
+    "chalk": "4.1.2",
     "ejs": "^3.1.9",
     "glob": "^10.3.10",
-    "chalk": "4.1.2",
-    "inquirer": "^9.2.16"
+    "inquirer": "^9.2.16",
+    "ora": "^5.4.0"
   }
 }
