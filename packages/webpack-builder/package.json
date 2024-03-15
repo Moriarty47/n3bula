@@ -1,0 +1,46 @@
+{
+  "name": "@n3bula/webpack-builder",
+  "version": "0.0.1",
+  "description": "A CLI for creating test project quickly.",
+  "main": "src/index.js",
+  "bin": {
+    "webpackcfg": "bin/builder.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "webpack",
+    "builder",
+    "cli",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/webpack-builder#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/webpack-builder"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "ora": "^5.4.0",
+    "ejs": "^3.1.9",
+    "glob": "^10.3.10",
+    "chalk": "4.1.2",
+    "inquirer": "^9.2.16"
+  }
+}

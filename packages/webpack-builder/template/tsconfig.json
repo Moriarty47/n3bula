@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es6",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "lib": ["dom", "es2017"],
+    "typeRoots": ["node_modules/@types", "typings/**/*.d.ts"],
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "files": ["src/index.ts"]
+}
