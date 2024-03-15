@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/webpack-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI for creating test project quickly.",
   "main": "src/index.js",
   "bin": {
