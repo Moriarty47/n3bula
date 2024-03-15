@@ -68,8 +68,6 @@ function createTemplate(config) {
       i++;
     });
 
-    throw 1;
-
     if (i !== templateDir.length) {
       log.error('Something went wrong.');
       process.exit(0);
