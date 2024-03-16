@@ -1,0 +1,49 @@
+{
+  "name": "@n3bula/event-emitter",
+  "version": "0.0.1",
+  "description": "Event Emitter",
+  "main": "./lib/index.js",
+  "files": [
+    "lib/*"
+  ],
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack",
+    "test": "ava",
+    "test:w": "ava --watch"
+  },
+  "keywords": [
+    "event-emitter",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/event-emitter#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/event-emitter"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "ava": "^6.1.2",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.3"
+  }
+}
