@@ -46,14 +46,13 @@ import('inquirer').then(res => {
       }
     ])
     .then(createTemplate)
-    .then(installPackages)
+    // .then(installPackages)
     .then(async ({ config }) => {
       const res = await inquirer.prompt([
         {
           type: 'confirm',
           name: 'run',
           message: msgFormatter('Do you want run it right now?'),
-          transformer: inputTransformer,
         }
       ]);
       return { res, config };

@@ -18,7 +18,7 @@ const templateDirPath = path.resolve(__dirname, '../template');
 
 /**
  * @param {import('.').Config} config 
- * @returns {string}
+ * @returns {{dst: string, config: import('.').Config}}
  */
 function createTemplate(config) {
   const projectPath = path.resolve(cwd, './', config.name);
