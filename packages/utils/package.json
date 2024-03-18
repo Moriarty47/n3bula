@@ -3,39 +3,33 @@
   "version": "0.0.5-alpha.1",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/umd/index.js",
-  "types": "./lib/esm/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/typings/index.d.ts",
+      "types": "./lib/types/index.d.ts",
       "import": "./lib/esm/index.js",
-      "module": "./lib/esm/index.js",
       "require": "./lib/umd/index.js",
-      "default": "./lib/umd/index.js"
+      "default": "./lib/esm/index.js"
+    },
+    "./*": {
+      "types": "./lib/types/*.d.ts",
+      "import": "./lib/esm/*.js",
+      "require": "./lib/umd/*.js",
+      "default": "./lib/esm/*.js"
     }
   },
   "files": [
-    "example",
-    "etc",
-    "lib",
-    "src",
-    "*.js",
-    "*.json"
+    "lib/*"
   ],
-  "targets": {
-    "main": {
-      "optimize": true
-    },
-    "module": {
-      "optimize": true
-    }
-  },
   "scripts": {
-    "dev": "webpack --watch -c webpack.config.ts",
-    "build": "shx rm -rf lib/** && pnpm run build:umd && pnpm run build:esm && pnpm run build:extract-api",
-    "build:umd": "webpack -c webpack.config.ts",
-    "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m es6",
-    "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
-    "build:extract-api-local": "shx mkdir -p ./etc && pnpm run build:esm && api-extractor run -l"
+    "dev": "webpack --watch",
+    "start": "webpack",
+    "build": "shx rm -rf ./lib && pnpm run start && pnpm run build:esm",
+    "build:esm": "pnpm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.json",
+    "test": "ava",
+    "test:w": "ava --watch"
   },
   "keywords": [
     "utils",
@@ -61,5 +55,15 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "ava": "^6.1.2",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.3"
   }
 }

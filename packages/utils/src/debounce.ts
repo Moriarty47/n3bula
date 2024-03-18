@@ -1,19 +1,18 @@
-import { isObject } from '.';
+import { isObject } from './is';
 import root from './root';
 
-export type DebounceOptions = {
+export type DebounceOptions = Partial<{
   leading: boolean;
   trailing: boolean;
   maxDelay: number;
-};
+}>;
 
 export type DebounceFunc = (...rest: any[]) => void;
 
-/** @public */
 export default function debounce(
   func: DebounceFunc,
   delay: number,
-  options: DebounceOptions
+  options?: DebounceOptions
 ): DebounceFunc {
   if (typeof func !== 'function') {
     throw new TypeError('Expected a function.');
@@ -117,7 +116,7 @@ export default function debounce(
     return timerId !== undefined;
   }
 
-  function debounced(...args: any[]) {
+  function debounced(this: any, ...args: any[]) {
     const time = Date.now();
     const isInvoking = shouldInvoke(time);
     lastArgs = args;

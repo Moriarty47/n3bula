@@ -1,8 +1,8 @@
-import { isObject } from '.';
+import { isObject } from './is';
 import debounce from './debounce';
 export default function throttle(func, delay, options) {
-    let leading = true;
-    let trailing = true;
+    var leading = true;
+    var trailing = true;
     if (typeof func !== 'function') {
         throw new TypeError('Expected a function.');
     }
@@ -11,10 +11,9 @@ export default function throttle(func, delay, options) {
         trailing = 'trailing' in options ? !!options.trailing : trailing;
     }
     return debounce(func, delay, {
-        leading,
-        trailing,
+        leading: leading,
+        trailing: trailing,
         maxDelay: delay
     });
 }
 ;
-//# sourceMappingURL=throttle.js.map

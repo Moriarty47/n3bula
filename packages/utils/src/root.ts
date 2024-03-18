@@ -1,5 +1,3 @@
-import { type } from 'os';
-
 const theGlobal = typeof global === 'object'
   && global !== null
   && global.Object === Object

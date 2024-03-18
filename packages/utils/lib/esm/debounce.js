@@ -1,26 +1,25 @@
-import { isObject } from '.';
+import { isObject } from './is';
 import root from './root';
-/** @public */
 export default function debounce(func, delay, options) {
     if (typeof func !== 'function') {
         throw new TypeError('Expected a function.');
     }
-    let result, timerId, lastArgs, lastThis, lastCallTime;
-    let leading = false;
-    let trailing = true;
-    let maxing = false;
-    let maxDelay = 0;
-    let lastInvokeTime = 0;
+    var result, timerId, lastArgs, lastThis, lastCallTime;
+    var leading = false;
+    var trailing = true;
+    var maxing = false;
+    var maxDelay = 0;
+    var lastInvokeTime = 0;
     if (isObject(options)) {
         leading = !!options.leading;
         trailing = 'trailing' in options ? !!options.trailing : trailing;
         maxing = 'maxWait' in options;
         maxDelay = maxing ? Math.max(options.maxDelay || 0, delay) : maxDelay;
     }
-    const useRAF = (!delay && delay !== 0 && typeof root.requestAnimationFrame === 'function');
+    var useRAF = (!delay && delay !== 0 && typeof root.requestAnimationFrame === 'function');
     function invokeFunc(time) {
-        const args = lastArgs;
-        const thisArg = lastThis;
+        var args = lastArgs;
+        var thisArg = lastThis;
         lastArgs = lastThis = undefined;
         lastInvokeTime = time;
         result = func.apply(thisArg, args);
@@ -40,22 +39,22 @@ export default function debounce(func, delay, options) {
         return clearTimeout(id);
     }
     function remainingDelay(time) {
-        const timeSinceLastCall = time - lastCallTime;
-        const timeSinceLastInvoke = time - lastInvokeTime;
-        const timeDelaying = delay - timeSinceLastCall;
+        var timeSinceLastCall = time - lastCallTime;
+        var timeSinceLastInvoke = time - lastInvokeTime;
+        var timeDelaying = delay - timeSinceLastCall;
         return maxing
             ? Math.min(timeDelaying, maxDelay - timeSinceLastInvoke)
             : timeDelaying;
     }
     function shouldInvoke(time) {
-        const timeSinceLastCall = time - lastCallTime;
-        const timeSinceLastInvoke = time - lastInvokeTime;
+        var timeSinceLastCall = time - lastCallTime;
+        var timeSinceLastInvoke = time - lastInvokeTime;
         return (lastCallTime === undefined || timeSinceLastCall >= delay)
             || (timeSinceLastCall < 0)
             || (maxing && timeSinceLastInvoke >= maxDelay);
     }
     function timerExpired() {
-        const time = Date.now();
+        var time = Date.now();
         if (shouldInvoke(time))
             return trailingEdge(time);
         timerId = startTimer(timerExpired, remainingDelay(time));
@@ -85,9 +84,13 @@ export default function debounce(func, delay, options) {
     function pending() {
         return timerId !== undefined;
     }
-    function debounced(...args) {
-        const time = Date.now();
-        const isInvoking = shouldInvoke(time);
+    function debounced() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var time = Date.now();
+        var isInvoking = shouldInvoke(time);
         lastArgs = args;
         lastThis = this;
         lastCallTime = time;
@@ -110,4 +113,3 @@ export default function debounce(func, delay, options) {
     debounced.pending = pending;
     return debounced;
 }
-//# sourceMappingURL=debounce.js.map

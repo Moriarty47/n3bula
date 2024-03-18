@@ -1,4 +1,4 @@
-import { isObject } from '.';
+import { isObject } from './is';
 import debounce, {
   type DebounceOptions,
   type DebounceFunc
