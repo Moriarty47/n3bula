@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/bin-tree",
-  "version": "0.0.5-alpha.1",
+  "version": "0.0.5",
   "description": "JavaScript library for creating a binary tree",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

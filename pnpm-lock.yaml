@@ -167,12 +167,6 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1
 
-  packages/test-package:
-    dependencies:
-      '@n3bula/utils':
-        specifier: workspace:^
-        version: link:../utils
-
   packages/utils:
     devDependencies:
       '@types/node':

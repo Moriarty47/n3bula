@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.0.5-alpha.1",
+  "version": "0.0.5",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/umd/index.js",
   "module": "./lib/esm/index.js",
