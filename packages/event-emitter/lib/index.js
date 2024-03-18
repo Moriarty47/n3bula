@@ -1,1 +1,198 @@
-!function(e,t){(()=>{"use strict";var n={d:(t,r)=>{for(var o in r)n.o(r,o)&&!n.o(t,o)&&e.defineProperty(t,o,{enumerable:!0,get:r[o]})},o:(t,n)=>e.prototype.hasOwnProperty.call(t,n),r:n=>{void 0!==t&&t.toStringTag&&e.defineProperty(n,t.toStringTag,{value:"Module"}),e.defineProperty(n,"__esModule",{value:!0})}},r={};n.r(r),n.d(r,{EventEmitter:()=>c,default:()=>g,useEventEmitter:()=>d});var o=function(){return o=e.assign||function(t){for(var n,r=1,o=arguments.length;r<o;r++)for(var i in n=arguments[r])e.prototype.hasOwnProperty.call(n,i)&&(t[i]=n[i]);return t},o.apply(this,arguments)},i=function(t,n,r,o){var i,s=arguments.length,p=s<3?n:null===o?o=e.getOwnPropertyDescriptor(n,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)p=Reflect.decorate(t,n,r,o);else for(var u=t.length-1;u>=0;u--)(i=t[u])&&(p=(s<3?i(p):s>3?i(n,r,p):i(n,r))||p);return s>3&&p&&e.defineProperty(n,r,p),p},s=function(e,t){if("object"==typeof Reflect&&"function"==typeof Reflect.metadata)return Reflect.metadata(e,t)},p=e.create,u=Function.prototype.apply,l=e.defineProperty,a={configurable:!1,enumerable:!1,writable:!0},f=t("__ONCE__"),y=0,c=function(){function t(e){l(this,"__ee_id",o({value:e||y++,writable:!1},a)),this.events=p(null)}return t.prototype.on=function(e,t,n){return void 0===n&&(n=!1),this.events[e]=this.events[e]||[],-1===this.events[e].indexOf(t)&&(n&&l(t,f,o(o({},a),{value:!0})),this.events[e].push(t)),this},t.prototype.once=function(e,t){return this.on(e,t,!0),this},t.prototype.off=function(e,t){var n=this.events[e];if(!n)return this;var r=n.indexOf(t);return-1!==r&&n.splice(r,1),this},t.prototype.emit=function(e){for(var t=[],n=1;n<arguments.length;n++)t[n-1]=arguments[n];var r=this.events[e];if(!r)return this;for(var o=r.slice(0),i=0;i<o.length;i+=1)u.call(o[i],this,t),o[i][f]&&this.off(e,r[i])},t.prototype.hasListeners=function(t){var n;return t?!!(null===(n=this.events[t])||void 0===n?void 0:n.length):!!e.keys(this.events).length},t.prototype.offAll=function(){this.events=p(null)},i([v(),s("design:type",Function),s("design:paramtypes",[String,e,e]),s("design:returntype",void 0)],t.prototype,"on",null),i([v(),s("design:type",Function),s("design:paramtypes",[String,e]),s("design:returntype",void 0)],t.prototype,"once",null),i([v(),s("design:type",Function),s("design:paramtypes",[String,e]),s("design:returntype",void 0)],t.prototype,"off",null),i([v(),s("design:type",Function),s("design:paramtypes",[String,e]),s("design:returntype",void 0)],t.prototype,"emit",null),i([v(),s("design:type",Function),s("design:paramtypes",[String]),s("design:returntype",void 0)],t.prototype,"hasListeners",null),i([v(),s("design:type",Function),s("design:paramtypes",[]),s("design:returntype",void 0)],t.prototype,"offAll",null),t}();function d(e){return new c(e)}function v(){return function(e,t,n){var r=n.value;n.value=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];try{return r.apply(this,e)}catch(e){throw new Error(e)}}}}const g=c;exports.EventEmitter=r.EventEmitter,exports.default=r.default,exports.useEventEmitter=r.useEventEmitter,e.defineProperty(exports,"__esModule",{value:!0})})()}(Object,Symbol);
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EventEmitter: () => (/* binding */ EventEmitter),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   useEventEmitter: () => (/* binding */ useEventEmitter)
+/* harmony export */ });
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var create = Object.create;
+var apply = Function.prototype.apply;
+var defProp = Object.defineProperty;
+var descriptor = {
+    configurable: false,
+    enumerable: false,
+    writable: true,
+};
+var ONCE = Symbol('__ONCE__');
+var __ee_id = 0;
+var EventEmitter = /** @class */ (function () {
+    function EventEmitter(name) {
+        defProp(this, '__ee_id', __assign({ value: name || __ee_id++, writable: false }, descriptor));
+        this.events = create(null);
+    }
+    EventEmitter.prototype.on = function (type, listener, once) {
+        if (once === void 0) { once = false; }
+        this.events[type] = this.events[type] || [];
+        if (this.events[type].indexOf(listener) === -1) {
+            if (once) {
+                defProp(listener, ONCE, __assign(__assign({}, descriptor), { value: true }));
+            }
+            this.events[type].push(listener);
+        }
+        return this;
+    };
+    EventEmitter.prototype.once = function (type, listener) {
+        this.on(type, listener, true);
+        return this;
+    };
+    EventEmitter.prototype.off = function (type, listener) {
+        var listeners = this.events[type];
+        if (!listeners)
+            return this;
+        var index = listeners.indexOf(listener);
+        if (index !== -1) {
+            listeners.splice(index, 1);
+        }
+        return this;
+    };
+    EventEmitter.prototype.emit = function (type) {
+        var rest = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            rest[_i - 1] = arguments[_i];
+        }
+        var listeners = this.events[type];
+        if (!listeners)
+            return this;
+        var array = listeners.slice(0);
+        for (var i = 0; i < array.length; i += 1) {
+            apply.call(array[i], this, rest);
+            if (array[i][ONCE]) {
+                this.off(type, listeners[i]);
+            }
+        }
+    };
+    EventEmitter.prototype.hasListeners = function (type) {
+        var _a;
+        if (type) {
+            return !!((_a = this.events[type]) === null || _a === void 0 ? void 0 : _a.length);
+        }
+        return !!(Object.keys(this.events).length);
+    };
+    EventEmitter.prototype.offAll = function () {
+        this.events = create(null);
+    };
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, Object, Object]),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "on", null);
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, Object]),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "once", null);
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, Object]),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "off", null);
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String, Object]),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "emit", null);
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String]),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "hasListeners", null);
+    __decorate([
+        ThrowExceptions(),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], EventEmitter.prototype, "offAll", null);
+    return EventEmitter;
+}());
+
+;
+function useEventEmitter(name) {
+    return new EventEmitter(name);
+}
+;
+function ThrowExceptions() {
+    return function (_target, _propKey, descriptor) {
+        var originalMethod = descriptor.value;
+        descriptor.value = function () {
+            var rest = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                rest[_i] = arguments[_i];
+            }
+            try {
+                return originalMethod.apply(this, rest);
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        };
+    };
+}
+;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EventEmitter);
+
+exports.EventEmitter = __webpack_exports__.EventEmitter;
+exports["default"] = __webpack_exports__["default"];
+exports.useEventEmitter = __webpack_exports__.useEventEmitter;
+Object.defineProperty(exports, "__esModule", { value: true });
+/******/ })()
+;

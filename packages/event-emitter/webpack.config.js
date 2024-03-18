@@ -5,10 +5,13 @@ const entry = path.resolve(__dirname, './index.ts');
 /** @type {import('webpack').Configuration} */
 module.exports = {
   mode: 'production',
-  entry,
+  entry: {
+    index: entry,
+    'index.min': entry,
+  },
   output: {
     path: path.resolve(__dirname, 'lib'),
-    filename: 'index.js',
+    filename: '[name].js',
     clean: true,
     library: {
       type: 'commonjs-static',
@@ -30,6 +33,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
+      test: /\.min\.js$/,
       terserOptions: {
         enclose: (() => {
           let a = ['Object', 'Symbol'].join(',');
