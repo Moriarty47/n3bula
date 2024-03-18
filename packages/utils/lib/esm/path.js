@@ -1,3 +1,7 @@
+/**
+ * Win32 methods have been removed to make this only useful for the browser.
+ * Node path from [v16.20.2](https://github.com/nodejs/node/blob/v16.20.2)
+ */
 /** char code of forward slash '/' */
 var CHAR_FORWARD_SLASH = 47;
 /** char code of dot '.' */
