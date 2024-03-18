@@ -1,30 +1,21 @@
 {
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    // 如果没有默认导出模块
-    // typescript会自动合成一个默认导出，即可通过默认导入的方式引入该模块
     "strict": true,
-    "module": "CommonJS",
-    "esModuleInterop": true, // 允许通过import方式引入commonjs模块
-    "moduleResolution": "Node",
-    "target": "ES6",
-    "lib": [
-      "ES2015",
-      "DOM"
-    ],
+    "target": "ESNext",
+    "module": "ESNext",
+    "baseUrl": "./src",
+    "outDir": "./lib/",
+    "sourceMap": false,
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "lib/esm",
-    "preserveSymlinks": false,
-    "noEmitOnError": false
+    "declarationMap": false,
+    "declarationDir": "./lib/types-temp",
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "lib": ["dom", "ESNext"],
+    "moduleResolution": "node",
+    "noUnusedParameters": false,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["node_modules/@types", "typings/**/*.d.ts"]
   },
-  "include": [
-    "src/**/*",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
 }

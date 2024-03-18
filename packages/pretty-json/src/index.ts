@@ -1,22 +1,24 @@
-import { capitalize, getType, isArray, isBigInt, isBoolean, isFunction, isNull, isNumber, isPrimary, isString, isSymbol, padEnd, padStart, simpleMerge, type UnionWithException } from '@n3bula/utils';
+import { capitalize, getType, isArray, isBigInt, isBoolean, isFunction, isNull, isNumber, isPrimary, isString, isSymbol, padEnd, padStart, simpleMerge } from '@n3bula/utils';
+import { UnionWithException } from '@n3bula/utils/lib/types/is';
+import jsonCss from './json.css';
 
 const IS_CSS_LOADED: symbol = Symbol('is_CSS_Loaded');
 
 const DOM_CACHE: Map<string, HTMLElement> = new Map();
 
-/** @public */
 export const loadCSS = () => {
+  if (typeof window === 'undefined') {
+    throw new TypeError('Only useful for the browser.')
+  }
   if (window && (window as any)[IS_CSS_LOADED]) return;
   const style = document.createElement('style');
-  import('./json.css').then(value => {
-    style.textContent = value.default as unknown as string;
-    document.head.appendChild(style);
-    Object.defineProperty(window, IS_CSS_LOADED, {
-      value: true,
-      writable: false,
-      enumerable: false,
-      configurable: false,
-    });
+  style.textContent = jsonCss as unknown as string;
+  document.head.appendChild(style);
+  Object.defineProperty(window, IS_CSS_LOADED, {
+    value: true,
+    writable: false,
+    enumerable: false,
+    configurable: false,
   });
 };
 
@@ -36,7 +38,6 @@ export const render = (domID: string | HTMLElement, content: string) => {
   }
 };
 
-/** @public */
 export const toHTML = (content: unknown, options: Omit<Partial<PrettyJSONOptions>, 'output'> = {}) => {
   const result = prettyJSONFormatter(content, {
     ...options,
@@ -50,7 +51,6 @@ export const toHTML = (content: unknown, options: Omit<Partial<PrettyJSONOptions
   };
 };
 
-/** @public */
 export const toText = (content: unknown, options: Omit<Partial<PrettyJSONOptions>, 'output'> = {}) => {
   const result = prettyJSONFormatter(content, {
     ...options,
@@ -64,7 +64,6 @@ export const toText = (content: unknown, options: Omit<Partial<PrettyJSONOptions
   };
 };
 
-/** @public */
 export type PrettyJSONOptions = {
   output: 'html' | 'text';
   indent: number;
@@ -84,7 +83,6 @@ const defaults: Omit<PrettyJSONOptions, 'htmlMarks'> = {
   trailingComma: true,
 };
 
-/** @public */
 export const prettyJSONFormatter = (content: unknown, options: Partial<Omit<PrettyJSONOptions, 'htmlMarks'>> = {}): string => {
   const config = simpleMerge<PrettyJSONOptions>(defaults as PrettyJSONOptions, options);
   config.htmlMarks = presetMarks(config);

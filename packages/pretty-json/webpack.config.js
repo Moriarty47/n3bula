@@ -1,26 +1,26 @@
-import path from 'path';
-import { Configuration } from 'webpack';
-import TerserPlugin from 'terser-webpack-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
+const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
+const getEnclose = (ids) => {
+  let a = ids.join(',');
+  return a + ':' + a;
+};
+const enclose = getEnclose(['Object', 'Symbol']);
+const entry = path.resolve(__dirname, './src/index.ts');
 
-const config: Configuration = {
-  target: "node",
+/** @type {import('webpack').Configuration} */
+module.exports = {
   mode: 'production',
   entry: {
-    index: './src/index.ts',
-    'index.min': './src/index.ts',
+    index: entry,
+    'index.min': entry
   },
   output: {
     clean: true,
-    path: path.resolve(__dirname, 'lib/umd'),
+    path: path.resolve(__dirname, 'lib'),
     library: {
       type: 'umd',
-      name: {
-        amd: 'prettyJson',
-        commonjs: 'prettyJson',
-        root: 'prettyJson',
-      },
+      name: 'PrettyJson',
     },
     globalObject: 'this',
   },
@@ -32,6 +32,7 @@ const config: Configuration = {
       {
         test: /\.[tj]s$/,
         exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'src')],
         use: [
           {
             loader: 'babel-loader',
@@ -58,21 +59,18 @@ const config: Configuration = {
       }
     ],
   },
-  devtool: 'source-map',
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: path.resolve(__dirname, 'src/json.css'), to: path.resolve(__dirname, 'lib/esm') }
-      ]
-    })
-  ],
+  devtool: false,
   optimization: {
-    sideEffects: false,
     minimize: true,
     minimizer: [
-      new TerserPlugin({ test: /\.min\.js$/ })
+      new TerserPlugin({
+        test: /\.min\.js$/i,
+        terserOptions: {
+          enclose,
+          mangle: true,
+          compress: true,
+        }
+      })
     ],
   },
 };
-
-export default config;

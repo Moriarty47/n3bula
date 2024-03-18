@@ -2,24 +2,19 @@
   "name": "@n3bula/pretty-json",
   "version": "0.0.5-alpha.1",
   "description": "Pretty JSON data into HTML.",
-  "main": "./lib/umd/index.js",
-  "types": "./lib/typings/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/typings/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "module": "./lib/esm/index.js",
-      "require": "./lib/umd/index.js",
-      "default": "./lib/umd/index.js"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js"
     }
   },
   "files": [
     "example",
-    "etc",
-    "lib",
-    "src",
-    "*.js",
-    "*.json"
+    "lib"
   ],
   "targets": {
     "main": {
@@ -30,12 +25,11 @@
     }
   },
   "scripts": {
-    "dev": "webpack --watch -c webpack.config.ts",
-    "build": "shx rm -rf lib/** && pnpm run build:umd && pnpm run build:esm && pnpm run build:extract-api",
-    "build:umd": "webpack -c webpack.config.ts",
-    "build:esm": "tsc -p tsconfig.json --declarationDir ./lib/typings-temp -m esnext",
-    "build:extract-api": "api-extractor run && shx rm -rf lib/typings-temp",
-    "build:extract-api-local": "shx mkdir -p ./etc && api-extractor run -l"
+    "dev": "webpack --watch --config webpack.config.js",
+    "build": "shx rm -rf ./lib && npm run build:wep && npm run build:dts",
+    "build:wep": "webpack --config webpack.config.js",
+    "build:dts": "api-extractor run --local --verbose && shx rm -rf ./lib/types-temp",
+    "ae:init": "api-extractor init"
   },
   "keywords": [
     "pretty",
