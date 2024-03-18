@@ -1,13 +1,17 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const DtsBundleWebpackPlugin = require('bundle-declarations-webpack-plugin').default;
 
+const getEnclose = (ids) => {
+  let a = ids.join(',');
+  return a + ':' + a;
+};
+const enclose = getEnclose(['Object', 'Symbol']);
 /** @type {import('webpack').Configuration} */
-const config = {
+module.exports = {
   mode: 'production',
   entry: {
-    'bundle': './src/index.ts',
-    'bundle.min': './src/index.ts',
+    'index': './src/index.ts',
+    'index.min': './src/index.ts',
   },
   output: {
     clean: true,
@@ -34,6 +38,7 @@ const config = {
       {
         test: /\.[tj]s$/,
         exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'src')],
         use: [
           {
             loader: 'babel-loader',
@@ -52,7 +57,8 @@ const config = {
             loader: 'ts-loader',
             options: {
               transpileOnly: false,
-
+              onlyCompileBundledFiles: true,
+              experimentalWatchApi: false,
             },
           },
         ],
@@ -63,34 +69,14 @@ const config = {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        test: /\.js/,
-        include: /\.min\.js/,
+        test: /\.min\.js/,
         terserOptions: {
-          format: {
-            comments: false,
-          },
+          enclose,
+          mangle: true,
+          compress: true,
         },
-        extractComments: false,
       }),
     ],
   },
   plugins: [],
-};
-
-module.exports = (env) => {
-  if (!env.WEBPACK_WATCH) {
-    config.plugins.push(
-      new DtsBundleWebpackPlugin({
-        entry: path.resolve(__dirname, 'src/index.ts'),
-        outFile: 'bundle.d.ts',
-        compilationOptions: {
-          preferredConfigPath: path.resolve(__dirname, 'tsconfig.json'),
-        },
-        removeEmptyLines: true,
-        removeEmptyExports: true,
-      })
-    );
-  }
-
-  return config;
 };

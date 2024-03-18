@@ -81,6 +81,25 @@ importers:
       '@n3bula/utils':
         specifier: workspace:^
         version: link:../utils
+    devDependencies:
+      terser-webpack-plugin:
+        specifier: ^5.3.9
+        version: 5.3.9(webpack@5.88.2)
+      ts-loader:
+        specifier: ^9.4.4
+        version: 9.4.4(typescript@5.3.3)(webpack@5.88.2)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      webpack:
+        specifier: ^5.88.2
+        version: 5.88.2(webpack-cli@5.1.4)
+      webpack-cli:
+        specifier: ^5.1.4
+        version: 5.1.4(webpack-dev-server@5.0.3)(webpack@5.88.2)
+      webpack-dev-server:
+        specifier: ^5.0.3
+        version: 5.0.3(webpack-cli@5.1.4)(webpack@5.88.2)
 
   packages/event-emitter:
     devDependencies:
@@ -147,6 +166,12 @@ importers:
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
+
+  packages/test-package:
+    dependencies:
+      '@n3bula/utils':
+        specifier: workspace:^
+        version: link:../utils
 
   packages/utils:
     devDependencies:
@@ -3808,7 +3833,7 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
-      typescript: 5.2.2
+      typescript: 5.3.3
       yargs: 17.7.2
     dev: true
 
@@ -5434,7 +5459,7 @@ packages:
       strong-log-transformer: 2.1.0
       tar: 6.1.11
       temp-dir: 1.0.0
-      typescript: 5.2.2
+      typescript: 5.3.3
       upath: 2.0.1
       uuid: 9.0.0
       validate-npm-package-license: 3.0.4

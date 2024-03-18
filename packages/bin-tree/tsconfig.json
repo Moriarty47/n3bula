@@ -1,27 +1,21 @@
 {
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    // 如果没有默认导出模块
-    // typescript会自动合成一个默认导出，即可通过默认导入的方式引入该模块
     "strict": true,
-    "module": "ES6",
-    "moduleResolution": "Node",
-    "target": "ES6",
-    "lib": [
-      "ES2015"
-    ],
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "outDir": "lib",
-    "preserveSymlinks": false,
-    "noEmitOnError": false
+    "target": "es5",
+    "module": "es6",
+    "baseUrl": "./src",
+    "outDir": "./lib/",
+    "sourceMap": false,
+    "declaration": true,
+    "declarationMap": false,
+    "declarationDir": "./lib/types-temp",
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "lib": ["dom", "es2015"],
+    "moduleResolution": "node",
+    "noUnusedParameters": false,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["node_modules/@types", "typings/**/*.d.ts"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
 }
