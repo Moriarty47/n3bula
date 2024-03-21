@@ -3,7 +3,7 @@
     "baseUrl": "./src",
     "target": "es5",
     "module": "es6",
-    "lib": ["ES2015"],
+    "lib": ["ES2015", "DOM"],
     "outDir": "./lib/esm",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

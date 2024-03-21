@@ -104,6 +104,7 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
+  assignMerge: () => (/* reexport */ assignMerge),
   camel2kebab: () => (/* reexport */ camel2kebab),
   capitalize: () => (/* reexport */ capitalize),
   debounce: () => (/* reexport */ debounce),
@@ -137,6 +138,7 @@ __webpack_require__.d(__webpack_exports__, {
   root: () => (/* reexport */ root),
   simpleMerge: () => (/* reexport */ simpleMerge),
   throttle: () => (/* reexport */ throttle),
+  useCookies: () => (/* reexport */ useCookies),
   validateInt32: () => (/* reexport */ validateInt32),
   validateUint32: () => (/* reexport */ validateUint32)
 });
@@ -814,6 +816,137 @@ function throttle(func, delay, options) {
   });
 }
 ;
+;// CONCATENATED MODULE: ./src/cookie.ts
+var __assign = undefined && undefined.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+// /(?![ ;])([^=]+)=([^;]+)/g
+function useCookies(_a) {
+  var _b = _a === void 0 ? {} : _a,
+    options = _b.options,
+    transformer = _b.transformer;
+  if (typeof document === 'undefined' || typeof window === 'undefined') return;
+  if (!window.navigator.cookieEnabled) {
+    throw new Error('The browser does not support or is blocking cookies from being set.');
+  }
+  function read(value) {
+    if (value[0] === '"') {
+      value = value.slice(1, -1);
+    }
+    return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+  }
+  function write(value) {
+    return encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
+  }
+  transformer = Object.freeze(__assign({
+    read: read,
+    write: write
+  }, transformer));
+  var defaultOptions = Object.freeze(__assign({
+    path: '/'
+  }, options));
+  function set(name, value, options) {
+    if (options === void 0) {
+      options = {};
+    }
+    if (typeof document === 'undefined') return;
+    options = __assign(__assign({}, defaultOptions), options);
+    if (typeof options.maxAge === 'number') {
+      options.expires = new Date(Date.now() + options.maxAge * 1000);
+    } else if (typeof options.expires === 'number') {
+      options.expires = new Date(Date.now() + options.expires * 864e5);
+    } else if (typeof options.expires === 'string') {
+      options.expires = new Date(options.expires);
+    }
+    if (options.expires) {
+      options.expires = options.expires.toUTCString();
+    }
+    name = encodeURIComponent(name).replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent).replace(/[()]/g, escape);
+    var serializedString = '';
+    for (var attr in options) {
+      if (Object.prototype.hasOwnProperty.call(options, attr)) {
+        if (!options[attr]) continue;
+        serializedString += "; ".concat(attr);
+        if (options[attr] === true) continue;
+        serializedString += "=".concat(options[attr].split(';')[0]);
+      }
+    }
+    console.log(serializedString);
+    return document.cookie = "".concat(name, "=").concat(transformer.write(value)).concat(serializedString);
+  }
+  function getAll(cookies, result) {
+    for (var i = 0, len = cookies.length; i < len; i += 1) {
+      var cookieParts = cookies[i].split('=');
+      var value = cookieParts.slice(1).join('=');
+      try {
+        var key = decodeURIComponent(cookieParts[0]);
+        if (!(key in result)) {
+          result[key] = new Set();
+        }
+        result[key].add(transformer.read(value));
+      } catch (_a) {}
+    }
+  }
+  function get() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      names[_i] = arguments[_i];
+    }
+    if (typeof document === 'undefined') return {};
+    var cookies = document.cookie ? document.cookie.split('; ') : [];
+    var result = {};
+    if (names.length === 0) {
+      getAll(cookies, result);
+    } else {
+      for (var i = 0, len = cookies.length; i < len; i += 1) {
+        var cookieParts = cookies[i].split('=');
+        var value = cookieParts.slice(1).join('=');
+        try {
+          var key = decodeURIComponent(cookieParts[0]);
+          if (!names.includes(key)) break;
+          if (!(key in result)) {
+            result[key] = new Set();
+          }
+          result[key].add(transformer.read(value));
+        } catch (_a) {}
+      }
+    }
+    for (var key in result) {
+      result[key] = Array.from(result[key]);
+    }
+    return result;
+  }
+  function has(name) {
+    return !!get(name);
+  }
+  function size() {
+    if (typeof document === 'undefined') return 0;
+    var allCookies = get();
+    var res = 0;
+    for (var key in allCookies) {
+      res += allCookies[key].length;
+    }
+    return res;
+  }
+  return {
+    has: has,
+    set: set,
+    get: get,
+    size: size,
+    "delete": function _delete(name, attributes) {
+      set(name, '', __assign(__assign({}, attributes), {
+        expires: -1
+      }));
+    }
+  };
+}
 ;// CONCATENATED MODULE: ./src/string.ts
 var capitalize = function capitalize(str) {
   if (str === void 0) {
@@ -914,22 +1047,22 @@ var validateUint32 = function validateUint32(value) {
   return !(value < 0 || value > 4294967295);
 };
 ;// CONCATENATED MODULE: ./src/merge.ts
-var __assign = undefined && undefined.__assign || function () {
-  __assign = Object.assign || function (t) {
+var merge_assign = undefined && undefined.__assign || function () {
+  merge_assign = Object.assign || function (t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
       s = arguments[i];
       for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
     }
     return t;
   };
-  return __assign.apply(this, arguments);
+  return merge_assign.apply(this, arguments);
 };
 
 var simpleMerge = function simpleMerge(source, object) {
   if (object === void 0) {
     object = {};
   }
-  var merged = __assign({}, source);
+  var merged = merge_assign({}, source);
   Object.keys(source).forEach(function (key) {
     if (isObject(source[key])) {
       merged[key] = simpleMerge(source[key], object[key]);
@@ -939,7 +1072,24 @@ var simpleMerge = function simpleMerge(source, object) {
   });
   return merged;
 };
+var assignMerge = function assignMerge(target) {
+  var rest = [];
+  for (var _i = 1; _i < arguments.length; _i++) {
+    rest[_i - 1] = arguments[_i];
+  }
+  var _loop_1 = function _loop_1(i, len) {
+    var source = rest[i];
+    Object.keys(source).forEach(function (key) {
+      target[key] = source[key];
+    });
+  };
+  for (var i = 0, len = rest.length; i < len; i += 1) {
+    _loop_1(i, len);
+  }
+  return target;
+};
 ;// CONCATENATED MODULE: ./src/index.ts
+
 
 
 

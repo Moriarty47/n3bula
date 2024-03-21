@@ -2,6 +2,7 @@ export { default as root } from './root';
 export { default as path } from './path';
 export { default as debounce } from './debounce';
 export { default as throttle } from './throttle';
+export { default as useCookies } from './cookie';
 export {
   getType,
   isArray,
@@ -38,4 +39,7 @@ export {
   validateInt32,
   validateUint32,
 } from './number';
-export { simpleMerge } from './merge';
+export {
+  simpleMerge,
+  assignMerge,
+} from './merge';

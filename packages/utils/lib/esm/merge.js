@@ -22,3 +22,19 @@ export var simpleMerge = function (source, object) {
     });
     return merged;
 };
+export var assignMerge = function (target) {
+    var rest = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        rest[_i - 1] = arguments[_i];
+    }
+    var _loop_1 = function (i, len) {
+        var source = rest[i];
+        Object.keys(source).forEach(function (key) {
+            target[key] = source[key];
+        });
+    };
+    for (var i = 0, len = rest.length; i < len; i += 1) {
+        _loop_1(i, len);
+    }
+    return target;
+};

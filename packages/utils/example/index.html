@@ -19,6 +19,13 @@
       console.log(N3bulaUtils.isType(false, 'boolean'));
       console.log(N3bulaUtils.kebab2camel('what-the-heck'));
       console.log(N3bulaUtils.simpleMerge({ a: 1, b: 2 }, { a: 5, c: 4 }));
+      console.log(N3bulaUtils.assignMerge({ a: 1, b: 2 }, { a: 5, c: 4 }));
+      const cookies = N3bulaUtils.useCookies();
+      console.log(cookies.get());
+      console.log(cookies.get('adfasfas'));
+      console.log(cookies.size());
+      console.log(cookies.set('test', 'asdfasdzcx12124'));
+      console.log(cookies.set('test', '3333333333333333', {path: '/packages/utils/example'}));
     </script>
   </body>
 </html>
