@@ -35,7 +35,7 @@
     "bundle-declarations-webpack-plugin": "^4.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
-    "lerna": "^7.1.5",
+    "lerna": "^8.1.2",
     "mini-css-extract-plugin": "^2.7.6",
     "shx": "^0.3.4",
     "terser-webpack-plugin": "^5.3.9",
