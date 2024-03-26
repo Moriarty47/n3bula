@@ -75,8 +75,6 @@ export default function useCookies({ options, transformer }: CookiesProps = {}) 
       }
     }
 
-    console.log(serializedString);
-
     return (document.cookie =
       `${name}=${transformer!.write(value)}${serializedString}`);
   }

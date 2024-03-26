@@ -59,7 +59,6 @@ export default function useCookies(_a) {
                 serializedString += "=".concat(options[attr].split(';')[0]);
             }
         }
-        console.log(serializedString);
         return (document.cookie =
             "".concat(name, "=").concat(transformer.write(value)).concat(serializedString));
     }

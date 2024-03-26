@@ -107,6 +107,7 @@ __webpack_require__.d(__webpack_exports__, {
   assignMerge: () => (/* reexport */ assignMerge),
   camel2kebab: () => (/* reexport */ camel2kebab),
   capitalize: () => (/* reexport */ capitalize),
+  clsn: () => (/* reexport */ src_clsn),
   debounce: () => (/* reexport */ debounce),
   decapitalize: () => (/* reexport */ decapitalize),
   emptyPadStart: () => (/* reexport */ emptyPadStart),
@@ -641,6 +642,50 @@ var path = {
   _makeLong: toNamespacedPath
 };
 /* harmony default export */ const src_path = (path);
+;// CONCATENATED MODULE: ./src/clsn.ts
+function toValue(cls) {
+  var temp;
+  var str = '';
+  if (typeof cls === 'string' || typeof cls === 'number') {
+    str += cls;
+  } else if (Array.isArray(cls)) {
+    for (var i = 0, len = cls.length; i < len; i += 1) {
+      if (cls[i]) {
+        if (temp = toValue(cls[i])) {
+          str && (str += ' ');
+          str += temp;
+        }
+      }
+    }
+  } else {
+    for (temp in cls) {
+      if (cls[temp]) {
+        str && (str += ' ');
+        str += temp;
+      }
+    }
+  }
+  return str;
+}
+function clsn() {
+  var rest = [];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    rest[_i] = arguments[_i];
+  }
+  var temp;
+  var str = '';
+  for (var i = 0, len = rest.length; i < len; i += 1) {
+    if (rest[i]) {
+      if (temp = toValue(rest[i])) {
+        str && (str += ' ');
+        str += temp;
+      }
+    }
+  }
+  return str;
+}
+;
+/* harmony default export */ const src_clsn = (clsn);
 ;// CONCATENATED MODULE: ./src/is.ts
 
 var getType = function getType(thing) {
@@ -878,7 +923,6 @@ function useCookies(_a) {
         serializedString += "=".concat(options[attr].split(';')[0]);
       }
     }
-    console.log(serializedString);
     return document.cookie = "".concat(name, "=").concat(transformer.write(value)).concat(serializedString);
   }
   function getAll(cookies, result) {
@@ -1089,6 +1133,7 @@ var assignMerge = function assignMerge(target) {
   return target;
 };
 ;// CONCATENATED MODULE: ./src/index.ts
+
 
 
 
