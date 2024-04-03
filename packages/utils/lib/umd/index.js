@@ -113,6 +113,7 @@ __webpack_require__.d(__webpack_exports__, {
   emptyPadStart: () => (/* reexport */ emptyPadStart),
   getCharLength: () => (/* reexport */ getCharLength),
   getCodePointLength: () => (/* reexport */ getCodePointLength),
+  getRandomStr: () => (/* reexport */ getRandomStr),
   getType: () => (/* reexport */ getType),
   is32Bit: () => (/* reexport */ is32Bit),
   isAllSameChar: () => (/* reexport */ isAllSameChar),
@@ -1077,6 +1078,12 @@ var emptyPadStart = function emptyPadStart(length, str, pad) {
   }
   return padStart(str, length, pad);
 };
+var getRandomStr = function getRandomStr(length) {
+  var str = Math.random().toString(36).slice(2);
+  if (str.length >= length) return str.slice(0, length);
+  str += getRandomStr(length - str.length);
+  return str;
+};
 ;// CONCATENATED MODULE: ./src/number.ts
 var isInt32 = function isInt32(value) {
   return value === (value | 0);
@@ -1132,6 +1139,10 @@ var assignMerge = function assignMerge(target) {
   }
   return target;
 };
+/* harmony default export */ const merge = ({
+  simpleMerge: simpleMerge,
+  assignMerge: assignMerge
+});
 ;// CONCATENATED MODULE: ./src/index.ts
 
 

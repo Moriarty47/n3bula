@@ -10,7 +10,7 @@
     "sourceMap": false,
     "declaration": true,
     "declarationMap": false,
-    "declarationDir": "./lib/types",
+    "declarationDir": "./lib/esm",
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,

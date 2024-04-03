@@ -14,6 +14,7 @@
 
   <body>
     <script src="../lib/umd/index.min.js"></script>
+    <script src="../lib/umd/crypto.min.js"></script>
     <script>
       console.log(N3bulaUtils.getType(true));
       console.log(N3bulaUtils.isType(false, 'boolean'));
@@ -26,6 +27,8 @@
       console.log(cookies.size());
       console.log(cookies.set('test', 'asdfasdzcx12124'));
       console.log(cookies.set('test', '3333333333333333', {path: '/packages/utils/example'}));
+      console.log(N3bulaUtils);
+      console.log(N3bulaCrypto);
     </script>
   </body>
 </html>

@@ -34,3 +34,9 @@ export const assignMerge = <T extends Record<string, any>, U extends Array<Recor
   }
   return target as T & UnionToIntersection<U[number]>;
 };
+
+
+export default {
+  simpleMerge,
+  assignMerge,
+};

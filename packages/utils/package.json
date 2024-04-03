@@ -1,19 +1,19 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.0.7-alpha.1",
+  "version": "0.0.7-alpha.2",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/umd/index.js",
   "module": "./lib/esm/index.js",
-  "types": "./lib/types/index.d.ts",
+  "types": "./lib/esm/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/types/index.d.ts",
+      "types": "./lib/esm/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/umd/index.js",
       "default": "./lib/esm/index.js"
     },
     "./*": {
-      "types": "./lib/types/*.d.ts",
+      "types": "./lib/esm/*.d.ts",
       "import": "./lib/esm/*.js",
       "require": "./lib/umd/*.js",
       "default": "./lib/esm/*.js"
@@ -23,8 +23,8 @@
     "lib/*"
   ],
   "scripts": {
-    "dev": "webpack --watch",
-    "start": "webpack",
+    "dev": "webpack  --define-process-env-node-env=development --watch",
+    "start": "webpack  --define-process-env-node-env=production",
     "build": "shx rm -rf ./lib && pnpm run start && pnpm run build:esm",
     "build:esm": "pnpm run build:tsc",
     "build:tsc": "tsc -p tsconfig.json",
@@ -65,5 +65,10 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.3"
+  },
+  "dependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
+    "jsencrypt": "^3.3.2"
   }
 }

@@ -1,6 +1,6 @@
 # `@n3bula/utils`
 
-### A tool used for printing a binary tree structure in a visualizing way.
+### A utils library for n3bula packages.
 
 ## Install
 

@@ -69,3 +69,10 @@ export const padStartEnd = (str: string, length: number, char1: string = '', cha
 export const emptyPadStart = (length: number, str: string = '', pad: string = ''): string => {
   return padStart(str, length, pad);
 };
+
+export const getRandomStr = (length: number) => {
+  let str = Math.random().toString(36).slice(2);
+  if (str.length >= length) return str.slice(0, length);
+  str += getRandomStr(length - str.length);
+  return str;
+};

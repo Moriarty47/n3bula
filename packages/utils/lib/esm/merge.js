@@ -38,3 +38,7 @@ export var assignMerge = function (target) {
     }
     return target;
 };
+export default {
+    simpleMerge: simpleMerge,
+    assignMerge: assignMerge,
+};

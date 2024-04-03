@@ -10,3 +10,4 @@ export declare const padStart: (str: string, length: number, char: string) => st
 export declare const padEnd: (str: string, length: number, char: string) => string;
 export declare const padStartEnd: (str: string, length: number, char1?: string, char2?: string) => string;
 export declare const emptyPadStart: (length: number, str?: string, pad?: string) => string;
+export declare const getRandomStr: (length: number) => string;
