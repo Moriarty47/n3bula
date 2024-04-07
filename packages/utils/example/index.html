@@ -26,9 +26,37 @@
       console.log(cookies.get('adfasfas'));
       console.log(cookies.size());
       console.log(cookies.set('test', 'asdfasdzcx12124'));
-      console.log(cookies.set('test', '3333333333333333', {path: '/packages/utils/example'}));
+      console.log(cookies.set('test', '3333333333333333', { path: '/packages/utils/example' }));
       console.log(N3bulaUtils);
       console.log(N3bulaCrypto);
+      console.log(
+        N3bulaUtils.extract(`---
+title: MDX frontmatter title test
+tags: 
+  - MDX
+  - frontmatter
+  - HTML
+  - Blog
+  - Github
+layout: 'default'
+categories:
+  - Development
+  - HTML
+keywords: 
+  - MDX
+  - frontmatter
+  - Github
+---
+This is other text.
+`),
+      );
+      console.log(
+        N3bulaUtils.serialize({
+          title: 'MD frontmatter title test',
+          tags: ['MD', 'frontmatter', 'HTML'],
+          keywords: ['MD', 'frontmatter'],
+        }),
+      );
     </script>
   </body>
 </html>

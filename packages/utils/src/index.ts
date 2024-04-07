@@ -8,3 +8,4 @@ export * from './is';
 export * from './string';
 export * from './number';
 export * from './merge';
+export * from './frontmatter';
