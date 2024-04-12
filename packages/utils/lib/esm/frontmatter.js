@@ -42,6 +42,12 @@ var parse = function (content, options) {
         bodyBegin: getBodyBegin(content, matched),
     };
 };
+/**
+ * extract the markdown frontmatter from the contents
+ * @param content content to extract
+ * @param options extract options
+ * @returns extracted result
+ */
 export var extract = function (content, options) {
     if (options === void 0) { options = {}; }
     var _options = __assign({ json: true }, options);
@@ -55,6 +61,12 @@ export var extract = function (content, options) {
         bodyBegin: 1,
     };
 };
+/**
+ * serializes the frontmatter object
+ * @param object frontmatter to serialize
+ * @param options serialize options
+ * @returns serialized result
+ */
 export var serialize = function (object, options) {
     var _options = __assign({ skipInvalid: true }, options);
     return yaml.dump(object, _options);

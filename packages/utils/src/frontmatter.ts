@@ -44,6 +44,12 @@ const parse = (content: string, options: ExtractOptions): ExtractResult => {
   };
 };
 
+/**
+ * extract the markdown frontmatter from the contents 
+ * @param content content to extract
+ * @param options extract options
+ * @returns extracted result
+ */
 export const extract = (content: string, options: ExtractOptions = {}): ExtractResult => {
   const _options: ExtractOptions = {
     json: true,
@@ -61,6 +67,12 @@ export const extract = (content: string, options: ExtractOptions = {}): ExtractR
   };
 };
 
+/**
+ * serializes the frontmatter object
+ * @param object frontmatter to serialize
+ * @param options serialize options
+ * @returns serialized result
+ */
 export const serialize = (object: Frontmatter, options: SerializeOptions) => {
   const _options: SerializeOptions = {
     skipInvalid: true,

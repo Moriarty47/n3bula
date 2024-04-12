@@ -57,6 +57,13 @@ This is other text.
           keywords: ['MD', 'frontmatter'],
         }),
       );
+      const cache = new N3bulaUtils.NCache();
+      (async () => {
+        await cache.put('test', 'test');
+        await cache.put('test2', 'test2');
+        console.log(await cache.get('test'));
+        console.log(await cache.get('test2'));
+      })();
     </script>
     <script type="module" src="../lib/esm/numeric-range-parser.js"></script>
   </body>

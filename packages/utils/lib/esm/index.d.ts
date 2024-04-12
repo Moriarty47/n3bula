@@ -10,3 +10,4 @@ export * from './number';
 export * from './merge';
 export * from './frontmatter';
 export * from './numeric-range-parser';
+export * from './cache';
