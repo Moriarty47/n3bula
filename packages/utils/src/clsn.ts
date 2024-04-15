@@ -1,6 +1,8 @@
-type ClsType = string | number | (string | number)[] | Record<string, any>;
+type ClsType = string | number | (string | number)[] | Record<string, any> | undefined;
 
-function toValue(cls: ClsType) {
+type WithoutUndefined<T> = T extends undefined ? never : T;
+
+function toValue(cls: WithoutUndefined<ClsType>) {
   let temp: string;
   let str = '';
   if (typeof cls === 'string' || typeof cls === 'number') {
@@ -31,7 +33,7 @@ export function clsn(...rest: ClsType[]) {
   let str = '';
   for (let i = 0, len = rest.length; i < len; i += 1) {
     if (rest[i]) {
-      if (temp = toValue(rest[i])) {
+      if (temp = toValue(rest[i]!)) {
         str && (str += ' ');
         str += temp;
       }

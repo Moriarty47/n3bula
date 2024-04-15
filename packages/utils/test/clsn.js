@@ -30,6 +30,13 @@ test('Returns an empty string for an empty configuration', t => {
   );
 });
 
+test('Returns an empty string for undefined', t => {
+  t.is(
+    clsn(),
+    ''
+  );
+});
+
 test('Supports an array of class names', t => {
   t.is(
     clsn(['a', 'b']),
