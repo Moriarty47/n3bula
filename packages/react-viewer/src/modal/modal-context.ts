@@ -6,7 +6,7 @@ export const ModalContext = React.createContext<ModalConfig | undefined>(undefin
 export const useModalContext = () => {
   const context = React.useContext(ModalContext);
   if (!context) {
-    throw new Error('[Modal]: useModalContext must be used within a ModalProvider');
+    throw new Error('[n3bula-modal]: useModalContext must be used within a ModalProvider');
   }
   return context;
 };

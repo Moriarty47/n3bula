@@ -6,6 +6,7 @@ export type VNode = { index: number, key: string; children: ReactElement; };
 
 
 export type RegistryProps = {
+  onClick: (e: MouseEvent) => void;
   currentNodes: (HTMLImageElement | VNode)[];
   currentIndex?: number;
   registerNode: (key: string, node: ReactElement) => void;

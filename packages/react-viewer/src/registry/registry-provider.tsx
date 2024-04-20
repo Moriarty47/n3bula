@@ -1,9 +1,10 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { RegistryContext, useRegistry } from './registry-context';
-import { isImageElement } from '../shared/utils';
+import { isFilterImage, isImageElement } from '../shared/utils';
+import { useSSR } from '../hooks/use-ssr';
 import { clsn } from '@n3bula/utils';
 import NodeMap from './key-map';
-import type { ReactElement, ReactNode, RefObject } from 'react';
+import type { MouseEvent as ReactMouseEvent, ReactElement, ReactNode, RefObject } from 'react';
 import type { ModalRefProps } from '../modal';
 
 export type RegistryProviderRef = {
@@ -15,11 +16,16 @@ export type RegistryProviderProps = { children: ReactNode; };
 const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(({
   children,
 }, ref) => {
-
+  const { isServer } = useSSR();
   const modalController = useRef<ModalRefProps | null>(null);
-  const registryParentRef = useRef<HTMLElement>(document.body);
+  const registryParentRef = useRef<HTMLElement | null>(isServer ? null : document.body);
   const nodesRef = useRef<NodeMap<string | HTMLImageElement>>(new NodeMap());
   const [currentIndex, setCurrentIndex] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (isServer) return;
+    registryParentRef.current = document.body;
+  }, [isServer]);
 
   const registerNode = useCallback((key: string, node: ReactElement) => {
     if (!node) return;
@@ -30,15 +36,10 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
     modalController.current = modalRef.current;
   }, []);
 
-  const value = useMemo(() => ({
-    currentNodes: nodesRef.current.toArray(),
-    currentIndex,
-    registerNode,
-    setModalController,
-  }), [nodesRef, currentIndex, registerNode, setModalController]);
 
-  const onClick = useCallback((e: MouseEvent) => {
-    const dom = e.target as HTMLElement;
+  const onClick = useCallback((e: ReactMouseEvent<HTMLElement> | MouseEvent) => {
+    const dom = (e.target as HTMLElement).closest('[data-v-key]');
+    if (!dom) return;
     let idx = nodesRef.current.get(dom as HTMLImageElement);
     if (idx === undefined) {
       const vKey = dom.getAttribute('data-v-key');
@@ -49,6 +50,14 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
     modalController.current?.onOpen();
   }, []);
 
+  const value = useMemo(() => ({
+    onClick,
+    currentNodes: nodesRef.current.toArray(),
+    currentIndex,
+    registerNode,
+    setModalController,
+  }), [nodesRef, currentIndex, registerNode, setModalController]);
+
   const register = useCallback(() => {
     const dom = registryParentRef.current;
     if (!dom) return;
@@ -58,21 +67,22 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
 
       const offset = nodesRef.current.size;
       nodes.forEach((node, i) => {
-        if (!isImageElement(node)) return;
+        if (!(isImageElement(node) && isFilterImage(node))) return;
+        node.onclick = onClick;
         nodesRef.current.setImageNode(node, offset + i);
       });
 
-      dom.addEventListener('click', onClick, false);
+      // dom.addEventListener('click', onClick, false);
     }, 10);
-  }, [value]);
+  }, [value, isServer]);
 
   const unregister = useCallback(() => {
     nodesRef.current.clear();
     setCurrentIndex(undefined);
     const dom = registryParentRef.current;
     if (!dom) return;
-    dom.removeEventListener('click', onClick, false);
-  }, [value]);
+    // dom.removeEventListener('click', onClick, false);
+  }, [value, isServer]);
 
 
   useImperativeHandle(ref, () => ({
@@ -98,7 +108,7 @@ export const ViewerNode = ({
   children: React.ReactElement;
   className?: string;
 }) => {
-  const { registerNode } = useRegistry();
+  const { onClick, registerNode } = useRegistry();
 
   useEffect(() => {
     registerNode?.(vKey, children);
@@ -108,6 +118,7 @@ export const ViewerNode = ({
     ...props,
     className: clsn('register-node', props.className),
     children,
+    onClick,
     'data-v-key': vKey,
   });
 };

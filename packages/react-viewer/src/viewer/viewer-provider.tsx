@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { useGesture } from '@use-gesture/react';
 import { useModalContext } from '../modal/modal-context';
 import { ViewerContext } from './viewer-context';
 import { isImageElement, isMobile, loadImage } from '../shared/utils';
@@ -189,8 +188,8 @@ const ViewerProvider = ({ children }: { children: React.ReactNode; }) => {
   }, [zoomable, zoomSpeed, maxScale, minScale]);
 
   const wheelHandler = useCallback((e: WheelEvent) => {
-    if (image.loading || !zoomable) return;
-    // e.preventDefault();
+    if (!zoomable) return;
+    e.preventDefault();
 
     let scale: ScaleFactor = 0;
     const delta = e.deltaY;
@@ -203,42 +202,32 @@ const ViewerProvider = ({ children }: { children: React.ReactNode; }) => {
       x -= rect.left;
       y -= rect.top;
     }
-    setImage(prev => ({
-      ...prev,
-      ...zoomProcessor(
-        { x, y },
-        prev,
-        getImageSize,
-        { zoomSpeed, maxScale, minScale },
-        scale,
-      )
-    }));
-  }, [image, container, zoomable, zoomSpeed, maxScale, minScale]);
+    setImage(prev => {
+      if (prev.loading) return prev;
+      return ({
+        ...prev,
+        ...zoomProcessor(
+          { x, y },
+          prev,
+          getImageSize,
+          { zoomSpeed, maxScale, minScale },
+          scale,
+        )
+      });
+    });
+  }, [container, zoomable, zoomSpeed, maxScale, minScale]);
 
-  useGesture(
-    {
-      onWheel(state) {
-        wheelHandler(state.event);
-      },
-      onPinch() {
-        // TODO: pinch event
-      },
-    },
-    {
-      target: container!,
-      wheel: {
-        enabled: !isMobile && scrollZoom,
-        preventDefault: true,
-        eventOptions: { capture: false, passive: false }
-      },
-      pinch: {
-        enabled: isMobile && scrollZoom,
-        preventDefault: true,
-        eventOptions: { capture: true, passive: false }
-      },
+  useEffect(() => {
+    if (!container) return;
+    if (!isMobile && scrollZoom) {
+      container.removeEventListener('wheel', wheelHandler, false);
     }
-  );
 
+    container.addEventListener('wheel', wheelHandler, false);
+    return () => {
+      container.removeEventListener('wheel', wheelHandler, false);
+    };
+  }, [container]);
 
   const getImageSize = useCallback((size: { width: number, height: number; }) => {
     const maxWidth = containerSizeRef.current.width * 0.8;

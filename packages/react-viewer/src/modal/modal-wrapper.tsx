@@ -20,7 +20,7 @@ const ModalWrapper: FC<PropsWithChildren<ModalWrapperProps>> = ({
   const focusRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || !document) return;
     const activeElement = document.activeElement;
     const isChild = isChildElement(modalRef.current, activeElement);
     if (isChild) return;

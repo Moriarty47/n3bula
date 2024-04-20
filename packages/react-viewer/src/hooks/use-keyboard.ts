@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import type { KeyboardEventHandler } from 'react';
+import { useEffect } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent, KeyboardEventHandler } from 'react';
 import { getActiveModMap, getCtrlKeysByPlatform } from '../shared/utils';
 import { KeyMod } from '../shared/keycodes';
 
@@ -23,7 +23,7 @@ export type KeyboardBindings = {
   };
 };
 
-export type KeyboardHandler = (event: React.KeyboardEvent | KeyboardEvent) => void;
+export type KeyboardHandler = (event: ReactKeyboardEvent | KeyboardEvent) => void;
 
 const useKeyboard = (
   handler: KeyboardHandler,
@@ -41,7 +41,7 @@ const useKeyboard = (
   const keyCode = bindings.filter((k => !KeyMod[k]));
   const { CtrlCmd, WinCtrl } = getCtrlKeysByPlatform();
 
-  const eventHandler = (event: React.KeyboardEvent | KeyboardEvent) => {
+  const eventHandler = (event: ReactKeyboardEvent | KeyboardEvent) => {
     if (activeModMap.Shift && !event.shiftKey) return;
     if (activeModMap.Alt && !event.altKey) return;
     if (activeModMap.CtrlCmd && !event[CtrlCmd]) return;
@@ -72,7 +72,7 @@ const useKeyboard = (
   ) => {
     if (elementEventType !== event) return () => { };
     if (isCapture !== capture) return () => { };
-    return (event: React.KeyboardEvent) => eventHandler(event);
+    return (event: ReactKeyboardEvent) => eventHandler(event);
   };
 
   return {

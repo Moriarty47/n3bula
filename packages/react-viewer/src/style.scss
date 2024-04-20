@@ -27,6 +27,12 @@ $viewer: 'n3bula-viewer';
   padding: 1rem;
 }
 
+.n3bula-portal {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
 @mixin useHover {
   @media (hover: hover) {
     &:hover {

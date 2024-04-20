@@ -56,6 +56,8 @@ export const loadImage = async (src: string): Promise<HTMLImageElement> => {
 
 export const isImageElement = (node: unknown): node is HTMLImageElement => !!(node && typeof node === 'object' && 'isConnected' in node);
 
+export const isFilterImage = (node: HTMLImageElement) => node.classList.contains('no-register');
+
 export const isVNode = (node: unknown): node is VNode => {
   return !!(node && typeof node === 'object' && 'vKey' in node);
-}
+};

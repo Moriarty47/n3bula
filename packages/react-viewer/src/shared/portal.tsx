@@ -2,6 +2,7 @@ import { forwardRef, useMemo, useEffect, useImperativeHandle } from 'react';
 import { createPortal } from 'react-dom';
 import { getId } from '@n3bula/utils';
 import type { ReactNode } from 'react';
+import { useSSR } from '../hooks/use-ssr';
 
 export type PortalAttach = HTMLElement | null;
 
@@ -19,16 +20,20 @@ const getDefaultPortal = (attach?: PortalAttach) => {
 
 const Portal = forwardRef(({
   id = `n3bula-portal-${getId()}`,
-  attach = document.body,
+  attach,
   children,
 }: PortalProps, ref) => {
+  const { isServer } = useSSR();
   const container = useMemo(() => {
+    if (isServer) return null;
     const ele = document.createElement('div');
     ele.id = id;
+    ele.className = 'n3bula-portal'
     return ele;
-  }, []);
+  }, [isServer]);
 
   useEffect(() => {
+    if (!container) return;
     const attachEle = getDefaultPortal(attach);
     if (!attachEle) return;
     attachEle.appendChild(container);
@@ -39,6 +44,10 @@ const Portal = forwardRef(({
   }, [container, attach]);
 
   useImperativeHandle(ref, () => container);
+
+  if (!container) {
+    return null;
+  }
 
   return createPortal(children, container);
 });
