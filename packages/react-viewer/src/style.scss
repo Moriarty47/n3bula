@@ -1,0 +1,335 @@
+$modal: 'n3bula-modal';
+$viewer: 'n3bula-viewer';
+
+* {
+  --n3bula-modal-bg: rgba(0, 0, 0, 0.75);
+  --n3bula-modal-radius: 4px;
+  --n3bula-modal-btn: rgb(153, 153, 153);
+  --n3bula-modal-btn-hover: rgb(255, 255, 255);
+  --n3bula-modal-btn-bg-hover: rgba(96, 96, 96, 0.75);
+  --n3bula-root-fz: 16px;
+}
+
+.rotate-0 {
+  transform: rotate(0deg);
+}
+.rotate-180 {
+  transform: rotate(180deg);
+}
+.-rotate-90 {
+  transform: rotate(-90deg);
+}
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.register-node {
+  padding: 1rem;
+}
+
+@mixin useHover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+  @media (hover: none) {
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+.#{$modal}-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  font-size: var(--n3bula-root-fz, 16px);
+  outline: none;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  div {
+    box-sizing: border-box;
+  }
+
+  .hidden {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    outline: none;
+    border: none;
+  }
+
+  .#{$modal}-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background-color: var(--n3bula-modal-bg);
+    /* border-radius: var(--n3bula-radius); */
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .#{$modal}-content {
+    position: relative;
+    z-index: 1000;
+    padding: 1rem;
+    outline: none;
+  }
+
+  &.#{$modal}--enter > div {
+    opacity: 0;
+  }
+  &.#{$modal}--enter-active > div {
+    opacity: 1;
+  }
+  &.#{$modal}--leave > div {
+    opacity: 1;
+  }
+  &.#{$modal}--leave-active > div {
+    opacity: 0;
+  }
+}
+
+.#{$viewer} {
+  width: 100svw;
+
+  .#{$viewer}-content {
+    width: 100svw;
+    height: 100svh;
+  }
+
+  .#{$viewer}-btn {
+    position: absolute;
+    z-index: 1010;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    color: var(--n3bula-modal-btn);
+    background-color: transparent;
+    border-radius: var(--n3bula-modal-radius);
+    transition: color 0.3s ease-out, background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+    cursor: pointer;
+
+    &.hide {
+      display: none;
+    }
+
+    @include useHover {
+      color: var(--n3bula-modal-btn-hover);
+    }
+
+    &:not(.#{$viewer}-prev, .#{$viewer}-next) {
+      @include useHover {
+        background-color: var(--n3bula-modal-btn-bg-hover);
+        box-shadow: 0 0 4px 0 var(--n3bula-modal-btn-bg-hover);
+      }
+    }
+
+    &.#{$viewer}-close {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    &.#{$viewer}-prev,
+    &.#{$viewer}-next {
+      top: 50%;
+      padding: 0 1rem;
+      width: 4.25rem;
+      height: 100%;
+      transform: translateY(-50%);
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        inset: 0;
+        background-repeat: no-repeat;
+        background-size: 200% 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease-out;
+      }
+
+      @include useHover {
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
+    &.#{$viewer}-prev {
+      left: 0;
+      &::after {
+        background-position: right;
+        background-image: linear-gradient(to right, rgb(0, 0, 0, 0.35), transparent);
+      }
+    }
+
+    &.#{$viewer}-next {
+      right: 0;
+      &::after {
+        background-position: left;
+        background-image: linear-gradient(to left, rgb(0, 0, 0, 0.35), transparent);
+      }
+    }
+  }
+
+  .#{$viewer}-toolbar {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    z-index: 1010;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+    background-color: transparent;
+    box-shadow: 0 0 9px 0 #00000088;
+    border-radius: 9999px;
+    overflow: hidden;
+    opacity: 1;
+    backdrop-filter: blur(40px) saturate(1.8);
+    transition: opacity 0.3s ease-out;
+
+    &.hide {
+      opacity: 0;
+    }
+
+    .#{$viewer}-btn {
+      --w: 20px;
+      border-radius: 0;
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.4);
+
+      &:first-child {
+        padding-left: 2px;
+        border-radius: 9999px 0 0 9999px;
+      }
+
+      &:last-child {
+        padding-right: 2px;
+        border-radius: 0 9999px 9999px 0;
+      }
+
+      &:not(.hide):only-child {
+        padding: 0;
+        border-radius: 9999px;
+      }
+    }
+  }
+
+  .#{$viewer}-info,
+  .#{$viewer}-pagination {
+    position: absolute;
+    bottom: 1.6rem;
+    z-index: 1010;
+    font-size: 1rem;
+    color: #ccc;
+    user-select: none;
+  }
+
+  .#{$viewer}-info {
+    left: 1rem;
+    max-width: 20%;
+    width: auto;
+    text-align: justify;
+  }
+
+  .#{$viewer}-pagination {
+    right: 1rem;
+    line-height: 1rem;
+    text-align: right;
+  }
+
+  .#{$viewer}-canvas {
+    position: fixed;
+    z-index: 1005;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    cursor: grab;
+
+    img {
+      display: block;
+      user-select: none;
+      border-style: none;
+    }
+
+    .#{$viewer}-node-transition {
+      transition-property: width, height, margin, transform;
+      transition-duration: 0.3s;
+      transition-timing-function: ease-out;
+    }
+  }
+
+  @mixin grid-center {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    user-select: none;
+  }
+
+  .#{$viewer}-node {
+    @include grid-center;
+  }
+
+  .#{$viewer}-node-failed {
+    @include grid-center;
+
+    font-size: 0.75rem;
+    color: #f31260;
+    user-select: none;
+    svg {
+      --w: 64px;
+    }
+  }
+
+  .#{$viewer}-node-loading-wrapper {
+    @include grid-center;
+
+    .#{$viewer}-node-loading {
+      --size: 3rem;
+      position: relative;
+      display: flex;
+      width: var(--size);
+      height: var(--size);
+
+      i {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 9999px;
+        border-width: 3px;
+        border-color: transparent transparent white transparent;
+        animation: n3bula-viewer-loading 0.8s ease-out infinite;
+      }
+      .line {
+        border-style: solid;
+      }
+      .dash {
+        border-style: dotted;
+        opacity: 0.75;
+        animation-timing-function: linear;
+      }
+    }
+  }
+}
+
+@keyframes n3bula-viewer-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}

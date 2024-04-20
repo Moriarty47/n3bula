@@ -24,7 +24,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "packageManager": "pnpm@8.6.11",
+  "packageManager": "pnpm@8.15.7",
   "devDependencies": {
     "@babel/core": "^7.22.11",
     "@babel/plugin-transform-runtime": "^7.22.10",
@@ -38,17 +38,20 @@
     "css-loader": "^6.8.1",
     "lerna": "^8.1.2",
     "mini-css-extract-plugin": "^2.7.6",
+    "pnpm": "^8.15.7",
     "shx": "^0.3.4",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "tsx": "^4.7.1",
     "typescript": "^5.2.2",
+    "vite": "^5.2.8",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.22.11",
-    "@n3bula/template-creator": "workspace:^",
+    "@n3bula/template-creator": "workspace:*",
+    "@n3bula/utils": "workspace:*",
     "@types/node": "^20.5.6",
     "@types/webpack": "^5.28.2",
     "ts-node": "^10.9.1"
