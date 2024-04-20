@@ -54,7 +54,7 @@ export const loadImage = async (src: string): Promise<HTMLImageElement> => {
   });
 };
 
-export const isImageElement = (node: unknown): node is HTMLImageElement => !!(node && typeof node === 'object' && 'isConnected' in node);
+export const isImageElement = (node: unknown): node is HTMLImageElement => !!(node && typeof node === 'object' && (node as HTMLElement).nodeName === 'IMG');
 
 export const isFilterImage = (node: HTMLImageElement) => node.classList.contains('no-register');
 

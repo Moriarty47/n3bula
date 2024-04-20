@@ -18,14 +18,12 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
 }, ref) => {
   const { isServer } = useSSR();
   const modalController = useRef<ModalRefProps | null>(null);
-  const registryParentRef = useRef<HTMLElement | null>(isServer ? null : document.body);
+  const registryParent = useMemo<HTMLElement | null>(() => {
+    if (isServer) return null;
+    return document.body;
+  }, [isServer]);
   const nodesRef = useRef<NodeMap<string | HTMLImageElement>>(new NodeMap());
   const [currentIndex, setCurrentIndex] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    if (isServer) return;
-    registryParentRef.current = document.body;
-  }, [isServer]);
 
   const registerNode = useCallback((key: string, node: ReactElement) => {
     if (!node) return;
@@ -38,14 +36,21 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
 
 
   const onClick = useCallback((e: ReactMouseEvent<HTMLElement> | MouseEvent) => {
-    const dom = (e.target as HTMLElement).closest('[data-v-key]');
+    let dom = e.target as (HTMLElement | null);
     if (!dom) return;
-    let idx = nodesRef.current.get(dom as HTMLImageElement);
-    if (idx === undefined) {
+    let idx;
+
+    if (isImageElement(dom)) {
+      if (isFilterImage(dom)) return;
+      idx = nodesRef.current.get(dom);
+    } else {
+      dom = dom.closest('[data-v-key]');
+      if (!dom) return;
       const vKey = dom.getAttribute('data-v-key');
       idx = nodesRef.current.getVNodeIndex(vKey);
-      if (idx === undefined) return;
     }
+    if (idx === undefined) return;
+    
     setCurrentIndex(idx);
     modalController.current?.onOpen();
   }, []);
@@ -59,30 +64,27 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
   }), [nodesRef, currentIndex, registerNode, setModalController]);
 
   const register = useCallback(() => {
-    const dom = registryParentRef.current;
-    if (!dom) return;
+    console.log('registryParent :>>', registryParent);
+    if (!registryParent) return;
     setTimeout(() => {
 
-      const nodes = Array.from(dom.querySelectorAll('img'));
+      const nodes = Array.from(registryParent.querySelectorAll('img'));
 
       const offset = nodesRef.current.size;
       nodes.forEach((node, i) => {
-        if (!(isImageElement(node) && isFilterImage(node))) return;
+        if (!isImageElement(node)) return;
         node.onclick = onClick;
         nodesRef.current.setImageNode(node, offset + i);
       });
 
-      // dom.addEventListener('click', onClick, false);
     }, 10);
-  }, [value, isServer]);
+  }, [value, registryParent]);
 
   const unregister = useCallback(() => {
     nodesRef.current.clear();
     setCurrentIndex(undefined);
-    const dom = registryParentRef.current;
-    if (!dom) return;
-    // dom.removeEventListener('click', onClick, false);
-  }, [value, isServer]);
+    if (!registryParent) return;
+  }, [value, registryParent]);
 
 
   useImperativeHandle(ref, () => ({

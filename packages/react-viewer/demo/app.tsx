@@ -5,6 +5,7 @@ import type { Language } from '../src/i18n/i18n-context';
 import { N3bulaViewer, useViewerState } from '../src/index';
 import '../src/style.scss';
 import RegistryProvider, { ViewerNode, RegistryProviderRef } from '../src/registry/registry-provider';
+import { useSSR } from '../src/hooks/use-ssr';
 // import { N3bulaViewer, useViewerState } from '../dist/index';
 // import '../dist/style.css';
 
@@ -59,12 +60,14 @@ const App = () => {
     }} />
   );
 
+  const { isServer } = useSSR();
   const [page, setPage] = useState(false);
   const registryRef = useRef<RegistryProviderRef>(null);
 
   useEffect(() => {
+    if (isServer) return;
     registryRef.current?.register();
-  }, []);
+  }, [isServer]);
 
   return (
     <>
@@ -183,7 +186,7 @@ const App = () => {
           <>
             <div style={{ width: 700, display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', rowGap: '1rem' }}>
               {images.map((path, index) => (
-                <img key={index} src={`images/${path}`} alt={path} width={100} height={100} style={{ objectFit: 'cover', objectPosition: 'center', cursor: 'pointer' }} />
+                <img className={index === 3 ? 'no-register' : ''} key={index} src={`images/${path}`} alt={path} width={100} height={100} style={{ objectFit: 'cover', objectPosition: 'center', cursor: 'pointer' }} />
               ))}
             </div>
 
