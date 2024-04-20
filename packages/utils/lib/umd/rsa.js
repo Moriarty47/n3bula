@@ -5536,8 +5536,11 @@ var emptyPadStart = function emptyPadStart(length, str, pad) {
   }
   return padStart(str, length, pad);
 };
+var getId = function getId() {
+  return Math.random().toString(36).slice(2);
+};
 var getRandomStr = function getRandomStr(length) {
-  var str = Math.random().toString(36).slice(2);
+  var str = getId();
   if (str.length >= length) return str.slice(0, length);
   str += getRandomStr(length - str.length);
   return str;

@@ -28,3 +28,7 @@ export declare const isPrimary: (thing: unknown) => thing is PrimaryType;
 export declare const isArray: (thing: unknown) => thing is any[];
 export declare const isFunction: (thing: unknown) => thing is () => void;
 export declare const isObject: (thing: unknown) => thing is {};
+export declare const isBrowser: () => boolean;
+export declare const isNode: () => boolean;
+export declare const isMac: () => boolean;
+export declare const isMobile: () => boolean;

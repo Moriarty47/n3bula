@@ -71,8 +71,9 @@ export var emptyPadStart = function (length, str, pad) {
     if (pad === void 0) { pad = ''; }
     return padStart(str, length, pad);
 };
+export var getId = function () { return Math.random().toString(36).slice(2); };
 export var getRandomStr = function (length) {
-    var str = Math.random().toString(36).slice(2);
+    var str = getId();
     if (str.length >= length)
         return str.slice(0, length);
     str += getRandomStr(length - str.length);

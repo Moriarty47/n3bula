@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/umd/index.js",
   "module": "./lib/esm/index.js",
@@ -74,5 +74,6 @@
     "crypto-js": "^4.2.0",
     "js-yaml": "^4.1.0",
     "jsencrypt": "^3.3.2"
-  }
+  },
+  "sideEffects": false
 }

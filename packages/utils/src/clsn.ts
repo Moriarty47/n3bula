@@ -1,8 +1,16 @@
-type ClsType = string | number | (string | number)[] | Record<string, any> | undefined;
+export type BaseType = number | string | boolean | null | undefined;
 
-type WithoutUndefined<T> = T extends undefined ? never : T;
+type ClsType = BaseType | BaseType[] | Record<string, any>;
 
-function toValue(cls: WithoutUndefined<ClsType>) {
+type WithoutBoolAndFalsy<T> = T extends undefined | null | boolean
+  ? never
+  : T extends (infer U)[]
+  ? WithoutBoolAndFalsy<U>[]
+  : T;
+
+type ClsTypeWithoutBoolAndFalsy = WithoutBoolAndFalsy<ClsType>;
+
+function toValue(cls: ClsTypeWithoutBoolAndFalsy) {
   let temp: string;
   let str = '';
   if (typeof cls === 'string' || typeof cls === 'number') {
@@ -33,7 +41,7 @@ export function clsn(...rest: ClsType[]) {
   let str = '';
   for (let i = 0, len = rest.length; i < len; i += 1) {
     if (rest[i]) {
-      if (temp = toValue(rest[i]!)) {
+      if (temp = toValue(rest[i] as ClsTypeWithoutBoolAndFalsy)) {
         str && (str += ' ');
         str += temp;
       }

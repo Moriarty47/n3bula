@@ -70,8 +70,10 @@ export const emptyPadStart = (length: number, str: string = '', pad: string = ''
   return padStart(str, length, pad);
 };
 
+export const getId = () => Math.random().toString(36).slice(2);
+
 export const getRandomStr = (length: number) => {
-  let str = Math.random().toString(36).slice(2);
+  let str = getId();
   if (str.length >= length) return str.slice(0, length);
   str += getRandomStr(length - str.length);
   return str;
