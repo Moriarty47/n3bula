@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/react-viewer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Image viewer for React",
   "type": "module",
   "main": "./dist/index.js",
