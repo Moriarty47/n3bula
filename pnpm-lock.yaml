@@ -217,7 +217,10 @@ importers:
         version: 1.0.0(rollup@4.14.3)
       vite-plugin-dts:
         specifier: ^3.8.3
-        version: 3.8.3(rollup@4.14.3)(typescript@5.3.3)(vite@5.2.8)
+        version: 3.8.3(@types/node@20.5.6)(rollup@4.14.3)(typescript@5.3.3)(vite@5.2.8)
+      vite-plugin-remove-console:
+        specifier: ^2.2.0
+        version: 2.2.0
 
   packages/template-creator:
     dependencies:
@@ -2414,12 +2417,12 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor-model@7.28.13:
+  /@microsoft/api-extractor-model@7.28.13(@types/node@20.5.6):
     resolution: {integrity: sha512-39v/JyldX4MS9uzHcdfmjjfS6cYGAoXV+io8B5a338pkHiSt+gy2eXQ0Q7cGFJ7quSa1VqqlMdlPrB6sLR/cAw==}
     dependencies:
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 4.0.2
+      '@rushstack/node-core-library': 4.0.2(@types/node@20.5.6)
     transitivePeerDependencies:
       - '@types/node'
     dev: true
@@ -2444,17 +2447,17 @@ packages:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.43.0:
+  /@microsoft/api-extractor@7.43.0(@types/node@20.5.6):
     resolution: {integrity: sha512-GFhTcJpB+MI6FhvXEI9b2K0snulNLWHqC/BbcJtyNYcKUiw7l3Lgis5ApsYncJ0leALX7/of4XfmXk+maT111w==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.28.13
+      '@microsoft/api-extractor-model': 7.28.13(@types/node@20.5.6)
       '@microsoft/tsdoc': 0.14.2
       '@microsoft/tsdoc-config': 0.16.2
-      '@rushstack/node-core-library': 4.0.2
+      '@rushstack/node-core-library': 4.0.2(@types/node@20.5.6)
       '@rushstack/rig-package': 0.5.2
-      '@rushstack/terminal': 0.10.0
-      '@rushstack/ts-command-line': 4.19.1
+      '@rushstack/terminal': 0.10.0(@types/node@20.5.6)
+      '@rushstack/ts-command-line': 4.19.1(@types/node@20.5.6)
       lodash: 4.17.21
       minimatch: 3.0.5
       resolve: 1.22.4
@@ -3360,7 +3363,7 @@ packages:
       z-schema: 5.0.5
     dev: true
 
-  /@rushstack/node-core-library@4.0.2:
+  /@rushstack/node-core-library@4.0.2(@types/node@20.5.6):
     resolution: {integrity: sha512-hyES82QVpkfQMeBMteQUnrhASL/KHPhd7iJ8euduwNJG4mu2GSOKybf0rOEjOm1Wz7CwJEUm9y0yD7jg2C1bfg==}
     peerDependencies:
       '@types/node': '*'
@@ -3368,6 +3371,7 @@ packages:
       '@types/node':
         optional: true
     dependencies:
+      '@types/node': 20.5.6
       fs-extra: 7.0.1
       import-lazy: 4.0.0
       jju: 1.4.0
@@ -3390,7 +3394,7 @@ packages:
       strip-json-comments: 3.1.1
     dev: true
 
-  /@rushstack/terminal@0.10.0:
+  /@rushstack/terminal@0.10.0(@types/node@20.5.6):
     resolution: {integrity: sha512-UbELbXnUdc7EKwfH2sb8ChqNgapUOdqcCIdQP4NGxBpTZV2sQyeekuK3zmfQSa/MN+/7b4kBogl2wq0vpkpYGw==}
     peerDependencies:
       '@types/node': '*'
@@ -3398,7 +3402,8 @@ packages:
       '@types/node':
         optional: true
     dependencies:
-      '@rushstack/node-core-library': 4.0.2
+      '@rushstack/node-core-library': 4.0.2(@types/node@20.5.6)
+      '@types/node': 20.5.6
       supports-color: 8.1.1
     dev: true
 
@@ -3411,10 +3416,10 @@ packages:
       string-argv: 0.3.2
     dev: true
 
-  /@rushstack/ts-command-line@4.19.1:
+  /@rushstack/ts-command-line@4.19.1(@types/node@20.5.6):
     resolution: {integrity: sha512-J7H768dgcpG60d7skZ5uSSwyCZs/S2HrWP1Ds8d1qYAyaaeJmpmmLr9BVw97RjFzmQPOYnoXcKA4GkqDCkduQg==}
     dependencies:
-      '@rushstack/terminal': 0.10.0
+      '@rushstack/terminal': 0.10.0(@types/node@20.5.6)
       '@types/argparse': 1.0.38
       argparse: 1.0.10
       string-argv: 0.3.2
@@ -4007,7 +4012,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.4)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.8(sass@1.75.0)
+      vite: 5.2.8(@types/node@20.5.6)(sass@1.75.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11046,7 +11051,7 @@ packages:
       - rollup
     dev: true
 
-  /vite-plugin-dts@3.8.3(rollup@4.14.3)(typescript@5.3.3)(vite@5.2.8):
+  /vite-plugin-dts@3.8.3(@types/node@20.5.6)(rollup@4.14.3)(typescript@5.3.3)(vite@5.2.8):
     resolution: {integrity: sha512-yRHiRosQw7MXdOhmcrVI+kRiB8YEShbSxnADNteK4eZGdEoyOkMHihvO5XOAVlOq8ng9sIqu8vVefDK1zcj3qw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -11056,19 +11061,23 @@ packages:
       vite:
         optional: true
     dependencies:
-      '@microsoft/api-extractor': 7.43.0
+      '@microsoft/api-extractor': 7.43.0(@types/node@20.5.6)
       '@rollup/pluginutils': 5.1.0(rollup@4.14.3)
       '@vue/language-core': 1.8.27(typescript@5.3.3)
       debug: 4.3.4
       kolorist: 1.8.0
       magic-string: 0.30.10
       typescript: 5.3.3
-      vite: 5.2.8(sass@1.75.0)
+      vite: 5.2.8(@types/node@20.5.6)(sass@1.75.0)
       vue-tsc: 1.8.27(typescript@5.3.3)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
       - supports-color
+    dev: true
+
+  /vite-plugin-remove-console@2.2.0:
+    resolution: {integrity: sha512-qgjh5pz75MdE9Kzs8J0kBwaCfifHV0ezRbB9rpGsIOxam+ilcGV7WOk91vFJXquzRmiKrFh3Hxlh0JJWAmXTbQ==}
     dev: true
 
   /vite@5.2.8(@types/node@20.5.6)(sass@1.75.0):
@@ -11100,42 +11109,6 @@ packages:
         optional: true
     dependencies:
       '@types/node': 20.5.6
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.14.3
-      sass: 1.75.0
-    optionalDependencies:
-      fsevents: 2.3.3
-    dev: true
-
-  /vite@5.2.8(sass@1.75.0):
-    resolution: {integrity: sha512-OyZR+c1CE8yeHw5V5t59aXsUPPVTHMDjEZz8MgguLL/Q7NblxhZUlTu9xSPqlsUO/y+X7dlU05jdhvyycD55DA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.14.3

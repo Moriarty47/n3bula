@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 // import { compression } from 'vite-plugin-compression2';
 import dts from 'vite-plugin-dts';
+import viteRemoveConsole from 'vite-plugin-remove-console';
 import packageJson from './package.json';
 
 // https://vitejs.dev/config/
@@ -25,6 +26,9 @@ export default defineConfig({
         declaration: true,
         typeRoots: ['./dist/index.d.ts']
       }
+    }),
+    viteRemoveConsole({
+      includes: ['log']
     }),
   ],
   build: {
