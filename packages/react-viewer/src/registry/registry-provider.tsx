@@ -64,11 +64,10 @@ const RegistryProvider = forwardRef<RegistryProviderRef, RegistryProviderProps>(
   }), [nodesRef, currentIndex, registerNode, setModalController]);
 
   const register = useCallback(() => {
-    console.log('registryParent :>>', registryParent);
     if (!registryParent) return;
     setTimeout(() => {
 
-      const nodes = Array.from(registryParent.querySelectorAll('img'));
+      const nodes = Array.from(registryParent.querySelectorAll('img:not(.no-register)'));
 
       const offset = nodesRef.current.size;
       nodes.forEach((node, i) => {
