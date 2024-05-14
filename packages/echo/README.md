@@ -1,21 +1,21 @@
-# `@n3bula/color-log`
+# `@n3bula/echo`
 
 ### Image viewer for React.
 
 ## Install
 
 ```sh
-npm install @n3bula/color-log
+npm install @n3bula/echo
 # or
-yarn add @n3bula/color-log
+yarn add @n3bula/echo
 # or
-pnpm add @n3bula/color-log
+pnpm add @n3bula/echo
 ```
 
 ## Use
 
 ```ts
-import {echo} from '@n3bula/color-log';
+import {echo} from '@n3bula/echo';
 echo.log
   .v(' ').img('./images/1.jpg')
   .v('\n')

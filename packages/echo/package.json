@@ -1,5 +1,5 @@
 {
-  "name": "@n3bula/color-log",
+  "name": "@n3bula/echo",
   "version": "0.0.1",
   "description": "Colorized log",
   "type": "module",
@@ -18,11 +18,13 @@
   },
   "files": [
     "dist",
-    "demo/*"
+    "demo/*",
+    "!demo/images/*"
   ],
   "keywords": [
     "log",
     "colorized",
+    "echo",
     "n3bula"
   ],
   "scripts": {
@@ -40,11 +42,11 @@
       "email": "wang_jn_xian@163.com"
     }
   ],
-  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/color-log#readme",
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/echo#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/Moriarty47/n3bula.git",
-    "directory": "packages/color-log"
+    "directory": "packages/echo"
   },
   "author": {
     "name": "Moriarty47",

@@ -52,7 +52,7 @@ interface EchoFunc {
   /** value */
   v(value: string | number): IColorOptions & TargetSubFunc;
   /** print */
-  p(): void;
+  p(value?: any): void;
 }
 
 type TargetSubFunc = Pick<EchoFunc, 'p' | 'v'>;
@@ -196,7 +196,7 @@ export function createEcho(options: {
     return receiver;
   };
 
-  const print = async () => {
+  const print = async (value?: any) => {
     calc();
     for (let i = 0; i < cssParams.length; i++) {
       const cssPromise = cssParams[i];
@@ -204,8 +204,13 @@ export function createEcho(options: {
         cssParams[i] = objectCssToStringCss(await cssPromise.url);
       }
     }
-    debugLog(str, ...cssParams as string[]);
-    console[type](str, ...cssParams);
+    if (value) {
+      debugLog(str, ...cssParams as string[], value);
+      console[type](str, ...cssParams, value);
+    } else {
+      debugLog(str, ...cssParams as string[]);
+      console[type](str, ...cssParams);
+    }
     str = '';
     store.length = 0;
     cssParams.length = 0;
@@ -220,9 +225,9 @@ export function createEcho(options: {
 
     if (funcKeys.includes(prop)) return processFunckey(prop, receiver);
 
-    if (prop !== 'p') return processProp(prop, receiver);
+    if (prop === 'css' || prop === 'img') return processCss(receiver);
 
-    if (prop === 'p') return print;
+    if (prop !== 'p') return processProp(prop, receiver);
 
     return receiver;
   };
@@ -235,8 +240,8 @@ export function createEcho(options: {
       const arg = argArray[0];
       if (
         (typeof arg === 'object' && arg !== null) ||
-        (typeof arg === 'string' && !arg.startsWith('#'))
-      ) return processCss(thisArg)(arg);
+        arg === undefined
+      ) return print(arg);
       return processRGB(thisArg)(...argArray);
     },
   };
@@ -245,7 +250,17 @@ export function createEcho(options: {
 
   function debugLog(...args: string[]) {
     if (debug) {
-      console.info(args.join(', ').replace(/\x1b/gi, '\\x1b'));
+      let strIdx = 0;
+      let params: any[] = [];
+      for (let i = 0; i < args.length; i++) {
+        if (typeof args[i] === 'string') {
+          params[strIdx] = (`${(params[strIdx] || '')}${params[strIdx] ? ', ' : ''}${args[i]}`).replace(/\x1b/gi, '\\x1b');
+        } else {
+          strIdx++;
+          params.push(args[i]);
+        }
+      }
+      console.log('', ...params);
     }
   }
 }

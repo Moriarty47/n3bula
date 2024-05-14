@@ -31,7 +31,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, './src/index.ts'),
       formats: ['es', 'umd'],
       fileName: 'index',
-      name: 'N3bulaColorLog',
+      name: 'N3bulaEcho',
     },
   }
 });
