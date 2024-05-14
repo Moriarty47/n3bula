@@ -19,7 +19,7 @@
   "files": [
     "dist",
     "demo/*",
-    "!/demo/images/1.jpg"
+    "!demo/images/1.jpg"
   ],
   "keywords": [
     "log",
