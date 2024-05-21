@@ -11,11 +11,12 @@ type CookiesProps = {
         write: (value: string) => string;
     };
 };
-export default function useCookies({ options, transformer }?: CookiesProps): {
+type CookiesReturn = {
     has: (name: string) => boolean;
     set: (name: string, value: string, options?: CookieOptions) => string | undefined;
     get: (...names: string[]) => Record<string, Array<string>>;
     size: () => number;
     delete(name: string, attributes: CookieOptions): void;
-} | undefined;
+};
+export default function useCookies({ options, transformer }?: CookiesProps): CookiesReturn | undefined;
 export {};

@@ -984,7 +984,7 @@ function useCookies(_a) {
         var value = cookieParts.slice(1).join('=');
         try {
           var key = decodeURIComponent(cookieParts[0]);
-          if (!names.includes(key)) break;
+          if (!names.includes(key)) continue;
           if (!(key in result)) {
             result[key] = new Set();
           }

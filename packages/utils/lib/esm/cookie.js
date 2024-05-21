@@ -95,7 +95,7 @@ export default function useCookies(_a) {
                 try {
                     var key = decodeURIComponent(cookieParts[0]);
                     if (!names.includes(key))
-                        break;
+                        continue;
                     if (!(key in result)) {
                         result[key] = new Set();
                     }

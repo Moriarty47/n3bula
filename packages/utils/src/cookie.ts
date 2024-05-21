@@ -13,9 +13,17 @@ type CookiesProps = {
   };
 };
 
+type CookiesReturn = {
+  has: (name: string) => boolean;
+  set: (name: string, value: string, options?: CookieOptions) => string | undefined;
+  get: (...names: string[]) => Record<string, Array<string>>;
+  size: () => number;
+  delete(name: string, attributes: CookieOptions): void;
+};
+
 // /(?![ ;])([^=]+)=([^;]+)/g
 
-export default function useCookies({ options, transformer }: CookiesProps = {}) {
+export default function useCookies({ options, transformer }: CookiesProps = {}): CookiesReturn | undefined {
   if (typeof document === 'undefined' || typeof window === 'undefined') return;
   if (!window.navigator.cookieEnabled) {
     throw new Error('The browser does not support or is blocking cookies from being set.');
@@ -110,7 +118,7 @@ export default function useCookies({ options, transformer }: CookiesProps = {}) 
 
         try {
           const key = decodeURIComponent(cookieParts[0]);
-          if (!names.includes(key)) break;
+          if (!names.includes(key)) continue;
           if (!(key in result)) {
             result[key] = new Set();
           }
