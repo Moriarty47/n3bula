@@ -31,4 +31,4 @@ export declare const isObject: (thing: unknown) => thing is {};
 export declare const isBrowser: () => boolean;
 export declare const isNode: () => boolean;
 export declare const isMac: () => boolean;
-export declare const isMobile: () => boolean;
+export declare const isMobile: (userAgent?: string) => boolean;

@@ -28,7 +28,7 @@ function getEntry(key, name) {
   }
 
   return {
-    [key]: { import: entry, library: { type: 'umd', name } },
+    // [key]: { import: entry, library: { type: 'umd', name } },
     [`${key}.min`]: { import: entry, library: { type: 'umd', name } }
   };
 }
