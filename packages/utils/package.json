@@ -1,21 +1,21 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.0.12-alpha.1",
+  "version": "0.0.12-alpha.2",
   "description": "A utils library for n3bula packages.",
-  "main": "./lib/umd/index.js",
+  "main": "./lib/umd/index.min.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/esm/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib/esm/index.d.ts",
       "import": "./lib/esm/index.js",
-      "require": "./lib/umd/index.js",
+      "require": "./lib/umd/index.min.js",
       "default": "./lib/esm/index.js"
     },
     "./*": {
       "types": "./lib/esm/*.d.ts",
       "import": "./lib/esm/*.js",
-      "require": "./lib/umd/*.js",
+      "require": "./lib/umd/*.min.js",
       "default": "./lib/esm/*.js"
     }
   },
