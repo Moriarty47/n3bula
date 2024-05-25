@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const getEnclose = (ids) => {
   let a = ids.join(',');
-  return a + ':' + a;
+  return a + ':' + a.replace('window', `typeof window === 'undefined' ? globalThis : window`);
 };
 
 const isFile = (path) => {
