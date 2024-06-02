@@ -1,0 +1,62 @@
+{
+  "name": "@n3bula/watcher",
+  "version": "0.0.1",
+  "description": "A file system watcher based on chokidar",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./dist/*": {
+      "default": "./dist/*"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "watcher",
+    "file-system",
+    "chokidar",
+    "rename",
+    "n3bula"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  },
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/watcher#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/watcher"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0"
+  }
+}
