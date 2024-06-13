@@ -26,6 +26,9 @@ export default defineConfig({
   ],
   build: {
     ssr: true,
+    rollupOptions: {
+      external: ['fsevents']
+    },
     outDir: path.resolve(__dirname, './dist'),
     emptyOutDir: true,
     lib: {
