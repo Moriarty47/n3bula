@@ -1,4 +1,5 @@
 import fs from 'fs';
+import upath from 'upath';
 import lockResolver from './lock-resolver';
 import type { INO_S, LockOptions } from './types';
 
@@ -42,7 +43,7 @@ export const getLock = (
   const release = options.locks.read[id];
 
   if (release) {
-    options.handlers.override(release());
+    options.handlers.override(upath.normalizeSafe(release()));
     return;
   }
 

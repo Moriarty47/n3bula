@@ -306,6 +306,9 @@ importers:
       chokidar:
         specifier: ^3.6.0
         version: 3.6.0
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       typescript:
         specifier: ^5.2.2
@@ -10957,7 +10960,6 @@ packages:
   /upath@2.0.1:
     resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
     engines: {node: '>=4'}
-    dev: true
 
   /update-browserslist-db@1.0.11(browserslist@4.21.10):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}

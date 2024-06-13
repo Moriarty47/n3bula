@@ -1,3 +1,4 @@
+import upath from 'upath';
 import chokidar from 'chokidar';
 import { getFileStats, getIno, getLock } from './utils';
 import type { INO_S, Lock, WatchEvent, WatcherHandlers } from './types';
@@ -37,6 +38,7 @@ const watcher = (
   };
 
   const change = (filePath: string) => {
+    filePath = upath.normalizeSafe(filePath);
     const stats = getFileStats(filePath);
     emit('change', filePath, stats);
   };
@@ -86,11 +88,11 @@ const watcher = (
   const _watcher = chokidar
     .watch(paths, _options)
     .on('ready', ready)
-    .on('add', (path) => add('add', path))
-    .on('addDir', (path) => add('addDir', path))
+    .on('add', (path) => add('add', upath.normalizeSafe(path)))
+    .on('addDir', (path) => add('addDir', upath.normalizeSafe(path)))
     .on('change', change)
-    .on('unlink', (path) => unlink('unlink', path))
-    .on('unlinkDir', (path) => unlink('unlinkDir', path));
+    .on('unlink', (path) => unlink('unlink', upath.normalizeSafe(path)))
+    .on('unlinkDir', (path) => unlink('unlinkDir', upath.normalizeSafe(path)));
 
   const _close = _watcher.close;
 

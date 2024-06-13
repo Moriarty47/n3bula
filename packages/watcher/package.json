@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/watcher",
-  "version": "0.0.2-alpha.1",
+  "version": "0.0.2-alpha.2",
   "description": "A file system watcher based on chokidar",
   "type": "module",
   "main": "./dist/index.js",
@@ -57,6 +57,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "chokidar": "^3.6.0"
+    "chokidar": "^3.6.0",
+    "upath": "^2.0.1"
   }
 }
