@@ -1,8 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-// import { compression } from 'vite-plugin-compression2';
 import dts from 'vite-plugin-dts';
-// import viteRemoveConsole from 'vite-plugin-remove-console';
 import packageJson from './package.json';
 
 // https://vitejs.dev/config/
@@ -12,7 +10,6 @@ export default defineConfig({
   },
   root: path.resolve(__dirname, 'demo'),
   plugins: [
-    // compression(),
     dts({
       insertTypesEntry: true,
       rollupTypes: true,

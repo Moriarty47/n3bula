@@ -1,4 +1,4 @@
-import { PropertiesHyphen } from 'csstype';
+import type { PropertiesHyphen } from 'csstype';
 
 const Style = {
   reset: '0',

@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/echo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Colorized log",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,9 +17,7 @@
     }
   },
   "files": [
-    "dist",
-    "demo/*",
-    "!demo/images/1.jpg"
+    "dist"
   ],
   "keywords": [
     "log",
