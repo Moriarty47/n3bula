@@ -1,0 +1,63 @@
+{
+  "name": "@n3bula/vue-resizable-panels",
+  "version": "0.0.1-alpha.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "resizable-panels",
+    "vue",
+    "n3bula"
+  ],
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "pinia": "^2.1.7",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1",
+    "vite-plugin-dts": "^3.8.3",
+    "vue-tsc": "^2.0.21"
+  },
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/vue-resizable-panels#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/vue-resizable-panels"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
