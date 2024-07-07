@@ -8,14 +8,12 @@ const flexCenterBase = {
 };
 
 const config: Config = {
+  corePlugins: { preflight: false },
   content: [
     "./index.html",
-    "./src/**/*.html",
-    "./src/**/*.{js,ts,jsx,tsx,vue}",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
     "./app.vue",
-    "./error.vue",
   ],
-  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
     },
