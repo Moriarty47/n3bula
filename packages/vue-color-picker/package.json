@@ -1,0 +1,64 @@
+{
+  "name": "@n3bula/vue-color-picker",
+  "version": "0.0.1-alpha.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./style.css": "./dist/style.css",
+    "./*": "./*"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "color-picker",
+    "vue",
+    "n3bula"
+  ],
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@types/postcss-prefix-selector": "^1.16.3",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "postcss-prefix-selector": "^1.16.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1",
+    "vite-plugin-dts": "^3.8.3",
+    "vue-tsc": "^2.0.21"
+  },
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/vue-color-picker#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/vue-color-picker"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
