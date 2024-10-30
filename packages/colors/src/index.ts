@@ -1,5 +1,5 @@
 export { cmyk, cmyk2rgb } from '@/transform/cmyk';
-export { hsl, hsl2hsv, hsl2rgb, hsl2string } from '@/transform/hsl';
+export { hsl, hsl2hsv, hsl2rgb } from '@/transform/hsl';
 export { hsv, hsv2hsl, hsv2rgb } from '@/transform/hsv';
 export { hwb, hwb2rgb } from '@/transform/hwb';
 export { lab, lab2lch, lab2xyz } from '@/transform/lab';

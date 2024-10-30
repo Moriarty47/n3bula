@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest';
-import { hsl, hsl2hsv, hsl2rgb, hsl2string } from '@/transform/hsl';
-import { hsl2hsvData, hsl2rgbData, hsl2stringData, hslData } from '$test/test-data';
+import { hsl, hsl2hsv, hsl2rgb } from '@/transform/hsl';
+import { hsl2hsvData, hsl2rgbData, hslData } from '$test/test-data';
 
 test.each(hslData)(
   '[hsl] $v -> $e',
@@ -20,12 +20,5 @@ test.each(hsl2rgbData)(
   '[hsl to rgb] $v -> $e',
   ({ v, e }) => {
     expect(hsl2rgb(v)).toMatchObject(e);
-  }
-);
-
-test.each(hsl2stringData)(
-  '[hsl to string] $v -> $e',
-  ({ v, e }) => {
-    expect(hsl2string(v)).toMatchObject(e);
   }
 );

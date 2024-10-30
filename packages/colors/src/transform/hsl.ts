@@ -52,7 +52,7 @@ export function hsl2rgb(hsl: HSL): RGB {
 
   let val: number;
   if (s === 0) {
-    val = l * 255;
+    val = toFixed(l * 255);
     return { r: val, g: val, b: val, a };
   }
 
@@ -81,14 +81,4 @@ export function hsl2rgb(hsl: HSL): RGB {
   }
 
   return rgb;
-}
-
-export function hsl2string(hsl: HSL): string {
-  let { h, s, l, a } = hsl;
-  h = Math.round(h);
-  s = Math.round(s);
-  l = Math.round(l);
-  a = normalizeAlpha(a);
-  const hasA = a !== undefined;
-  return `hsl${hasA ? 'a' : ''}(${h},${s}%,${l}%${hasA ? `,${a}` : ''})`;
 }

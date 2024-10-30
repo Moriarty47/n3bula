@@ -112,3 +112,6 @@ dist
 
 # api-extractor
 tsdoc-metadata.json
+
+# wasted draft
+packages/wasted-*
