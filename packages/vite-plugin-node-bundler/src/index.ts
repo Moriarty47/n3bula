@@ -1,6 +1,6 @@
-import type { Plugin } from 'vite';
-import { viteNodeExternals } from './plugins/externals';
 import { viteNodeConfig } from './plugins/config';
+import { viteNodeExternals } from './plugins/externals';
+import type { Plugin } from 'vite';
 
 export type VitePluginNodeBundlerOptions = {
   entry?: string | string[];
@@ -35,6 +35,7 @@ export async function vitePluginNodeBundler(options?: VitePluginNodeBundlerOptio
       ...((await import('./plugins/dts')).viteDts({
         ...(typeof options.dts === 'object' ? options.dts : {}),
         entry,
+        outDir: options?.outDir,
       }))
     );
   }
