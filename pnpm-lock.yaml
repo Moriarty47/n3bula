@@ -240,17 +240,17 @@ importers:
   packages/simple-db:
     devDependencies:
       '@n3bula/vite-plugin-node-bundler':
-        specifier: workspace:0.0.1-alpha.1
+        specifier: workspace:*
         version: link:../vite-plugin-node-bundler
       typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
+        specifier: ~5.4.2
+        version: 5.4.2
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
       vite-plugin-dts:
         specifier: ^3.8.3
-        version: 3.8.3(@types/node@20.17.3)(rollup@4.24.3)(typescript@5.6.3)(vite@5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2))
+        version: 3.8.3(@types/node@20.17.3)(rollup@4.24.3)(typescript@5.4.2)(vite@5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2))
       vitest:
         specifier: ^2.0.2
         version: 2.0.2(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
@@ -335,37 +335,6 @@ importers:
         version: 5.0.3(webpack-cli@5.1.4)(webpack@5.88.2)
 
   packages/vite-plugin-node-bundler:
-    dependencies:
-      '@microsoft/api-extractor':
-        specifier: ^7.39.5
-        version: 7.43.0(@types/node@20.17.3)
-      magic-string:
-        specifier: ^0.30.12
-        version: 0.30.12
-      pathe:
-        specifier: ^1.1.2
-        version: 1.1.2
-      rollup-plugin-node-externals:
-        specifier: ^7.1.3
-        version: 7.1.3(rollup@4.24.3)
-      vite-plugin-dts:
-        specifier: ^3.8.3
-        version: 3.8.3(@types/node@20.17.3)(rollup@4.24.3)(typescript@5.6.3)(vite@5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2))
-    devDependencies:
-      '@types/node':
-        specifier: ^20.8.1
-        version: 20.17.3
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      vite:
-        specifier: ^5.4.10
-        version: 5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
-      vitest:
-        specifier: ^2.0.2
-        version: 2.0.2(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
-
-  packages/vite-plugin-node-config:
     dependencies:
       '@microsoft/api-extractor':
         specifier: ^7.39.5
@@ -14501,6 +14470,23 @@ snapshots:
       vue-tsc: 1.8.27(typescript@5.4.2)
     optionalDependencies:
       vite: 5.3.3(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - rollup
+      - supports-color
+
+  vite-plugin-dts@3.8.3(@types/node@20.17.3)(rollup@4.24.3)(typescript@5.4.2)(vite@5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)):
+    dependencies:
+      '@microsoft/api-extractor': 7.43.0(@types/node@20.17.3)
+      '@rollup/pluginutils': 5.1.0(rollup@4.24.3)
+      '@vue/language-core': 1.8.27(typescript@5.4.2)
+      debug: 4.3.5
+      kolorist: 1.8.0
+      magic-string: 0.30.12
+      typescript: 5.4.2
+      vue-tsc: 1.8.27(typescript@5.4.2)
+    optionalDependencies:
+      vite: 5.4.10(@types/node@20.17.3)(sass@1.75.0)(terser@5.19.2)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
