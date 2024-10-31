@@ -85,7 +85,6 @@ export class Database {
     const buffer = serilaize2Buffer(value);
 
     this.btree.insert(Buffer.from(key), buffer);
-    this.btree.insert(Buffer.from(key), buffer);
     return deserialize(buffer);
   }
 }
