@@ -1,0 +1,65 @@
+{
+  "name": "@n3bula/dbjs",
+  "version": "0.0.1-alpha.1",
+  "description": "A simple repl database",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --mode development --watch",
+    "preview": "node ./dist/index.js",
+    "grammar": "nearleyc src/parser/grammar/grammar.ne --out src/parser/grammar/grammar.ts",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "testone": "vitest related",
+    "coverage": "vitest run --coverage"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": "./dist/*"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@n3bula/vite-plugin-node-bundler": "workspace:*",
+    "@types/moo": "^0.5.9",
+    "@types/nearley": "^2.11.5",
+    "nodemon": "^3.1.7",
+    "typescript": "~5.4.2",
+    "vite": "^5.4.10",
+    "vitest": "^2.0.2"
+  },
+  "keywords": [
+    "database",
+    "repl",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/dbjs#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/dbjs"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "moo": "^0.5.2",
+    "nearley": "^2.20.1"
+  }
+}
