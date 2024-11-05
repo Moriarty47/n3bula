@@ -4,12 +4,18 @@ const MAX_PAGE_OFFSET = MAGIC_HEADER_SIZE + 2;
 const ROOT_PAGE_OFFSET = MAX_PAGE_OFFSET + 4;
 /**
  * FileHeader
- * 0             20          22         26          30             100
- * +--------------+-----------+----------+-----------+--------------+
- * |   [buffer]   |   [int]   |  [int]   |   [int]   |              |
- * | magic_header | page_size | max_page | root_page | unused_space |
- * |   _string    |           |   _id    |    _id    |              |
- * +--------------+-----------+----------+-----------+--------------+
+ * 0             20          22         26          30
+ * +--------------+-----------+----------+-----------+
+ * |   [buffer]   |   [int]   |  [int]   |   [int]   |
+ * | magic_header | page_size | max_page | root_page |
+ * |   _string    |           |   _id    |    _id    |
+ * +--------------+-----------+----------+-----------+
+ * 30          34            127       128
+ * +-----------+-------------+----------+
+ * |   [int]   |             |   0xff   |
+ * | timestamp | unused_space| end flag |
+ * |           |             |          |
+ * +-----------+-------------+----------+
  */
 export class FileHeader {
   static create(): FileHeader {
@@ -18,6 +24,9 @@ export class FileHeader {
     header.writeInt16BE(PAGE_SIZE, MAGIC_HEADER_SIZE); // page_size 0x1000 2 bytes offset to 22
     header.writeInt32BE(0, MAX_PAGE_OFFSET); // max_page_id 4 bytes
     header.writeInt32BE(0, ROOT_PAGE_OFFSET); // root_page_id 4 bytes
+    const ctime = parseInt('' + (Date.now() / 1000));
+    header.writeInt32BE(ctime, 30);
+    header.writeInt8(0x0f, 127);
     return new FileHeader(header);
   }
 

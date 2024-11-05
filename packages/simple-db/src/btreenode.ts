@@ -9,17 +9,24 @@ export const enum PageType {
 }
 
 /**
- * BTreeNode
+ * Every page is a b tree node, search from root node, read one page from 
+ * disk to RAM each time. All pointers store to the internal node, all data 
+ * store to the leaf node.
+ * BTreeNode(Page)
  * 0        8           freeStart       cellAreaStart           4096
  * +--------+---------------+-----------------+-------------------+
  * | header | cell_pointers |    free_space   | cell_content_area |
  * +--------+---------------+-----------------+-------------------+
- *      |
- *      v
+ *     |
+ *     v
+ * PageHeader
  * 0           1            3                 5          8
  * +-----------+------------+-----------------+----------+
  * |   [int]   |    [int]   |      [int]      |          |
- * | page_type | free_start | cell_area_start | reserved |
+ * | page_type |            |                 |          |
+ * |0x00: EMPTY| free_start | cell_area_start | reserved |
+ * |0x05:INTERN|            |                 |          |
+ * |0x0d: LEAF |            |                 |          |
  * +-----------+------------+-----------------+----------+
  */
 export class BTreeNode {
