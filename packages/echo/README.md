@@ -1,6 +1,6 @@
 # `@n3bula/echo`
 
-### Image viewer for React.
+### Echo to log
 
 ## Install
 
@@ -15,7 +15,7 @@ pnpm add @n3bula/echo
 ## Use
 
 ```ts
-import {echo} from '@n3bula/echo';
+import { echo } from '@n3bula/echo';
 echo.log
   .v(' ').img('./images/1.jpg')
   .v('\n')
