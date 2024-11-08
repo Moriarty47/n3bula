@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite build --mode development --watch",
     "preview": "node ./dist/index.js",
-    "grammar": "nearleyc src/parser/grammar/grammar.ne --out src/parser/grammar/grammar.ts",
+    "repl": "node ./dist/index.js repl",
+    "grammar": "nearleyc src/parser/grammar/grammar.ne | sed -f src/parser/grammar/grammar.js.sed > src/parser/grammar/grammar.ts",
+    "test:grammar": "nearleyc ./db/grammar.ne | sed -f ./db/grammar.js.sed > ./db/grammar.js",
     "build": "tsc && vite build",
     "test": "vitest",
     "testone": "vitest related",
@@ -59,6 +61,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@n3bula/event-emitter": "^0.0.2",
     "moo": "^0.5.2",
     "nearley": "^2.20.1"
   }

@@ -1,16 +1,14 @@
 import fs from 'node:fs';
-import { Header, IndexHeader, PageHeader } from './header';
+import { Header, IndexHeader, PageHeader, TableHeader } from './header';
 import { META } from './constants';
 import type { HashMap, MapValue } from '.';
 
 export class DBFile {
-  protected readonly hashMap!: HashMap;
   readonly fd: number;
   header!: InstanceType<Header>;
 
-  constructor(filePath: string, hashMap: HashMap) {
+  constructor(filePath: string) {
     this.fd = this.openFile(filePath);
-    this.hashMap = hashMap;
   }
 
   private openFile(pt: string): number {
@@ -52,7 +50,13 @@ export class DBFile {
 }
 
 export class IndexFile extends DBFile {
+  protected readonly hashMap!: HashMap;
   buffer!: Buffer;
+
+  constructor(filePath: string, hashMap: HashMap) {
+    super(filePath);
+    this.hashMap = hashMap;
+  }
 
   verifyHeader(): boolean {
     const isValid = super.verifyHeader(IndexHeader);
@@ -106,6 +110,20 @@ export class IndexFile extends DBFile {
 
   readIndex(key: string): MapValue | undefined {
     return this.hashMap.get(key);
+  }
+
+  searchKeys(target: string): MapValue[] {
+    const result: MapValue[] = [];
+
+    const keys = this.hashMap.keys();
+
+    for (const key of keys) {
+      if (key.startsWith(target)) {
+        result.push(this.hashMap.get(key)!);
+      }
+    }
+
+    return result;
   }
 
   insertIndex(key: string, pointer: Buffer) {
@@ -167,6 +185,58 @@ export class PageFile extends DBFile {
 
   verifyHeader(): boolean {
     return super.verifyHeader(PageHeader);
+  }
+
+  insertValue(value: Buffer): Buffer {
+    let buffer = Buffer.alloc(META.PAGE_VALUESIZE_SIZE);
+    buffer.writeInt32BE(value.length, 0);
+    buffer = Buffer.concat([buffer, value]);
+
+    const offset = fs.fstatSync(this.fd).size;
+    this.saveToFile(offset, buffer);
+
+    const pointer = Buffer.alloc(4);
+    pointer.writeInt32BE(offset, 0);
+    return pointer;
+  }
+
+  readValue(offset: number): Buffer {
+    const buffer = Buffer.alloc(META.PAGE_VALUESIZE_SIZE);
+    fs.readSync(
+      this.fd,
+      buffer,
+      0,
+      buffer.length,
+      offset,
+    );
+    const valueSize = buffer.readInt32BE(0);
+    const valueBuf = Buffer.alloc(valueSize);
+    fs.readSync(
+      this.fd,
+      valueBuf,
+      0,
+      valueSize,
+      offset + META.PAGE_VALUESIZE_SIZE,
+    );
+    return valueBuf;
+  }
+
+  saveToFile(offset: number, buffer: Buffer): void {
+    fs.writeSync(
+      this.fd,
+      buffer,
+      0,
+      buffer.length,
+      offset
+    );
+  }
+}
+
+
+export class TableFile extends DBFile {
+
+  verifyHeader(): boolean {
+    return super.verifyHeader(TableHeader);
   }
 
   insertValue(value: Buffer): Buffer {

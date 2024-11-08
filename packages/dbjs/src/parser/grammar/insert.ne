@@ -1,84 +1,33 @@
 @include "base.ne"
+
 @lexer lexer
 
-insert_statement -> kw_insert %ws table_name %ws insert_table_columns {% d => {
-    return{
-        "type":"insert",
-        "params":{
-            "document" : d[4],
-            "table": d[2]
-        }
-    }
-} %}
+insert_statement -> insert
 
-batch_insert_statement -> kw_batch %ws kw_insert %ws table_name %ws column_object_array {% d => {
-    return{
-        "type":"batch insert",
-        "params":{
-            "documents" : d[6],
-            "table": d[4]
-        }
-    }
-} %}
+insert -> insert _ into _ identifier _ columns:? _ values _ value_list {% (d) => ({
+  type: "INSERT",
+  table: d[4][0].value,
+  columns: d[6],
+  values: d[10]
+}) %}
 
-insert_table_columns -> column_name_array {% d => d[0] %}
-insert_table_columns -> column_object {% d=> d[0] %}
+columns -> lparen _ column_list _ rparen {% (d) => d[2] %}
 
-column_object_array -> %lBracket column_object %rBracket {% d => [d[1]] %}
-column_object_array -> column_object {% d => [d[0]] %}
-column_object_array -> %lBracket column_object_array %comma %ws column_object %rBracket {% d => {
-    let array = d[1]
+column_list -> identifier {% (d) => [d[0][0].value] %}
 
-    let newArray = [...array, d[4]]
+column_list -> column_list _ comma _ identifier {% (d) => d[0].concat([d[4][0].value]) %}
 
-    return newArray
-} %}
+value_list -> value_group {% (d) => [d[0]] %}
 
-column_object -> %lcBracket property %rcBracket {% d=> d[1] %}
-column_object -> %lcBracket property_multi %rcBracket {% d=> d[1] %}
+value_list -> value_list _ comma _ value_group {% (d) => d[0].concat([d[4]]) %}
 
-property_multi -> property_multi %ws %comma %ws property {% d=> { 
-    let obj = d[0]
-    
-    obj[d[4][0]] = d[4][1]
+value_group -> lparen _ values _ rparen {% (d) => d[2] %}
 
-    return obj
- } %}
+values -> value {% (d) => [d[0]] %}
 
-property_multi -> property_multi %comma %ws property {% d=> { 
-    let obj = d[0]
-    
-    obj[d[3][0]] = d[3][1]
+values -> values _ comma _ value {% (d) => d[0].concat([d[4]]) %}
 
-    return obj
- } %}
-
-property_multi -> property_multi %ws %comma property {% d=> { 
-    let obj = d[0]
-    
-    obj[d[3][0]] = d[3][1]
-
-    return obj
- } %}
-
-property_multi -> property {% d=> { 
-    let obj = {}
-    
-    obj[d[0][0]] = d[0][1]
-
-    return obj
- } %}
-
-property -> key %ws %colon %ws value {% d => [d[0], d[4]] %}
-property -> key %colon value {% d => [d[0], d[2]] %}
-property -> key %ws %colon value {% d => [d[0], d[3]] %}
-property -> key %colon %ws value {% d => [d[0], d[3]] %}
-property -> %ws property %ws {% d => d[1] %}
-property -> %ws property {% d => d[1] %}
-property ->  property %ws  {% d => d[0] %}
-
-value -> word {% d => d[0] %}
-value -> %number {% d => d[0] %}
-value -> column_object {% d => d[0] %}
-
-key -> word {% d => d[0] %}
+value -> 
+    string {% (d) => d[0][0].value %}
+  | number {% (d) => d[0][0].value %}
+  | identifier {% (d) => d[0][0].value %}

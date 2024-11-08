@@ -6,20 +6,14 @@ export default commandFactory<{
   type: string;
   table: string;
   columns: string[];
-}>('CREATE TABLE', async (
+  values: any[];
+}>('INSERT', async (
   params,
-  databases,
+  databases,  
 ) => {
   assertIsDefined(Database.currentDatabase, 'No current database');
 
-  const database = databases.get(Database.currentDatabase);
-
-  if (!database) {
-    throw new Error(`Database "${Database.currentDatabase}" does not exist.`);
-  }
-
-  const { table, columns } = params;
-  database.createTable(table, columns);
-
+  const { table, columns, values } = params;
+  console.log('table, columns, values :>>', table, columns, values);
   return {};
 });

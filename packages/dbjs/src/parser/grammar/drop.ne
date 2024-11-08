@@ -1,9 +1,11 @@
 @include "base.ne"
+
 @lexer lexer
 
-drop_statement -> kw_drop %ws database_name {% d => {
-    return{
-        "type":"drop",
-        "params": d[2]
-    }
-} %}
+drop_statement -> drop_seq
+
+drop_seq -> drop _ identifier {% (d) => ({
+  type: "DROP",
+  database: d[2][0].value,
+}) %}
+

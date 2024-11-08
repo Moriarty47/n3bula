@@ -1,6 +1,7 @@
 export const DEFAULT_DB_NAME: string = 'data';
-export const DEFAULT_DB_EXT: string = 'db';
-export const DEFAULT_DB_INDEX_EXT: string = 'dbi';
+export const DEFAULT_DB_EXT: string = 'ndb';
+export const DEFAULT_DB_INDEX_EXT: string = 'ndbi';
+export const DEFAULT_DB_TABLE_EXT: string = 'ndbt';
 
 export const META = Object.freeze({
   FILE_HEADER_SIZE: 128,
@@ -8,6 +9,8 @@ export const META = Object.freeze({
   MAGIC_HEADER_SIZE: 20,
   MAGIC_INDEX_HEADER: Buffer.from('N3BULA_DB_INDEX_V1\x00'), // 19 bytes
   MAGIC_INDEX_HEADER_SIZE: 20,
+  MAGIC_TABLE_HEADER: Buffer.from('N3BULA_DB_TABLE_V1\x00'), // 19 bytes
+  MAGIC_TABLE_HEADER_SIZE: 20,
   CREATE_TIME_OFFSET: 20, 
   INDEX_SIZE_OFFSET: 24,
   DELETE_NUM_OFFSET: 28,

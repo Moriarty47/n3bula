@@ -1,13 +1,12 @@
 @include "base.ne"
-@include "where.ne"
+
 @lexer lexer
 
-delete_statement -> kw_delete %ws kw_from %ws table_name %ws where_statement {% d => {
-    return{
-        "type":"delete",
-        "params":{
-            "where" : d[6],
-            "table": d[4]
-        }        
-    }
-} %}
+delete_statement -> delete_seq
+
+delete_seq -> delete_ _ from _ identifier _ where_seq:? {% (d) => ({
+  type: "DELETE",
+  table: d[4][0].value,
+  conditions: d[6],
+}) %}
+

@@ -1,10 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { DEFAULT_DB_NAME, DEFAULT_DB_EXT } from './constants';
-import { DBError, deserialize, logger, serilaize2Buffer } from '@/utils';
-import { IndexFile, PageFile } from './file';
-
-const cwd = process.cwd();
+import { IndexFile, PageFile, TableFile } from './file';
+import { DEFAULT_DB_NAME, DEFAULT_DB_EXT, DEFAULT_DB_TABLE_EXT } from './constants';
+import { DBError, currentWorkingDirectory, deserialize, logger, mkdirIfNotExists, rmSameDBFiles, serilaize2Buffer } from '@/utils';
 
 export type MapValue = {
   /** this offset means the pointer's offset in the index file  */
@@ -15,6 +13,8 @@ export type MapValue = {
 export type HashMap = Map<string, MapValue>;
 
 export class Database {
+  static currentDatabase: string | null = null;
+
   readonly root: string;
   readonly path: string;
   readonly idxPath: string;
@@ -22,51 +22,48 @@ export class Database {
   private pageFile!: PageFile;
   private indexFile!: IndexFile;
   private hashMap: HashMap = new Map();
-  public currentTable: string | null = null;
 
   constructor(name?: string, root?: string) {
-    this.root = root || path.resolve(cwd, './db');
     this.name = name || DEFAULT_DB_NAME;
+    this.root = root || path.resolve(currentWorkingDirectory, `./db/${this.name}`);
     this.path = path.resolve(this.root, `${this.name}.${DEFAULT_DB_EXT}`);
     this.idxPath = `${this.path}i`;
-    if (!fs.existsSync(this.root)) {
-      fs.mkdirSync(this.root, { recursive: true });
-    }
+
+    mkdirIfNotExists(this.root);
   }
 
-  open(): this {
+  async open(): Promise<string> {
+    logger(
+      fs.existsSync(this.path)
+        ? `Database "${this.name}" already exists, connecting...`
+        : `Creating database "${this.name}"...`,
+      'white',
+      'reset'
+    );
     this.indexFile = new IndexFile(this.idxPath, this.hashMap);
-    this.pageFile = new PageFile(this.path, this.hashMap);
-
+    this.pageFile = new PageFile(this.path);
     if (!this.verifyHeader()) {
-      throw new DBError('Cannot open the db file. File maybe corrupted.');
+      throw new DBError('Cannot open the database file. File maybe corrupted.');
     }
-    logger('Db started.');
 
     this.indexFile.readIndexes();
 
-    return this;
+    return `Database "${this.name}" connected.`;
   }
 
-  close(): void {
-    this.indexFile.closeFile();
-    this.pageFile.closeFile();
-    logger('Db closed.');
+  async close(): Promise<string> {
+    this.indexFile?.closeFile();
+    this.pageFile?.closeFile();
+    return `Database "${this.name}" closed.`;
+  }
+
+  async __deleteDatabase(): Promise<void> {
+    await this.close();
+    await rmSameDBFiles(this.root);
   }
 
   verifyHeader(): boolean {
     return this.indexFile.verifyHeader() && this.pageFile.verifyHeader();
-  }
-
-  isSelectTable(): boolean {
-    return !!this.currentTable;
-  }
-
-  createTable(tableName: string): void {
-    if (this.isSelectTable()) {
-      throw new DBError('Cannot create a new table while selecting an existing one.');
-    }
-    this.currentTable = tableName;
   }
 
   set(key: string, value: any): void {
@@ -89,5 +86,19 @@ export class Database {
     if (value === undefined) return null;
     const offset = value.pointer.readInt32BE(0);
     return deserialize(this.pageFile.readValue(offset));
+  }
+
+  createTable(tableName: string, columns: string[]): void {
+    const tableFilePath = path.resolve(this.root, `${this.name}_${tableName}.${DEFAULT_DB_TABLE_EXT}`);
+    const tableFile = new TableFile(tableFilePath);
+    if (!tableFile.verifyHeader()) {
+      throw new DBError('Cannot open the database file. File maybe corrupted.');
+    }
+    this.set(`N3BULA_TABLE__${tableName}`, tableFilePath);
+  }
+
+  getAllTables() {
+    const keys = this.indexFile.searchKeys('N3BULA_TABLE__');
+    console.log('keys :>>', keys);
   }
 }

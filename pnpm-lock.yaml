@@ -142,6 +142,9 @@ importers:
 
   packages/dbjs:
     dependencies:
+      '@n3bula/event-emitter':
+        specifier: ^0.0.2
+        version: 0.0.2
       moo:
         specifier: ^0.5.2
         version: 0.5.2
@@ -1741,6 +1744,9 @@ packages:
 
   '@microsoft/tsdoc@0.14.2':
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
+
+  '@n3bula/event-emitter@0.0.2':
+    resolution: {integrity: sha512-pPAkrzNf2n0hNheZMb+6jrrfflS3Pfv73m+elv3gMUt7QS3sud1uJtIUHCAd6TU564mV4ApPSrebmor2A4vPxQ==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -8712,6 +8718,8 @@ snapshots:
       resolve: 1.19.0
 
   '@microsoft/tsdoc@0.14.2': {}
+
+  '@n3bula/event-emitter@0.0.2': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

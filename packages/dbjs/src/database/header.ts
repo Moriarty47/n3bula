@@ -98,4 +98,20 @@ export class IndexHeader extends PageHeader {
   }
 }
 
-export type Header = typeof IndexHeader | typeof PageHeader;
+export class TableHeader extends PageHeader {
+
+  static create<T extends typeof PageHeader>(this: T): InstanceType<T> {
+    const info = Buffer.alloc(META.FILE_HEADER_SIZE);
+    META.MAGIC_TABLE_HEADER.copy(info);
+    const ctime = parseInt('' + (Date.now() / 1000));
+    info.writeInt32BE(ctime, META.CREATE_TIME_OFFSET);
+    info.writeInt8(0x0f, META.FILE_HEADER_END_OFFSET);
+    return new this(info) as InstanceType<T>;
+  }
+
+  verify(): boolean {
+    return this.buffer.subarray(0, META.MAGIC_TABLE_HEADER.length).compare(META.MAGIC_TABLE_HEADER) === 0;
+  }
+}
+
+export type Header = typeof IndexHeader | typeof PageHeader | typeof TableHeader;

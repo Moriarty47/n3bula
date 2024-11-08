@@ -1,25 +1,86 @@
-import { log } from 'node:console';
+import fs from 'fs';
+import { info } from 'node:console';
+
 
 export const isDev = import.meta.env.MODE === 'development';
 
-export const tagify = (message: string = '[DBJS]', green = false): string => green ? `\x1b[42;37m${message}\x1b[m` : `\x1b[45;30m${message}\x1b[m`;
+export const DONE = 'Done.';
+
+export const currentWorkingDirectory = process.cwd();
+
+const FG = {
+  black: '30',
+  red: '31',
+  green: '32',
+  yellow: '33',
+  blue: '34',
+  magenta: '35',
+  cyan: '36',
+  white: '37',
+  rgb: '38;2',
+  reset: '39',
+  gray: '90',
+};
+const BG = {
+  black: '40',
+  red: '41',
+  green: '42',
+  yellow: '43',
+  blue: '44',
+  magenta: '45',
+  cyan: '46',
+  white: '47',
+  rgb: '48;2',
+  reset: '49',
+  gray: '100',
+};
+type COLOR_KEY = keyof typeof FG;
+
+export const tagify = (
+  message: string = '[DBJS]',
+  fg: COLOR_KEY = 'white',
+  bg: COLOR_KEY = 'magenta',
+): string => `\x1b[${BG[bg]};${FG[fg]}m${message}\x1b[m`;
 
 export class DBError extends Error {
   constructor(message: string) {
-    super(tagify(message));
+    super(tagify(message, 'red', 'reset'));
     this.name = 'DBError';
   }
 }
 
-export const NOOP = () => { };
+export const NOOP = (..._: any): any => { };
+export const NOOP_Promise = (..._: any): Promise<void> => Promise.resolve();
 
-export const logger = isDev ? (...message: any[]) => {
-  if (message.length === 1) {
-    log(tagify(), message[0]);
-  } else {
-    log(tagify(message[0], true), ...message.slice(1));
+export const logger = (
+  message: string = '[DBJS]',
+  fg: COLOR_KEY = 'white',
+  bg: COLOR_KEY = 'magenta',
+) => {
+  info(tagify(message, fg, bg));
+};
+
+export const assertIsDefined: <T>(value: T, msg?: string) => asserts value is NonNullable<T> = (value, msg = 'Something went wrong.') => {
+  if (value === undefined || value === null) {
+    throw new DBError(msg);
   }
-} : NOOP;
+};
+
+export const mkdirIfNotExists = async (dirPath: fs.PathLike, options: fs.MakeDirectoryOptions = { recursive: true }): Promise<void> => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, options);
+  }
+};
+
+export const mkfileIfNotExists = async (filePath: fs.PathLike, options: fs.WriteFileOptions = { encoding: 'utf-8' }): Promise<void> => {
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, '', options);
+  }
+};
+
+export const rmSameDBFiles = async (dirPath: fs.PathLike): Promise<void> => {
+  fs.rmSync(dirPath, { recursive: true, force: true });
+};
 
 /**
  * Find the index of the first element in the array that is greater than 

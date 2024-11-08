@@ -1,32 +1,30 @@
 @include "base.ne"
-@include "where.ne"
+
 @lexer lexer
 
-update_statement -> kw_update %ws table_name %ws set %ws set_key_value_array %ws where_statement {% d => {
-    return{
-        "type":"update",
-        "params":{
-            "where" : d[8],
-            "set": d[6],
-            "table": d[2]
-        }        
-    }
-} %}
+update_statement -> update_seq
 
-set_key_value_array -> set_key_value_array %comma %ws set_key_value {%
-    d => {
-        let array = d[0];
+update_seq -> update _ identifier _ set _ expression_seq _ where_seq:? {% (d) => ({
+  type: "UPDATE",
+  table: d[2][0].value,
+  expression: d[6],
+  conditions: d[8],
+}) %}
 
-        array = [...array, d[3]]
+expression_seq -> expression {% (d) => [d[0]] %}
 
-        return array;
-    }
-%}
-set_key_value_array -> set_key_value {% d => [d[0]] %}
+expression_seq -> expression_seq _ comma _ expression {% (d) => d[0].concat([d[4]]) %}
 
-set_key_value -> word %ws %equal %ws word {% d => {
-    return{
-        "key": d[0],
-        "value" :d[4],
-    }
-} %}
+expression -> 
+    identifier _ equal _ number {% (d) => ({
+      column: d[0][0].value,
+      value: d[4][0].value,
+    }) %}
+  | identifier _ equal _ string {% (d) => ({
+      column: d[0][0].value,
+      value: d[4][0].value,
+    }) %}
+  | identifier _ equal _ identifier {% (d) => ({
+      column: d[0][0].value,
+      value: d[4][0].value,
+    }) %}
