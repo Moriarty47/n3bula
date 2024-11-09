@@ -49,7 +49,7 @@ export class NCache {
 
     if (this.cache.size + 1 > this.maxCacheSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      firstKey && this.cache.delete(firstKey);
     }
 
     this.cache.set(key, record);

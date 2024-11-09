@@ -2,4 +2,7 @@
 /src
 /node_modules
 /config
+/example
+/.vscode
+/.idea
 .DS_Store

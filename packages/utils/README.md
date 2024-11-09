@@ -2,6 +2,8 @@
 
 ### A utils library for n3bula packages.
 
+### Changes: Remove UMD and Now support ESM and CJS
+
 ## Install
 
 ```sh

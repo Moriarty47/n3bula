@@ -1,6 +1,6 @@
 export { default as root } from './root';
 export { default as path } from './path';
-export { default as clsn } from './clsn';
+export { clsn } from './clsn';
 export { default as debounce } from './debounce';
 export { default as throttle } from './throttle';
 export { default as useCookies } from './cookie';

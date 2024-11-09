@@ -8,9 +8,10 @@
     /* Bundler mode */
     "moduleResolution": "Bundler",
     "esModuleInterop": true,
-    "noEmit": true,
+    "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
+    "declarationDir": "./lib/types",
     "sourceMap": true,
 
     /* Linting */

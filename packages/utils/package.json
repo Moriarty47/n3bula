@@ -2,36 +2,32 @@
   "name": "@n3bula/utils",
   "version": "0.1.0-alpha.1",
   "description": "A utils library for n3bula packages.",
-  "main": "./lib/umd/index.min.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/esm/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/umd/index.min.js",
-      "default": "./lib/esm/index.js"
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/esm/index.mjs",
+      "require": "./lib/cjs/index.cjs",
+      "default": "./lib/esm/index.mjs"
     },
     "./*": {
-      "types": "./lib/esm/*.d.ts",
-      "import": "./lib/esm/*.js",
-      "require": "./lib/umd/*.min.js",
-      "default": "./lib/esm/*.js"
+      "types": "./lib/types/*.d.ts",
+      "import": "./lib/esm/*.mjs",
+      "require": "./lib/cjs/*.cjs",
+      "default": "./lib/esm/*.mjs"
     }
   },
   "files": [
-    "lib/*",
-    "example/*",
-    "test/*"
+    "lib/*"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --watch",
-    "start": "cross-env NODE_ENV=production webpack",
-    "build": "shx rm -rf ./lib && pnpm run start && pnpm run build:esm",
-    "build:esm": "pnpm run build:tsc",
-    "build:tsc": "tsc -p tsconfig.json",
-    "test": "ava",
-    "test:w": "cross-env NODE_OPTIONS='--import=tsx' ava --watch"
+    "dev": "vite build --mode development --watch",
+    "build": "vite build && tsc",
+    "test": "vitest",
+    "testone": "vitest related",
+    "coverage": "vitest run --coverage"
   },
   "keywords": [
     "utils",
@@ -62,15 +58,9 @@
     "@types/crypto-js": "^4.2.2",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.5.6",
-    "ava": "^6.1.2",
-    "terser-webpack-plugin": "^5.3.9",
-    "ts-loader": "^9.4.4",
-    "typescript": "^5.3.3",
+    "typescript": "^5.6.3",
     "vite": "^5.4.10",
-    "vitest": "^2.0.2",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.3"
+    "vitest": "^2.0.2"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",

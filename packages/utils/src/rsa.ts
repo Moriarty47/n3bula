@@ -33,5 +33,3 @@ ${publicKey}
     return key;
   }
 }
-
-export default RSA;

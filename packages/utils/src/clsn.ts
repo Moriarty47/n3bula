@@ -49,5 +49,3 @@ export function clsn(...rest: ClsType[]) {
   }
   return str;
 };
-
-export default clsn;
