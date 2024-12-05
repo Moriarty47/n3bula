@@ -8,7 +8,7 @@ import type {
 
 export * from '@antfu/eslint-config';
 
-const commonRules: Rules = {
+export const commonRules: Rules = {
   'antfu/if-newline': 'off',
   'style/comma-dangle': 'warn',
   'style/operator-linebreak': ['warn', 'after'],
