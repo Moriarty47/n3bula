@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "exclude": ["**/dist/**", "**/lib/**", "node_modules"]
+}

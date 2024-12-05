@@ -5,8 +5,8 @@
     "packages/*"
   ],
   "files": [
-    "packages/**",
-    "!node_modules"
+    "!node_modules",
+    "packages/**"
   ],
   "scripts": {
     "build:all": "pnpm --filter=@n3bula/* run build",
@@ -31,12 +31,14 @@
     "@babel/preset-env": "^7.22.10",
     "@babel/runtime": "^7.22.11",
     "@microsoft/api-extractor": "^7.36.4",
+    "@n3bula/eslint-config": "workspace:^",
     "babel-loader": "^9.1.3",
     "bundle-declarations-webpack-plugin": "^4.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "csstype": "^3.1.3",
+    "eslint": "^9.16.0",
     "lerna": "^8.1.2",
     "mini-css-extract-plugin": "^2.7.6",
     "pnpm": "^8.15.7",
@@ -44,7 +46,7 @@
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "tsx": "^4.7.1",
-    "typescript": "^5.2.2",
+    "typescript": "^5.7.2",
     "vite": "^5.2.8",
     "vite-plugin-dts": "^3.8.3",
     "vite-plugin-remove-console": "^2.2.0",
