@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { dynamic } from './dynamic';
+import { dynamic } from '../dynamic';
 
 import type { ChalkFunction } from '../types';
 

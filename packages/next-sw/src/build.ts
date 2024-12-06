@@ -9,11 +9,11 @@ import type {
   Webpack,
 } from './types';
 
-const loader = resolve(__dirname, 'loader.js');
-
 export function build(webpack: Webpack, config: ServiceWorkerBuildConfig, callback: ServiceWorkerBuildCallback) {
   let rules;
   let treeShaking = !config.dev;
+
+  const loader = resolve(__dirname, 'loader.js');
 
   const options = {
     defines: config.defines,

@@ -1,4 +1,4 @@
-import { dynamic } from './utils/dynamic';
+import { dynamic } from './dynamic';
 
 import type { WebpackLoaderContext } from './types';
 

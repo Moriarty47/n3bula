@@ -1,4 +1,4 @@
-import { dynamic } from './dynamic';
+import { dynamic } from '../dynamic';
 import { logger } from './logger';
 
 import type { Webpack } from '../types';
