@@ -90,7 +90,6 @@ export default function useESLintConfig(config: ESLinterConfig = {}, ...userConf
         '**/node_modules/**',
         '**/dist/**',
         '**/build/**',
-        '**/lib/**',
         'pnpm-*.yaml',
         ...ignores,
       ],
