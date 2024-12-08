@@ -190,10 +190,17 @@ importers:
         version: 5.2.8(@types/node@20.17.3)(sass@1.75.0)(terser@5.37.0)
 
   packages/eslint-config:
+    dependencies:
+      '@antfu/eslint-config':
+        specifier: ^3.11.2
+        version: 3.11.2(@eslint-react/eslint-plugin@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2))(@typescript-eslint/utils@8.17.0(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2))(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.3(eslint@9.16.0(jiti@1.21.6)))(eslint-plugin-react-hooks@5.0.0(eslint@9.16.0(jiti@1.21.6)))(eslint-plugin-react-refresh@0.4.16(eslint@9.16.0(jiti@1.21.6)))(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)(vitest@2.0.2(@types/node@20.17.3)(sass@1.75.0)(terser@5.37.0))
+      eslint-plugin-format:
+        specifier: ^0.1.3
+        version: 0.1.3(eslint@9.16.0(jiti@1.21.6))
+      eslint-plugin-tailwindcss:
+        specifier: ^3.17.5
+        version: 3.17.5(tailwindcss@3.4.4(ts-node@10.9.1(@types/node@20.17.3)(typescript@5.7.2)))
     optionalDependencies:
-      '@eslint-react/eslint-plugin':
-        specifier: ^1.17.3
-        version: 1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.16.0(jiti@1.21.6))
@@ -201,21 +208,15 @@ importers:
         specifier: ^0.4.16
         version: 0.4.16(eslint@9.16.0(jiti@1.21.6))
     devDependencies:
-      '@antfu/eslint-config':
-        specifier: ^3.11.2
-        version: 3.11.2(@eslint-react/eslint-plugin@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2))(@typescript-eslint/utils@8.17.0(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2))(@vue/compiler-sfc@3.4.31)(eslint-plugin-format@0.1.3(eslint@9.16.0(jiti@1.21.6)))(eslint-plugin-react-hooks@5.0.0(eslint@9.16.0(jiti@1.21.6)))(eslint-plugin-react-refresh@0.4.16(eslint@9.16.0(jiti@1.21.6)))(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)(vitest@2.0.2(@types/node@20.17.3)(sass@1.75.0)(terser@5.37.0))
+      '@eslint-react/eslint-plugin':
+        specifier: ^1.17.3
+        version: 1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)
       '@types/eslint-plugin-tailwindcss':
         specifier: ^3.17.0
         version: 3.17.0
       eslint:
         specifier: ^9.16.0
         version: 9.16.0(jiti@1.21.6)
-      eslint-plugin-format:
-        specifier: ^0.1.3
-        version: 0.1.3(eslint@9.16.0(jiti@1.21.6))
-      eslint-plugin-tailwindcss:
-        specifier: ^3.17.5
-        version: 3.17.5(tailwindcss@3.4.4(ts-node@10.9.1(@types/node@20.17.3)(typescript@5.7.2)))
 
   packages/event-emitter:
     devDependencies:
@@ -9744,7 +9745,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
   '@eslint-react/core@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9765,7 +9765,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
   '@eslint-react/eslint-plugin@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9787,7 +9786,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   '@eslint-react/jsx@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9804,7 +9802,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
   '@eslint-react/shared@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9817,10 +9814,8 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
-  '@eslint-react/tools@1.17.3':
-    optional: true
+  '@eslint-react/tools@1.17.3': {}
 
   '@eslint-react/types@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9831,7 +9826,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
   '@eslint-react/var@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2)':
     dependencies:
@@ -9846,7 +9840,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-    optional: true
 
   '@eslint/compat@1.2.3(eslint@9.16.0(jiti@1.21.6))':
     optionalDependencies:
@@ -12027,8 +12020,7 @@ snapshots:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  birecord@0.1.1:
-    optional: true
+  birecord@0.1.1: {}
 
   bl@1.2.3:
     dependencies:
@@ -12391,8 +12383,7 @@ snapshots:
       array-ify: 1.0.0
       dot-prop: 5.3.0
 
-  compare-versions@6.1.1:
-    optional: true
+  compare-versions@6.1.1: {}
 
   compressible@2.0.18:
     dependencies:
@@ -13114,7 +13105,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-react-dom@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2):
     dependencies:
@@ -13135,7 +13125,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-react-hooks-extra@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2):
     dependencies:
@@ -13156,7 +13145,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-react-hooks@4.6.0(eslint@8.57.0):
     dependencies:
@@ -13185,7 +13173,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-react-refresh@0.4.16(eslint@9.16.0(jiti@1.21.6)):
     dependencies:
@@ -13215,7 +13202,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-react-x@1.17.3(eslint@9.16.0(jiti@1.21.6))(typescript@5.7.2):
     dependencies:
@@ -13238,7 +13224,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   eslint-plugin-regexp@2.7.0(eslint@9.16.0(jiti@1.21.6)):
     dependencies:
@@ -14311,7 +14296,6 @@ snapshots:
       typescript: 5.7.2
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   is-inside-container@1.0.0:
     dependencies:
@@ -15169,7 +15153,6 @@ snapshots:
   minimatch@10.0.1:
     dependencies:
       brace-expansion: 2.0.1
-    optional: true
 
   minimatch@3.0.5:
     dependencies:
@@ -16551,8 +16534,7 @@ snapshots:
       interpret: 1.4.0
       rechoir: 0.6.2
 
-  short-unique-id@5.2.0:
-    optional: true
+  short-unique-id@5.2.0: {}
 
   shx@0.3.4:
     dependencies:
@@ -16755,8 +16737,7 @@ snapshots:
 
   string-argv@0.3.2: {}
 
-  string-ts@2.2.0:
-    optional: true
+  string-ts@2.2.0: {}
 
   string-width@4.2.3:
     dependencies:
@@ -17089,7 +17070,6 @@ snapshots:
     dependencies:
       minimatch: 10.0.1
       typescript: 5.7.2
-    optional: true
 
   ts-interface-checker@0.1.13: {}
 
@@ -17195,8 +17175,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-pattern@5.5.0:
-    optional: true
+  ts-pattern@5.5.0: {}
 
   tsconfig-paths@4.2.0:
     dependencies:
