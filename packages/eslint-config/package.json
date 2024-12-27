@@ -1,7 +1,7 @@
 {
   "name": "@n3bula/eslint-config",
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.6-alpha.1",
   "description": "My eslint config based on Antfu's eslint config",
   "main": "./dist/index.js",
   "files": [
