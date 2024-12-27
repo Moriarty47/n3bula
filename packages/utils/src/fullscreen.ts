@@ -156,4 +156,6 @@ class Fullscreen {
   }
 }
 
-export default nativeAPI[exist] === 'true' ? new Fullscreen() : { enabled: false } as unknown as InstanceType<typeof Fullscreen>;
+const fullscreen = nativeAPI[exist] === 'true' ? new Fullscreen() : { enabled: false } as unknown as Fullscreen;
+
+export default fullscreen;

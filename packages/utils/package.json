@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
