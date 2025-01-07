@@ -396,6 +396,9 @@ importers:
       jsencrypt:
         specifier: ^3.3.2
         version: 3.3.2
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       '@types/crypto-js':
         specifier: ^4.2.2

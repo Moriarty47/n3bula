@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
-
   const srcDirPath = path.resolve(__dirname, './src');
   const srcFiles = fs.readdirSync(srcDirPath);
 
@@ -11,11 +11,14 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': srcDirPath,
-      }
+      },
     },
     build: {
       outDir: path.resolve(__dirname, './lib'),
       emptyOutDir: true,
+      rollupOptions: {
+        external: ['path'],
+      },
       lib: {
         entry: srcFiles.map(pt => path.resolve(srcDirPath, pt)),
         formats: ['es', 'cjs'],
@@ -28,6 +31,6 @@ export default defineConfig(({ mode }) => {
       },
       sourcemap: mode === 'development',
       minify: mode === 'development' ? false : 'esbuild',
-    }
+    },
   };
 });

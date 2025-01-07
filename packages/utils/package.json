@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/utils",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "A utils library for n3bula packages.",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
@@ -65,7 +65,8 @@
   "dependencies": {
     "crypto-js": "^4.2.0",
     "js-yaml": "^4.1.0",
-    "jsencrypt": "^3.3.2"
+    "jsencrypt": "^3.3.2",
+    "upath": "^2.0.1"
   },
   "sideEffects": false
 }
