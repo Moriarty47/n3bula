@@ -1,0 +1,66 @@
+{
+  "name": "@n3bula/startup",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "startup": "bin/index.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "keys"
+  ],
+  "scripts": {
+    "dev": "pnpm build && node lib/index.js",
+    "build": "node esbuild.config.ts"
+  },
+  "keywords": [
+    "static",
+    "server",
+    "assets"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/startup#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/startup"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "connect": "^3.7.0",
+    "connect-history-api-fallback": "^2.0.0",
+    "debug": "^4.4.3",
+    "http-proxy-middleware": "^3.0.5",
+    "minimist": "^1.2.8",
+    "open": "^10.2.0",
+    "serve-index": "^1.9.1",
+    "serve-static": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/connect": "^3.4.38",
+    "@types/connect-history-api-fallback": "^1.5.4",
+    "@types/debug": "^4.1.12",
+    "@types/minimist": "^1.2.5",
+    "@types/serve-index": "^1.9.4",
+    "@types/serve-static": "^2.2.0",
+    "@types/webpack": "^5.28.2",
+    "esbuild": "^0.25.11",
+    "esbuild-plugin-node-externals": "^1.0.1"
+  }
+}
