@@ -46,17 +46,6 @@ const closeDrawer = () => {
   if (props.open && !transitoning.value) emits('close');
 };
 
-// watch(() => props.open, newVal => {
-//   transitoning.value = true;
-//   toggleBackgroundScrolling(newVal);
-//   if (newVal) {
-//     visible.value = true;
-//   } else {
-//     setTimeout(() => visible.value = false, props.duration);
-//   }
-//   setTimeout(() => transitoning.value = false, props.duration);
-// });
-
 onMounted(() => visible.value = props.open);
 </script>
 
