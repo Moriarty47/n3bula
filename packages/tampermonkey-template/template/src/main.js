@@ -9,3 +9,8 @@ import style from './style.css?raw';
 GM_addStyle(style);
 // initialize
 setConfig(getConfig());
+
+console.clear();
+log.success(`Tampermonkey injected!`);
+
+inject();

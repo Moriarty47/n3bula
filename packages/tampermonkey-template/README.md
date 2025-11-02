@@ -1,15 +1,15 @@
-# `@n3bula/template-creator`
+# `@n3bula/tampermonkey-template`
 
-### A CLI for creating library template.
+### A CLI tool for creating tampermonkey template.
 
 ## Install
 
 ```sh
-npm install @n3bula/template-creator
+npm install @n3bula/tampermonkey-template
 # or
-yarn add @n3bula/template-creator
+yarn add @n3bula/tampermonkey-template
 # or
-pnpm add @n3bula/template-creator
+pnpm add @n3bula/tampermonkey-template
 ```
 
 ## Author

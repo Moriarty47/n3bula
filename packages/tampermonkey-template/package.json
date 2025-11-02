@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/tampermonkey-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI tool for creating tampermonkey template.",
   "main": "index.js",
   "bin": {

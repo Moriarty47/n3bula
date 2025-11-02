@@ -47,7 +47,7 @@ export const toast = (type, msg) => {
 export const createContainer = (idOrClassName, appendToElement = document.body) => {
   const wrapper = document.createElement('div');
   if (idOrClassName.startsWith('.')) {
-    wrapper.className = idOrClassName;
+    wrapper.className = idOrClassName.slice(1);
   } else {
     wrapper.id = idOrClassName;
   }
