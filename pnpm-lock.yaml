@@ -428,6 +428,42 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1(esbuild@0.25.11)
 
+  packages/tempermonkey-template:
+    dependencies:
+      '@n3bula/utils':
+        specifier: workspace:^
+        version: link:../utils
+      '@types/inquirer':
+        specifier: ^8.2.6
+        version: 8.2.12
+      chalk:
+        specifier: ^4.1.2
+        version: 4.1.2
+      commander:
+        specifier: ^11.0.0
+        version: 11.1.0
+      download-git-repo:
+        specifier: ^3.0.2
+        version: 3.0.2
+      handlebars:
+        specifier: ^4.7.8
+        version: 4.7.8
+      inquirer:
+        specifier: ^8.2.6
+        version: 8.2.7(@types/node@20.19.24)
+      log-symbols:
+        specifier: ^5.1.0
+        version: 5.1.0
+      mkdirp:
+        specifier: ^3.0.1
+        version: 3.0.1
+      ora:
+        specifier: ^5.4.1
+        version: 5.4.1
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.10
+
   packages/template-creator:
     dependencies:
       '@n3bula/utils':
@@ -10934,7 +10970,7 @@ packages:
       array-differ: 3.0.0
       array-union: 2.1.0
       arrify: 2.0.1
-      minimatch: 3.0.5
+      minimatch: 3.1.2
     dev: true
 
   /mute-stream@0.0.8:
@@ -11411,7 +11447,7 @@ packages:
       bl: 4.1.0
       chalk: 4.1.2
       cli-cursor: 3.1.0
-      cli-spinners: 2.6.1
+      cli-spinners: 2.9.2
       is-interactive: 1.0.0
       log-symbols: 4.1.0
       strip-ansi: 6.0.1

@@ -1,0 +1,55 @@
+{
+  "name": "@n3bula/tampermonkey-template",
+  "version": "0.0.1",
+  "description": "A CLI tool for creating tampermonkey template.",
+  "main": "index.js",
+  "bin": {
+    "tampermonkey": "index.js"
+  },
+  "files": [
+    "lib",
+    "template"
+  ],
+  "keywords": [
+    "tampermonkey",
+    "vue3",
+    "template",
+    "creator",
+    "cli",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/tampermonkey-template#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/tampermonkey-template"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@n3bula/utils": "workspace:^",
+    "@types/inquirer": "^8.2.6",
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "download-git-repo": "^3.0.2",
+    "handlebars": "^4.7.8",
+    "inquirer": "^8.2.6",
+    "log-symbols": "^5.1.0",
+    "mkdirp": "^3.0.1",
+    "ora": "^5.4.1",
+    "rimraf": "^5.0.1"
+  }
+}
