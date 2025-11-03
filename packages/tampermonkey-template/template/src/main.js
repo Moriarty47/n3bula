@@ -4,7 +4,7 @@ import '../lib/toast';
 import inject from './inject';
 import { log, getConfig, setConfig } from './utils';
 
-import style from './style.css?raw';
+import style from './style.scss?raw';
 
 GM_addStyle(style);
 // initialize
