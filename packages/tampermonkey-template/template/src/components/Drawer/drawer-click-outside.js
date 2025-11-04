@@ -9,9 +9,7 @@ const onMounted = (el, binding, vnode) => {
   let callback = binding.value;
 
   let nextTick = false;
-  setTimeout(function () {
-    nextTick = true;
-  }, 0);
+  setTimeout(() => nextTick = true, 0);
 
   el[UNIQUE_ID] = (event) => {
     if (
@@ -23,11 +21,11 @@ const onMounted = (el, binding, vnode) => {
     }
   };
 
-  document.addEventListener(clickEventType(), el[UNIQUE_ID], false);
+  el.previousElementSibling.addEventListener(clickEventType(), el[UNIQUE_ID], false);
 };
 
 const onUnmounted = (el) => {
-  document.removeEventListener(clickEventType(), el[UNIQUE_ID], false);
+  el.previousElementSibling.removeEventListener(clickEventType(), el[UNIQUE_ID], false);
   delete el[UNIQUE_ID];
 };
 

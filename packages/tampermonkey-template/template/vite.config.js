@@ -5,6 +5,18 @@ import minifyCssPlugin from './vite.minify-css-literal';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    minify: true,
+    cssMinify: true,
+  },
+  resolve: {
+    alias: {
+      '@utils': path.join(__dirname, './src/utils.js'),
+      '@comps': path.join(__dirname, './src/components'),
+      '@drets': path.join(__dirname, './src/directives'),
+      '@lib': path.join(__dirname, './lib'),
+    }
+  },
   plugins: [
     vue(),
     minifyCssPlugin(),
@@ -23,8 +35,4 @@ export default defineConfig({
       }
     }),
   ],
-  build: {
-    minify: true,
-    cssMinify: true,
-  }
 });

@@ -1,35 +1,37 @@
 <script setup>
 import { ref, watch } from 'vue';
+
+import Drawer from '@comps/Drawer/index.vue';
+import useDrawer from '@comps/Drawer/use-drawer-state';
+
 import { getConfig, setConfig } from './utils';
-import Drawer from './components/Drawer.vue';
 
 const config = ref(getConfig());
-const direction = ref({
-  top: false,
-  right: false,
-  bottom: false,
-  left: false,
-});
+const drawer = useDrawer();
+const drawer2 = useDrawer();
+const drawer3 = useDrawer();
 
 watch(() => config.value, newVal => {
   setConfig(newVal);
 }, {
   deep: true,
 });
-
-const openDrawers = (dir) => {
-  direction.value[dir] = true;
-};
-const closeDrawers = (dir) => {
-  direction.value[dir] = false;
-}
-
 </script>
 
 <template>
-  <button class="drawer-button" v-for="dir in Object.keys(direction)" @click="openDrawers(dir)">Open \{{ dir }}
+  <button class="drawer-button" @click="drawer.open">Open
     Drawer</button>
-  <Drawer v-for="dir in Object.keys(direction)" :open="direction[dir]" @close="closeDrawers(dir)" :direction="dir">
-    tampermonkey \{{ dir }} template \{{ JSON.stringify(config) }}
+  <Drawer :isOpen="drawer.visible.value" @close="drawer.close" direction="right">
+    tampermonkey template {{ JSON.stringify(config) }}
+    <button class="drawer-button" @click="drawer2.open">Open
+      Drawer</button>
+    <Drawer :isOpen="drawer2.visible.value" @close="drawer2.close" direction="right">
+      tampermonkey template 2 {{ JSON.stringify(config) }}
+      <button class="drawer-button" @click="drawer3.open">Open
+        Drawer</button>
+      <Drawer :isOpen="drawer3.visible.value" @close="drawer3.close" direction="right">
+        tampermonkey template 3 {{ JSON.stringify(config) }}
+      </Drawer>
+    </Drawer>
   </Drawer>
 </template>

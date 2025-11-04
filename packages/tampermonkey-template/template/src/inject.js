@@ -1,10 +1,14 @@
 import { createApp } from 'vue';
 
 import App from './App.vue';
+import { createDrawerBox } from '@comps/Drawer/use-drawer-state';
+import drawerClickOutside from '@comps/Drawer/drawer-click-outside';
 
-import { createContainer } from './utils';
-import clickOutside from './directives/click-outside';
+import { createContainer } from '@utils';
 
-export default () => {
-  createApp(App).use(clickOutside).mount(createContainer('.{{packageName}}-box'));
+export default async () => {
+  await createDrawerBox();
+  createApp(App)
+    .use(drawerClickOutside)
+    .mount(createContainer('.{{packageName}}-box'));
 };

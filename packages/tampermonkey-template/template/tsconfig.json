@@ -12,6 +12,12 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "paths": {
+      "@utils": ["./src/utils.js"],
+      "@comps/*": ["./src/components/*"],
+      "@drets/*": ["./src/directives/*"],
+      "@lib/*": ["./lib/*"],
+    },
 
     /* Linting */
     "allowJs": true,
