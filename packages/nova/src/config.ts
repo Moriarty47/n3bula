@@ -1,6 +1,5 @@
+import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
 
 import json from '@rollup/plugin-json';
 import alias from '@rollup/plugin-alias';
@@ -15,7 +14,6 @@ import type { RollupOptions } from 'rollup';
 
 export const defineConfig = (options: RollupOptions) => {
   const cwd = process.cwd();
-  const __dirname = dirname(fileURLToPath(import.meta.url));
   let packageJson = {} as any;
   try {
     packageJson = JSON.parse(readFileSync(resolve(cwd, 'package.json'), { encoding: 'utf8' }));
@@ -27,7 +25,7 @@ export const defineConfig = (options: RollupOptions) => {
         alias({
           entries: Object.entries(packageJson.aliases).reduce(
             (obj, [k, v]) => {
-              obj[k] = resolve(__dirname, v as string);
+              obj[k] = resolve(cwd, v as string);
               return obj;
             },
             {} as Record<string, string>,
@@ -36,8 +34,26 @@ export const defineConfig = (options: RollupOptions) => {
       ]
     : [];
 
+  const resolvePath = (p: string) => resolve(cwd, p);
+
+  const getInput = () => {
+    const input = options.input;
+    if (Array.isArray(input)) {
+      return input.map(resolvePath);
+    } else if (input && typeof input === 'object') {
+      return Object.keys(input).reduce(
+        (o, k) => {
+          o[k] = resolvePath(input[k]);
+          return o;
+        },
+        {} as Record<string, string>,
+      );
+    }
+    return resolvePath(input || 'index.js');
+  };
+
   const config: RollupOptions = {
-    input: options.input || resolve(cwd, 'index.js'),
+    input: getInput(),
     output: {
       file: 'dist/index.js',
       sourcemap: false,

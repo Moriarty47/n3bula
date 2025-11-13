@@ -32,9 +32,7 @@ async function build(config: NovaOptions) {
   let bundle: RollupBuild | null = null;
   let bundleFailed = false;
   try {
-    const rollupCfg = defineConfig({
-      input: config.input,
-    });
+    const rollupCfg = defineConfig(config);
     bundle = await rollup(rollupCfg);
 
     await generateOutputs(bundle, rollupCfg);
