@@ -1,0 +1,17 @@
+{
+  "name": "n3bula-nova-example",
+  "version": "1.0.0",
+  "description": "Example for @n3bula/nova",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nova",
+    "build": "nova build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@n3bula/nova": "^0.0.1"
+  }
+}
