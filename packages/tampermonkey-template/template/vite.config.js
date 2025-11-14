@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import monkey, { cdn } from 'vite-plugin-monkey';
@@ -11,10 +12,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@utils': path.join(__dirname, './src/utils.js'),
-      '@comps': path.join(__dirname, './src/components'),
-      '@drets': path.join(__dirname, './src/directives'),
-      '@lib': path.join(__dirname, './lib'),
+      '@utils': join(__dirname, './src/utils.js'),
+      '@comps': join(__dirname, './src/components'),
+      '@drets': join(__dirname, './src/directives'),
+      '@lib': join(__dirname, './lib'),
     }
   },
   plugins: [
