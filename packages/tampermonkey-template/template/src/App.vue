@@ -22,15 +22,15 @@ watch(() => config.value, newVal => {
   <button class="drawer-button" @click="drawer.open">Open
     Drawer</button>
   <Drawer :isOpen="drawer.visible.value" @close="drawer.close" direction="right">
-    tampermonkey template {{ JSON.stringify(config) }}
+    tampermonkey template \{{ JSON.stringify(config) }}
     <button class="drawer-button" @click="drawer2.open">Open
       Drawer</button>
     <Drawer :isOpen="drawer2.visible.value" @close="drawer2.close" direction="right">
-      tampermonkey template 2 {{ JSON.stringify(config) }}
+      tampermonkey template 2 \{{ JSON.stringify(config) }}
       <button class="drawer-button" @click="drawer3.open">Open
         Drawer</button>
       <Drawer :isOpen="drawer3.visible.value" @close="drawer3.close" direction="right">
-        tampermonkey template 3 {{ JSON.stringify(config) }}
+        tampermonkey template 3 \{{ JSON.stringify(config) }}
       </Drawer>
     </Drawer>
   </Drawer>

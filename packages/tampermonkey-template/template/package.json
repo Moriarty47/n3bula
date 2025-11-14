@@ -9,6 +9,16 @@
     "preview": "vite preview"
   },
   "keywords": [{{{packageKeywords}}}],
+  "contributors": [
+    {
+      "name": "{{gitAuthor}}",
+      "email": "{{gitAuthorEmail}}"
+    }
+  ],
+  "author": {
+    "name": "{{gitAuthor}}",
+    "email": "{{gitAuthorEmail}}"
+  },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
     "sass": "^1.93.3",
