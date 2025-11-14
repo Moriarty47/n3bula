@@ -1,0 +1,46 @@
+{
+  "name": "@n3bula/npm-commands",
+  "version": "0.0.1",
+  "description": "Show global installed npm commands",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "showcmds": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "nova",
+    "build": "nova build"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "npm",
+    "commands",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/npm-commands#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/npm-commands"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@n3bula/nova": "workspace:0.0.2-alpha.1"
+  }
+}

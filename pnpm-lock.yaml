@@ -358,6 +358,12 @@ importers:
         specifier: ^6.1.0
         version: 6.2.3(rollup@4.53.2)(typescript@5.9.3)
 
+  packages/npm-commands:
+    devDependencies:
+      '@n3bula/nova':
+        specifier: workspace:0.0.2-alpha.1
+        version: link:../nova
+
   packages/pretty-json:
     dependencies:
       '@n3bula/utils':
