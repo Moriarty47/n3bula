@@ -11,8 +11,9 @@ import { nodeExternals } from 'rollup-plugin-node-externals';
 import { logger } from './util.ts';
 
 import type { RollupOptions } from 'rollup';
+import type { RequiredNovaOptions } from './nova.ts';
 
-export const defineConfig = (options: RollupOptions) => {
+export const defineConfig = (options: RequiredNovaOptions) => {
   const cwd = process.cwd();
   let packageJson = {} as any;
   try {
@@ -36,24 +37,8 @@ export const defineConfig = (options: RollupOptions) => {
 
   const resolvePath = (p: string) => resolve(cwd, p);
 
-  const getInput = () => {
-    const input = options.input;
-    if (Array.isArray(input)) {
-      return input.map(resolvePath);
-    } else if (input && typeof input === 'object') {
-      return Object.keys(input).reduce(
-        (o, k) => {
-          o[k] = resolvePath(input[k]);
-          return o;
-        },
-        {} as Record<string, string>,
-      );
-    }
-    return resolvePath(input || 'index.js');
-  };
-
   const config: RollupOptions = {
-    input: getInput(),
+    input: resolvePath(options.nova.input),
     output: {
       file: 'dist/index.js',
       sourcemap: false,

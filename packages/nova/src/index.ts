@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import { join, resolve, relative } from 'node:path';
 import { existsSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
@@ -7,12 +7,14 @@ import { rollup, RollupBuild, RollupOptions } from 'rollup';
 import { defineNova } from './nova.ts';
 import { defineConfig } from './config.ts';
 
-import { logger } from './util.ts';
+import { logger, mergeDefaultNovaConfig } from './util.ts';
 
-import type { NovaOptions } from './nova.ts';
+import type { NovaOptions, RequiredNovaOptions } from './nova.ts';
+import { stat } from 'node:fs/promises';
 
 export type { NovaOptions };
 
+const cwd = process.cwd();
 const argv = process.argv.slice(2);
 
 try {
@@ -28,7 +30,7 @@ try {
   logger.error(error);
 }
 
-async function build(config: NovaOptions) {
+async function build(config: RequiredNovaOptions) {
   let bundle: RollupBuild | null = null;
   let bundleFailed = false;
   try {
@@ -54,14 +56,39 @@ async function generateOutputs(bundle: RollupBuild, rollupCfg: RollupOptions) {
     outputOptionsList = [outputOptionsList];
   }
 
+  const statInfos = [];
+  let maxSizeLength = 0;
   for (const outputOptions of outputOptionsList) {
-    await bundle.write(outputOptions);
+    const { output } = await bundle.write(outputOptions);
+    for (const file of output) {
+      if (file.type === 'chunk' && file.facadeModuleId) {
+        let outputPath;
+        if (outputOptions.dir) {
+          outputPath = join(outputOptions.dir, file.fileName);
+        } else {
+          outputPath = join(cwd, outputOptions.file!);
+        }
+        const fileStat = await stat(outputPath);
+        const size = `${(fileStat.size / 1024).toFixed(2)}KB`;
+        if (size.length > maxSizeLength) maxSizeLength = size.length;
+        statInfos.push([size, relative(cwd, outputPath)]);
+      }
+    }
   }
+  statInfos.forEach(([size, p], i) => {
+    logger[i === 0 ? 'info' : 'info2'](`\x1b[36m${size.padStart(maxSizeLength, ' ')}\x1b[m`, p);
+  });
+  console.log();
 }
 
 async function getConfig() {
   const cwd = process.cwd();
   const configPaths = ['ts', 'mjs', 'cjs', 'js'].map(ext => resolve(cwd, `nova.config.${ext}`));
   const configPath = configPaths.find(cfg => existsSync(cfg));
-  return (configPath ? (await import(pathToFileURL(configPath).href)).default : {}) as NovaOptions;
+
+  const config: RequiredNovaOptions = configPath ? (await import(pathToFileURL(configPath).href)).default : {};
+
+  config.nova = mergeDefaultNovaConfig(config.nova);
+
+  return config;
 }

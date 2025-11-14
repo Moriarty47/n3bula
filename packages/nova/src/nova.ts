@@ -1,10 +1,10 @@
 import { spawn } from 'node:child_process';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import n3bulaWatcher from '@n3bula/watcher';
 
-import { logger } from './util.ts';
+import { logger, mergeDefaultNovaConfig } from './util.ts';
 
 import type { RollupOptions } from 'rollup';
 import type { ChildProcess } from 'node:child_process';
@@ -14,15 +14,17 @@ type Watcher = ReturnType<WatcherCreator>;
 type GetOptions<T> = T extends (paths: any, options: infer U, ...rest: any[]) => {} ? U : never;
 type WatcherOptions = GetOptions<WatcherCreator>;
 export type NovaOptions = {
-  input?: string;
-  watchPaths?: string | readonly string[];
-  silent?: number;
-  timeout?: number;
+  nova?: {
+    input?: string;
+    watchPaths?: string | readonly string[];
+    silent?: boolean;
+    timeout?: number;
+  };
 } & WatcherOptions &
-  RollupOptions;
+  Omit<RollupOptions, 'input'>;
+export type _RequiredNovaOptions = Exclude<Required<NovaOptions['nova']>, undefined>;
+export type RequiredNovaOptions = NovaOptions & { nova: _RequiredNovaOptions };
 
-const cwd = process.cwd();
-const defaultWatchPath = join(cwd, 'src');
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const loaderPath = pathToFileURL(resolve(__dirname, 'loaders/index.js')).href;
 
@@ -31,13 +33,9 @@ let cp: ChildProcess | null = null;
 let watcher: Watcher | null = null;
 
 export async function defineNova(options: NovaOptions = {}) {
-  const {
-    input = 'src/index.ts',
-    watchPaths = defaultWatchPath,
-    silent = false,
-    timeout = 500,
-    ...restOptions
-  } = options;
+  const { nova = {}, ...restOptions } = options;
+  const { input, watchPaths, silent, timeout } = mergeDefaultNovaConfig(nova);
+
   await reload(input);
 
   watcher = n3bulaWatcher(
