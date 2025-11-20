@@ -8,13 +8,12 @@ import esbuild from 'rollup-plugin-esbuild';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
 
-import { logger } from './util.ts';
+import { cwd, logger } from './util.ts';
 
 import type { RollupOptions } from 'rollup';
 import type { RequiredNovaOptions } from './nova.ts';
 
 export const defineConfig = (options: RequiredNovaOptions) => {
-  const cwd = process.cwd();
   let packageJson = {} as any;
   try {
     packageJson = JSON.parse(readFileSync(resolve(cwd, 'package.json'), { encoding: 'utf8' }));

@@ -29,9 +29,9 @@ const config: RollupOptions[] = [
       esbuild({
         target: 'esnext',
         sourceMap: false,
-        minify: true,
+        minify: !isDev,
       }),
-      copyLoaderPlugin(),
+      // copyLoaderPlugin(),
     ],
   },
   ...(isDev

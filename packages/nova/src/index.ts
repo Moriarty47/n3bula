@@ -1,20 +1,17 @@
-import { join, resolve, relative } from 'node:path';
-import { existsSync } from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { stat } from 'node:fs/promises';
+import { join, relative } from 'node:path';
 
 import { rollup, RollupBuild, RollupOptions } from 'rollup';
 
 import { defineNova } from './nova.ts';
 import { defineConfig } from './config.ts';
 
-import { logger, mergeDefaultNovaConfig } from './util.ts';
+import { cwd, getConfig, logger } from './util.ts';
 
 import type { NovaOptions, RequiredNovaOptions } from './nova.ts';
-import { stat } from 'node:fs/promises';
 
 export type { NovaOptions };
 
-const cwd = process.cwd();
 const argv = process.argv.slice(2);
 
 try {
@@ -79,16 +76,4 @@ async function generateOutputs(bundle: RollupBuild, rollupCfg: RollupOptions) {
     logger[i === 0 ? 'info' : 'info2'](`\x1b[36m${size.padStart(maxSizeLength, ' ')}\x1b[m`, p);
   });
   console.log();
-}
-
-async function getConfig() {
-  const cwd = process.cwd();
-  const configPaths = ['ts', 'mjs', 'cjs', 'js'].map(ext => resolve(cwd, `nova.config.${ext}`));
-  const configPath = configPaths.find(cfg => existsSync(cfg));
-
-  const config: RequiredNovaOptions = configPath ? (await import(pathToFileURL(configPath).href)).default : {};
-
-  config.nova = mergeDefaultNovaConfig(config.nova);
-
-  return config;
 }

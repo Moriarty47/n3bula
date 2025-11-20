@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { dirname, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import n3bulaWatcher from '@n3bula/watcher';
@@ -26,7 +26,6 @@ export type _RequiredNovaOptions = Exclude<Required<NovaOptions['nova']>, undefi
 export type RequiredNovaOptions = NovaOptions & { nova: _RequiredNovaOptions };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const loaderPath = pathToFileURL(resolve(__dirname, 'loaders/index.js')).href;
 
 let timer: NodeJS.Timeout | null = null;
 let cp: ChildProcess | null = null;
@@ -62,12 +61,17 @@ export async function defineNova(options: NovaOptions = {}) {
   process.once('SIGINT', cleanup('SIGINT')).once('SIGTERM', cleanup('SIGTERM'));
 }
 
+const nodeModulesDir = resolve(__dirname, '../node_modules');
+const tsx = pathToFileURL(join(nodeModulesDir, 'tsx/dist/esm/index.mjs')).href;
+
 async function reload(input: string) {
-  return new Promise(resolve => {
+  return new Promise((rsv, rej) => {
     cp?.kill('SIGINT');
-    cp = spawn('node', ['--import', loaderPath, input], {
+    cp = spawn('node', ['--import', tsx, input], {
       stdio: 'inherit',
-    }).on('spawn', resolve);
+    })
+      .on('spawn', rsv)
+      .on('error', rej);
   });
 }
 

@@ -1,9 +1,13 @@
-import { isAbsolute, join, resolve } from 'node:path';
-import type { _RequiredNovaOptions, NovaOptions } from './nova.ts';
 import { existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
+import { isAbsolute, join, resolve } from 'node:path';
+
+import type { _RequiredNovaOptions, NovaOptions, RequiredNovaOptions } from './nova.ts';
 
 const NOVA = '@n3bula/nova';
 const PLACEHOLADER = NOVA.replace(/./g, ' ');
+
+export const cwd = process.cwd();
 
 export const logger = {
   info: (...msgs: any[]) => console.log(`\x1b[34m${NOVA}\x1b[m`, ...msgs),
@@ -28,7 +32,6 @@ const isRelative = (p: string) => {
   return true;
 };
 
-const cwd = process.cwd();
 const defaultWatchPath = join(cwd, 'src');
 
 const getInput = (input?: string) => {
@@ -52,3 +55,17 @@ export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _Required
   ...cfg,
   input: getInput(cfg.input),
 });
+
+export const novaConfigPath = (() => {
+  const configPaths = ['ts', 'mjs', 'cjs', 'js'].map(ext => resolve(cwd, `nova.config.${ext}`));
+  const _configPath = configPaths.find(cfg => existsSync(cfg));
+  return _configPath;
+})();
+
+export async function getConfig() {
+  const config: RequiredNovaOptions = novaConfigPath ? (await import(pathToFileURL(novaConfigPath).href)).default : {};
+
+  config.nova = mergeDefaultNovaConfig(config.nova);
+
+  return config;
+}
