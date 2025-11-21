@@ -4,7 +4,7 @@ import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
-import copyLoaderPlugin from './rollup-plugin-copy-loader.ts';
+// import copyLoaderPlugin from './rollup-plugin-copy-loader.ts';
 
 import type { RollupOptions } from 'rollup';
 
