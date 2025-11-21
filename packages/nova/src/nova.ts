@@ -61,8 +61,7 @@ export async function defineNova(options: NovaOptions = {}) {
   process.once('SIGINT', cleanup('SIGINT')).once('SIGTERM', cleanup('SIGTERM'));
 }
 
-const nodeModulesDir = resolve(__dirname, '../node_modules');
-const tsx = pathToFileURL(join(nodeModulesDir, 'tsx/dist/esm/index.mjs')).href;
+const tsx = import.meta.resolve('tsx/esm');
 
 async function reload(input: string) {
   return new Promise((rsv, rej) => {
