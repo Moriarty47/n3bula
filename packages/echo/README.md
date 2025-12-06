@@ -119,7 +119,7 @@ echo.css({
 })('N3BULA');
 ```
 
-![Effect](./demo/images/effect.png)
+![Example](./demo/example.png)
 
 ## Author
 
