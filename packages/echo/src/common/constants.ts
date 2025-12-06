@@ -1,8 +1,8 @@
 export const isNode = typeof process === 'object';
 
 export const isDev = (() => {
-  if (isNode) return process.env.DEV as unknown as boolean;
-  return (import.meta as any).env.DEV;
+  if (isNode) return (process.env.DEV as unknown as string) === 'true';
+  return (import.meta as any)?.env.DEV;
 })();
 
 export const ECHO_TAG = '@n3bula/echo';

@@ -7,6 +7,7 @@ import packageJson from './package.json';
 export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(packageJson.version),
+    'process.env.DEV': JSON.stringify(process.env.DEV || 'false'),
   },
   plugins: [
     dts({
@@ -16,8 +17,8 @@ export default defineConfig({
       strictOutput: true,
       compilerOptions: {
         declaration: true,
-        typeRoots: ['./dist/index.d.ts']
-      }
+        typeRoots: ['./dist/index.d.ts'],
+      },
     }),
   ],
   build: {
@@ -29,5 +30,5 @@ export default defineConfig({
       fileName: 'index',
       name: 'N3bulaEcho',
     },
-  }
+  },
 });
