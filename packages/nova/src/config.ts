@@ -7,6 +7,7 @@ import alias from '@rollup/plugin-alias';
 import cjs from '@rollup/plugin-commonjs';
 import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
+import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
 
@@ -75,6 +76,12 @@ export const defineConfig = (options: RequiredNovaOptions) => {
         json(),
         cjs({
           exclude: ['node_moduels/*'],
+        }),
+        replace({
+          preventAssignment: true,
+          values: {
+            'process.env.DEV': JSON.stringify(process.env.DEV || 'false'),
+          },
         }),
         esbuild({
           target: 'esnext',

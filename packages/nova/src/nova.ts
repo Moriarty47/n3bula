@@ -1,6 +1,4 @@
 import { spawn } from 'node:child_process';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import n3bulaWatcher from '@n3bula/watcher';
 
@@ -27,8 +25,6 @@ export type NovaOptions = {
   Omit<RollupOptions, 'input'>;
 export type _RequiredNovaOptions = Exclude<Required<NovaOptions['nova']>, undefined>;
 export type RequiredNovaOptions = NovaOptions & { nova: _RequiredNovaOptions };
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let timer: NodeJS.Timeout | null = null;
 let cp: ChildProcess | null = null;
