@@ -3,10 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>N3bula Color-log Demo</title>
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      .box {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      button {
+        font-size: 8em;
+        padding: 8px;
+      }
+    </style>
+    <script src="../dist/index.umd.cjs"></script>
+    <script src="main.js"></script>
+    <script src="index.js"></script>
+    <script type="module" src="index.mjs"></script>
   </head>
   <body>
-    <div id="app">N3bula Color-log Demo</div>
-    <script type="module" src="./main.ts"></script>
+    <div class="box">
+      <button id="esm">ESM</button>
+      <button id="cjs">CJS</button>
+    </div>
   </body>
 </html>

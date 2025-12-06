@@ -8,7 +8,6 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(packageJson.version),
   },
-  root: path.resolve(__dirname, 'demo'),
   plugins: [
     dts({
       insertTypesEntry: true,
@@ -25,7 +24,7 @@ export default defineConfig({
     outDir: path.resolve(__dirname, './dist'),
     emptyOutDir: true,
     lib: {
-      entry: path.resolve(__dirname, './src/index.ts'),
+      entry: path.resolve(__dirname, './src/browser/index.ts'),
       formats: ['es', 'umd'],
       fileName: 'index',
       name: 'N3bulaEcho',

@@ -209,6 +209,9 @@ importers:
 
   packages/echo:
     devDependencies:
+      '@n3bula/nova':
+        specifier: workspace:0.0.2-alpha.6
+        version: link:../nova
       typescript:
         specifier: ^5.2.2
         version: 5.9.3
@@ -367,7 +370,7 @@ importers:
   packages/npm-commands:
     devDependencies:
       '@n3bula/nova':
-        specifier: workspace:0.0.2-alpha.3
+        specifier: workspace:0.0.2-alpha.6
         version: link:../nova
 
   packages/pretty-json:
