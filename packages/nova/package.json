@@ -1,19 +1,18 @@
 {
   "name": "@n3bula/nova",
-  "version": "0.0.2-alpha.5",
+  "version": "0.0.2-alpha.6",
   "description": "A simple tool for Node.js development",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "nova": "bin/nova"
+    "nova": "dist/index.js"
   },
   "scripts": {
     "dev": "rollup -c --environment NODE_ENV:development",
     "build": "rollup -c"
   },
   "files": [
-    "bin",
     "dist"
   ],
   "keywords": [
@@ -44,7 +43,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@n3bula/watcher": "workspace:0.0.2-alpha.3",
+    "@n3bula/watcher": "workspace:*",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-json": "^6.1.0",

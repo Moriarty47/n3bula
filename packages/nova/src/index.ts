@@ -30,18 +30,22 @@ try {
 async function build(config: RequiredNovaOptions) {
   let bundle: RollupBuild | null = null;
   let bundleFailed = false;
-  try {
-    const rollupCfg = defineConfig(config);
-    bundle = await rollup(rollupCfg);
+  const rollupCfg = defineConfig(config);
 
-    await generateOutputs(bundle, rollupCfg);
-  } catch (error: any) {
-    bundleFailed = true;
-    logger.error(error);
+  for (const cfg of rollupCfg) {
+    try {
+      bundle = await rollup(cfg);
+
+      await generateOutputs(bundle, cfg);
+    } catch (error: any) {
+      bundleFailed = true;
+      logger.error(error);
+    }
+    if (bundle) {
+      await bundle.close();
+    }
   }
-  if (bundle) {
-    await bundle.close();
-  }
+
   process.exit(bundleFailed ? 1 : 0);
 }
 

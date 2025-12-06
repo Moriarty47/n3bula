@@ -15,8 +15,11 @@ type GetOptions<T> = T extends (paths: any, options: infer U, ...rest: any[]) =>
 type WatcherOptions = GetOptions<WatcherCreator>;
 export type NovaOptions = {
   nova?: {
-    input?: string;
     watchPaths?: string | readonly string[];
+    input?: string;
+    outputFile?: string;
+    outputDtsFile?: string;
+    tsconfigPath?: string;
     silent?: boolean;
     timeout?: number;
   };

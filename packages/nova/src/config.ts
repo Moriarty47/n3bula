@@ -5,6 +5,7 @@ import { parse } from 'jsonc-parser';
 import json from '@rollup/plugin-json';
 import alias from '@rollup/plugin-alias';
 import cjs from '@rollup/plugin-commonjs';
+import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
@@ -14,7 +15,7 @@ import { cwd, logger } from './util.ts';
 import type { RollupOptions } from 'rollup';
 import type { RequiredNovaOptions } from './nova.ts';
 
-function tsconfigPathsToAlias(tsconfigPath = './tsconfig.json') {
+function tsconfigPathToAlias(tsconfigPath: string) {
   let tsconfig = {} as any;
   try {
     tsconfig = parse(readFileSync(tsconfigPath, 'utf8'));
@@ -46,7 +47,7 @@ function tsconfigPathsToAlias(tsconfigPath = './tsconfig.json') {
 }
 
 export const defineConfig = (options: RequiredNovaOptions) => {
-  const aliasEntries = tsconfigPathsToAlias();
+  const aliasEntries = tsconfigPathToAlias(options.nova.tsconfigPath);
   const aliasPlugin = aliasEntries
     ? [
         alias({
@@ -57,30 +58,40 @@ export const defineConfig = (options: RequiredNovaOptions) => {
 
   const resolvePath = (p: string) => resolve(cwd, p);
 
-  const config: RollupOptions = {
-    input: resolvePath(options.nova.input),
-    output: {
-      file: 'dist/index.js',
-      sourcemap: false,
-      format: 'esm',
-      banner: '#!/usr/bin/env node',
-      ...options.output,
+  const config: RollupOptions[] = [
+    {
+      input: resolvePath(options.nova.input),
+      output: {
+        file: options.nova.outputFile,
+        sourcemap: false,
+        format: 'esm',
+        banner: '#!/usr/bin/env node',
+        ...options.output,
+      },
+      plugins: [
+        ...aliasPlugin,
+        nodeResolve(),
+        nodeExternals(),
+        json(),
+        cjs({
+          exclude: ['node_moduels/*'],
+        }),
+        esbuild({
+          target: 'esnext',
+          sourceMap: false,
+          minify: true,
+        }),
+        ...(options.plugins ? (Array.isArray(options.plugins) ? options.plugins : [options.plugins]) : []),
+      ],
     },
-    plugins: [
-      ...aliasPlugin,
-      nodeResolve(),
-      nodeExternals(),
-      json(),
-      cjs({
-        exclude: ['node_moduels/*'],
-      }),
-      esbuild({
-        target: 'esnext',
-        sourceMap: false,
-        minify: true,
-      }),
-      ...(options.plugins ? (Array.isArray(options.plugins) ? options.plugins : [options.plugins]) : []),
-    ],
-  };
+    {
+      input: resolvePath(options.nova.input),
+      output: {
+        file: options.nova.outputDtsFile,
+        format: 'es',
+      },
+      plugins: [dts()],
+    } as RollupOptions,
+  ];
   return config;
 };

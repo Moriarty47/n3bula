@@ -32,8 +32,6 @@ const isRelative = (p: string) => {
   return true;
 };
 
-const defaultWatchPath = join(cwd, 'src');
-
 const getInput = (input?: string) => {
   if (!input) {
     input = ['ts', 'js'].map(ext => resolve(cwd, `src/index.${ext}`)).find(p => existsSync(p));
@@ -48,13 +46,22 @@ const getInput = (input?: string) => {
   return input;
 };
 
-export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _RequiredNovaOptions => ({
-  watchPaths: defaultWatchPath,
-  silent: false,
-  timeout: 500,
-  ...cfg,
-  input: getInput(cfg.input),
-});
+export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _RequiredNovaOptions => {
+  const {
+    outputFile = 'dist/index.js',
+    outputDtsFile = outputFile.replace(/(.*)\.(c|m)?js/, (_, $1) => `${$1}.d.ts`),
+  } = cfg;
+  return {
+    watchPaths: join(cwd, 'src'),
+    silent: false,
+    timeout: 500,
+    tsconfigPath: join(cwd, './tsconfig.json'),
+    ...cfg,
+    outputFile,
+    outputDtsFile,
+    input: getInput(cfg.input),
+  };
+};
 
 export const novaConfigPath = (() => {
   const configPaths = ['ts', 'mjs', 'cjs', 'js'].map(ext => resolve(cwd, `nova.config.${ext}`));

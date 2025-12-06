@@ -4,7 +4,6 @@ import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
-// import copyLoaderPlugin from './rollup-plugin-copy-loader.ts';
 
 import type { RollupOptions } from 'rollup';
 
@@ -21,7 +20,9 @@ const config: RollupOptions[] = [
     },
     plugins: [
       nodeResolve(),
-      nodeExternals(),
+      nodeExternals({
+        include: ['rollup-plugin-dts']
+      }),
       json(),
       cjs({
         exclude: ['node_moduels/*'],
@@ -31,7 +32,6 @@ const config: RollupOptions[] = [
         sourceMap: false,
         minify: !isDev,
       }),
-      // copyLoaderPlugin(),
     ],
   },
   ...(isDev
