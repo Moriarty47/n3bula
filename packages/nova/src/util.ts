@@ -2,25 +2,27 @@ import { existsSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { isAbsolute, join, resolve } from 'node:path';
 
-import type { _RequiredNovaOptions, NovaOptions, RequiredNovaOptions } from './nova.ts';
+import type { _RequiredNovaOptions, NovaOptions, RequiredNovaOptions } from './types.ts';
 
-const NOVA = '@n3bula/nova';
+export const NOVA = '@n3bula/nova';
 const PLACEHOLADER = NOVA.replace(/./g, ' ');
 
 export const cwd = process.cwd();
 
+const wrapTag = (color: number, extra?: string) => `\x1b[${color}m${NOVA}${extra ? ' ' + extra : ''}\x1b[m`;
+
 export const logger = {
-  info: (...msgs: any[]) => console.log(`\x1b[34m${NOVA}\x1b[m`, ...msgs),
+  info: (...msgs: any[]) => console.log(wrapTag(34), ...msgs),
   info2: (...msgs: any[]) => console.log(PLACEHOLADER, ...msgs),
-  success: (...msgs: any[]) => console.log(`\x1b[32m${NOVA}\x1b[m`, ...msgs),
-  warn: (...msgs: any[]) => console.log(`\x1b[33m${NOVA}\x1b[m`, ...msgs),
+  success: (...msgs: any[]) => console.log(wrapTag(32), ...msgs),
+  warn: (...msgs: any[]) => console.log(wrapTag(33), ...msgs),
   error: (...msgs: any[]) => {
     const key = msgs[0];
     if (typeof key === 'object' && key.code && key.message) {
-      console.log(`\x1b[31m${NOVA} ${key.code}\x1b[m`, key.message);
+      console.log(wrapTag(31, key.code), key.message, key.stack);
       return;
     }
-    console.log(`\x1b[31m${NOVA}\x1b[m`, ...msgs);
+    console.log(wrapTag(31), ...msgs);
   },
 };
 
@@ -55,7 +57,16 @@ export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _Required
     watchPaths: join(cwd, 'src'),
     silent: false,
     timeout: 500,
+    minify: false,
     tsconfigPath: join(cwd, './tsconfig.json'),
+    alias: {},
+    cjs: {},
+    dts: {},
+    esbuild: {},
+    externals: {},
+    json: {},
+    nodeResolve: {},
+    replace: {},
     ...cfg,
     outputFile,
     outputDtsFile,

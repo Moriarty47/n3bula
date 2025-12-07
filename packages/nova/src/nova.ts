@@ -4,27 +4,8 @@ import n3bulaWatcher from '@n3bula/watcher';
 
 import { logger, mergeDefaultNovaConfig } from './util.ts';
 
-import type { RollupOptions } from 'rollup';
 import type { ChildProcess } from 'node:child_process';
-
-type WatcherCreator = typeof n3bulaWatcher;
-type Watcher = ReturnType<WatcherCreator>;
-type GetOptions<T> = T extends (paths: any, options: infer U, ...rest: any[]) => {} ? U : never;
-type WatcherOptions = GetOptions<WatcherCreator>;
-export type NovaOptions = {
-  nova?: {
-    watchPaths?: string | readonly string[];
-    input?: string;
-    outputFile?: string;
-    outputDtsFile?: string;
-    tsconfigPath?: string;
-    silent?: boolean;
-    timeout?: number;
-  };
-} & WatcherOptions &
-  Omit<RollupOptions, 'input'>;
-export type _RequiredNovaOptions = Exclude<Required<NovaOptions['nova']>, undefined>;
-export type RequiredNovaOptions = NovaOptions & { nova: _RequiredNovaOptions };
+import type { NovaOptions, Watcher } from './types.ts';
 
 let timer: NodeJS.Timeout | null = null;
 let cp: ChildProcess | null = null;

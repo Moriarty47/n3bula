@@ -3,9 +3,10 @@ import { dirname, resolve } from 'node:path';
 
 import { parse } from 'jsonc-parser';
 import json from '@rollup/plugin-json';
+import { dts } from 'rollup-plugin-dts';
 import alias from '@rollup/plugin-alias';
 import cjs from '@rollup/plugin-commonjs';
-import { dts } from 'rollup-plugin-dts';
+import terser from '@rollup/plugin-terser';
 import esbuild from 'rollup-plugin-esbuild';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
@@ -14,14 +15,14 @@ import { nodeExternals } from 'rollup-plugin-node-externals';
 import { cwd, logger } from './util.ts';
 
 import type { RollupOptions } from 'rollup';
-import type { RequiredNovaOptions } from './nova.ts';
+import type { RequiredNovaOptions } from './types.ts';
 
 function tsconfigPathToAlias(tsconfigPath: string) {
   let tsconfig = {} as any;
   try {
     tsconfig = parse(readFileSync(tsconfigPath, 'utf8'));
   } catch (error: any) {
-    logger.error(error);
+    logger.error('tsconfigPathToAlias', error);
     return null;
   }
   const { baseUrl = '.', paths = {} } = tsconfig.compilerOptions || {};
@@ -48,56 +49,88 @@ function tsconfigPathToAlias(tsconfigPath: string) {
 }
 
 export const defineConfig = (options: RequiredNovaOptions) => {
-  const aliasEntries = tsconfigPathToAlias(options.nova.tsconfigPath);
+  const { nova } = options;
+  const aliasEntries = tsconfigPathToAlias(nova.tsconfigPath);
   const aliasPlugin = aliasEntries
     ? [
         alias({
           entries: aliasEntries,
+          ...nova.alias,
         }),
       ]
     : [];
 
   const resolvePath = (p: string) => resolve(cwd, p);
 
+  const commonPlugins = [
+    ...aliasPlugin,
+    nodeResolve({
+      extensions: ['.js', '.ts'],
+      ...nova.nodeResolve,
+    }),
+    nodeExternals(nova.externals),
+    json(nova.json),
+    cjs({
+      exclude: ['node_moduels/*'],
+      ...nova.cjs,
+    }),
+  ];
+
+  const mainOutput = {
+    file: nova.outputFile,
+    format: 'es',
+    ...options.output,
+  };
+
+  const output = (
+    nova.minify === 'both'
+      ? [
+          mainOutput,
+          {
+            ...mainOutput,
+            file: nova.outputFile.replace(/\.js$/, $0 => `.min${$0}`),
+            plugins: [terser()],
+          },
+        ]
+      : {
+          ...mainOutput,
+          ...(nova.minify
+            ? {
+                plugins: [terser()],
+              }
+            : {}),
+        }
+  ) as RollupOptions['output'];
+
   const config: RollupOptions[] = [
     {
-      input: resolvePath(options.nova.input),
-      output: {
-        file: options.nova.outputFile,
-        sourcemap: false,
-        format: 'esm',
-        banner: '#!/usr/bin/env node',
-        ...options.output,
-      },
+      input: resolvePath(nova.input),
+      output,
       plugins: [
-        ...aliasPlugin,
-        nodeResolve(),
-        nodeExternals(),
-        json(),
-        cjs({
-          exclude: ['node_moduels/*'],
-        }),
+        ...commonPlugins,
         replace({
           preventAssignment: true,
           values: {
             'process.env.DEV': JSON.stringify(process.env.DEV || 'false'),
           },
+          ...nova.replace,
         }),
         esbuild({
           target: 'esnext',
           sourceMap: false,
-          minify: true,
+          minify: false,
+          ...nova.esbuild,
         }),
         ...(options.plugins ? (Array.isArray(options.plugins) ? options.plugins : [options.plugins]) : []),
       ],
     },
     {
-      input: resolvePath(options.nova.input),
+      input: resolvePath(nova.input),
       output: {
-        file: options.nova.outputDtsFile,
+        file: nova.outputDtsFile,
         format: 'es',
       },
-      plugins: [dts()],
+      plugins: [...commonPlugins, dts(nova.dts)],
     } as RollupOptions,
   ];
   return config;

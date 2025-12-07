@@ -8,7 +8,7 @@ import { defineConfig } from './config.ts';
 
 import { cwd, getConfig, logger } from './util.ts';
 
-import type { NovaOptions, RequiredNovaOptions } from './nova.ts';
+import type { NovaOptions, RequiredNovaOptions } from './types.ts';
 
 export type { NovaOptions };
 
@@ -39,7 +39,7 @@ async function build(config: RequiredNovaOptions) {
       await generateOutputs(bundle, cfg);
     } catch (error: any) {
       bundleFailed = true;
-      logger.error(error);
+      logger.error('build', error);
     }
     if (bundle) {
       await bundle.close();
