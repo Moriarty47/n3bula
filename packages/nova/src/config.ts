@@ -7,15 +7,16 @@ import { dts } from 'rollup-plugin-dts';
 import alias from '@rollup/plugin-alias';
 import cjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
-import esbuild from 'rollup-plugin-esbuild';
+import typescript from 'rollup-plugin-typescript2';
 import replace from '@rollup/plugin-replace';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { nodeExternals } from 'rollup-plugin-node-externals';
+import { emptyDirs } from '../rollup.plugin.empty-dir';
 
-import { cwd, logger } from './util.ts';
+import { cwd, cwdRelative, logger } from './util';
 
 import type { RollupOptions } from 'rollup';
-import type { RequiredNovaOptions } from './types.ts';
+import type { RequiredNovaOptions } from './types';
 
 function tsconfigPathToAlias(tsconfigPath: string) {
   let tsconfig = {} as any;
@@ -48,8 +49,8 @@ function tsconfigPathToAlias(tsconfigPath: string) {
   return entries;
 }
 
-export const defineConfig = (options: RequiredNovaOptions) => {
-  const { nova } = options;
+export const defineConfig = (options: RequiredNovaOptions, envPath: string) => {
+  const { nova, output: optionOutput, ...rollupOptions } = options;
   const aliasEntries = tsconfigPathToAlias(nova.tsconfigPath);
   const aliasPlugin = aliasEntries
     ? [
@@ -79,8 +80,11 @@ export const defineConfig = (options: RequiredNovaOptions) => {
   const mainOutput = {
     file: nova.outputFile,
     format: 'es',
-    ...options.output,
+    ...(optionOutput || {}),
   };
+  if ((mainOutput as any).dir) {
+    delete (mainOutput as any).file;
+  }
 
   const output = (
     nova.minify === 'both'
@@ -102,34 +106,68 @@ export const defineConfig = (options: RequiredNovaOptions) => {
         }
   ) as RollupOptions['output'];
 
+  const entryId = resolvePath(nova.input);
+
+  const plugins = options.plugins ? (Array.isArray(options.plugins) ? options.plugins : [options.plugins]) : [];
+
+  const replaceValues = nova.replace.values;
+
   const config: RollupOptions[] = [
     {
-      input: resolvePath(nova.input),
+      input: entryId,
       output,
+      ...rollupOptions,
       plugins: [
+        emptyDirs({ dirs: 'dist' }),
         ...commonPlugins,
         replace({
           preventAssignment: true,
-          values: {
-            'process.env.DEV': JSON.stringify(process.env.DEV || 'false'),
-          },
           ...nova.replace,
+          values: typeof replaceValues === 'function' ? replaceValues(process.env.NOVA_MODE) : replaceValues,
         }),
-        esbuild({
-          target: 'esnext',
-          sourceMap: false,
-          minify: false,
-          ...nova.esbuild,
-        }),
-        ...(options.plugins ? (Array.isArray(options.plugins) ? options.plugins : [options.plugins]) : []),
+        typescript(),
+        {
+          name: 'inject-env-loader',
+          generateBundle(_options, bundle) {
+            if (!envPath) return;
+
+            for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+              if (chunkOrAsset.type !== 'chunk') continue;
+              const chunk = chunkOrAsset;
+              if (!chunk.modules || !Object.keys(chunk.modules).some(id => id === entryId)) continue;
+
+              const code = chunk.code;
+              const importRegex =
+                /import([ \n\t]*(?:[^ \n\t\{\}]+[ \n\t]*,?)?(?:[ \n\t]*\{(?:[ \n\t]*[^ \n\t"'\{\}]+[ \n\t]*,?)+\})?[ \n\t]*)from[ \n\t]*(['"])([^'"\n]+)(?:['"])/g;
+              let lastMatchIndex = -1;
+              let m;
+              while ((m = importRegex.exec(code)) !== null) {
+                lastMatchIndex = m.index + m[0].length;
+              }
+
+              const appendCode = `import { config as dotEnvCfg } from 'dotenv';\ndotEnvCfg({ quiet: true, path: ${JSON.stringify(cwdRelative(envPath))} });`;
+              let newCode;
+              if (lastMatchIndex >= 0) {
+                newCode = code.slice(0, lastMatchIndex) + '\n' + appendCode + '\n' + code.slice(lastMatchIndex);
+              } else {
+                newCode = code + '\n' + appendCode;
+              }
+
+              // 用修改后的代码替换 chunk.code
+              chunk.code = newCode;
+            }
+          },
+        },
+        ...plugins,
       ],
     },
     {
-      input: resolvePath(nova.input),
+      input: entryId,
       output: {
         file: nova.outputDtsFile,
         format: 'es',
       },
+      ...rollupOptions,
       plugins: [...commonPlugins, dts(nova.dts)],
     } as RollupOptions,
   ];

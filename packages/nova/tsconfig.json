@@ -9,17 +9,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "tslib": ["./node_modules/tslib/tslib.d.ts"]
+    }
   },
-  "include": [
-    "loaders/alias.js",
-    "rollup.config.ts",
-    "rollup-plugin-copy-loader.ts",
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example"
-  ]
+  "include": ["rollup.*.ts", "src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "example"]
 }

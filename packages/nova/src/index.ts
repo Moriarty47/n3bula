@@ -1,83 +1,32 @@
-import { stat } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import minimist from 'minimist';
 
-import { rollup, RollupBuild, RollupOptions } from 'rollup';
+import { novaDev } from './nova-dev';
+import { novaBuild } from './nova-build';
 
-import { defineNova } from './nova.ts';
-import { defineConfig } from './config.ts';
+import { getConfig, getEnvPath, logger } from './util';
 
-import { cwd, getConfig, logger } from './util.ts';
-
-import type { NovaOptions, RequiredNovaOptions } from './types.ts';
+import type { NovaOptions } from './types';
 
 export type { NovaOptions };
 
-const argv = process.argv.slice(2);
+const argv = minimist(process.argv.slice(2), {
+  '--': true,
+});
+const isDevMode = !(argv._[0] === 'build');
 
-try {
-  const config = await getConfig();
-  if (!argv.length || argv[0] === 'dev') {
-    // nova [=dev]
-    defineNova(config);
-  } else if (argv[0] === 'build') {
-    // nova build
-    await build(config);
+async function main() {
+  try {
+    const config = await getConfig();
+    if (isDevMode) {
+      // nova [=dev]
+      novaDev(config, getEnvPath(argv.env, isDevMode), argv['--']);
+    } else {
+      // nova build
+      await novaBuild(config, getEnvPath(argv.env, isDevMode));
+    }
+  } catch (error) {
+    logger.error(error);
   }
-} catch (error) {
-  logger.error(error);
 }
 
-async function build(config: RequiredNovaOptions) {
-  let bundle: RollupBuild | null = null;
-  let bundleFailed = false;
-  const rollupCfg = defineConfig(config);
-
-  for (const cfg of rollupCfg) {
-    try {
-      bundle = await rollup(cfg);
-
-      await generateOutputs(bundle, cfg);
-    } catch (error: any) {
-      bundleFailed = true;
-      logger.error('build', error);
-    }
-    if (bundle) {
-      await bundle.close();
-    }
-  }
-
-  process.exit(bundleFailed ? 1 : 0);
-}
-
-async function generateOutputs(bundle: RollupBuild, rollupCfg: RollupOptions) {
-  let { output: outputOptionsList } = rollupCfg;
-  if (!outputOptionsList) throw new Error('should specify [output]');
-
-  if (!Array.isArray(outputOptionsList)) {
-    outputOptionsList = [outputOptionsList];
-  }
-
-  const statInfos = [];
-  let maxSizeLength = 0;
-  for (const outputOptions of outputOptionsList) {
-    const { output } = await bundle.write(outputOptions);
-    for (const file of output) {
-      if (file.type === 'chunk' && file.facadeModuleId) {
-        let outputPath;
-        if (outputOptions.dir) {
-          outputPath = join(outputOptions.dir, file.fileName);
-        } else {
-          outputPath = join(cwd, outputOptions.file!);
-        }
-        const fileStat = await stat(outputPath);
-        const size = `${(fileStat.size / 1024).toFixed(2)}KB`;
-        if (size.length > maxSizeLength) maxSizeLength = size.length;
-        statInfos.push([size, relative(cwd, outputPath)]);
-      }
-    }
-  }
-  statInfos.forEach(([size, p], i) => {
-    logger[i === 0 ? 'info' : 'info2'](`\x1b[36m${size.padStart(maxSizeLength, ' ')}\x1b[m`, p);
-  });
-  console.log();
-}
+main();

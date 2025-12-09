@@ -6,7 +6,7 @@ import type { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve';
 import type { ExternalsOptions } from 'rollup-plugin-node-externals';
 import type { RollupJsonOptions } from '@rollup/plugin-json';
 import type { RollupCommonJSOptions } from '@rollup/plugin-commonjs';
-import type { RollupReplaceOptions } from '@rollup/plugin-replace';
+import type { Replacement, RollupReplaceOptions } from '@rollup/plugin-replace';
 import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild';
 import type { Options as DtsOptions } from 'rollup-plugin-dts';
 
@@ -28,7 +28,9 @@ export type NovaOptions = {
     externals?: ExternalsOptions;
     json?: RollupJsonOptions;
     cjs?: RollupCommonJSOptions;
-    replace?: RollupReplaceOptions;
+    replace?: RollupReplaceOptions & {
+      values?: { [str: string]: Replacement } | ((mode?: string) => { [str: string]: Replacement });
+    };
     esbuild?: EsbuildOptions;
     dts?: DtsOptions;
     minify?: boolean | 'both';
