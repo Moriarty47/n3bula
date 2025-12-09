@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "es2022",
+    "types": ["node"],
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "esModuleInterop": true,
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "$const": ["./src/utils/constants.ts"],
+      "$deco/*": ["./src/decorators/*"],
+      "$util/*": ["./src/utils/*"],
+      "$mw/*": ["./src/middlewares/*"]
+    }
+  },
+  "include": ["global.d.ts", "nova.config.ts", "virtual-api-resolver.ts", "src", "c:/Users/MillerWang/Desktop/Vue/n3bula-blog/server/loader"]
+}
