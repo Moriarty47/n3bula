@@ -24,20 +24,7 @@ const config: RollupOptions[] = [
         dirs: 'dist',
       }),
       nodeResolve(),
-      nodeExternals({
-        include: [
-          'jsonc-parser',
-          '@rollup/plugin-json',
-          'rollup-plugin-dts',
-          '@rollup/plugin-alias',
-          '@rollup/plugin-commonjs',
-          '@rollup/plugin-terser',
-          'rollup-plugin-esbuild',
-          '@rollup/plugin-replace',
-          '@rollup/plugin-node-resolve',
-          'rollup-plugin-node-externals',
-        ],
-      }),
+      nodeExternals(),
       json(),
       cjs({
         exclude: ['node_moduels/*'],
