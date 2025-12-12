@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/express",
-  "version": "0.0.2-alpha.1",
+  "version": "0.0.2-alpha.2",
   "description": "A Node.js server based on Express.js",
   "type": "module",
   "main": "dist/index.js",
@@ -58,16 +58,14 @@
   "dependencies": {
     "@n3bula/echo": "workspace:*",
     "@n3bula/nova": "workspace:*",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^5.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "express": "^4.19.2",
     "globby": "^16.0.0",
     "nanoid": "^5.1.6",
     "tslib": "^2.8.1"
-  },
-  "devDependencies": {
-    "@types/compression": "^1.7.5",
-    "@types/cookie-parser": "^1.4.7",
-    "@types/express": "^5.0.0"
   }
 }
