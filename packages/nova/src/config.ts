@@ -123,7 +123,7 @@ export const defineConfig = (options: RequiredNovaOptions, envPath: string) => {
         replace({
           preventAssignment: true,
           ...nova.replace,
-          values: typeof replaceValues === 'function' ? replaceValues(process.env.NOVA_MODE) : replaceValues,
+          values: (typeof replaceValues === 'function' ? replaceValues(process.env.NOVA_MODE) : replaceValues) || {},
         }),
         typescript(),
         {
