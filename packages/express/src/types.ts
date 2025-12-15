@@ -23,6 +23,7 @@ export type AppConfig = {
   apis: ApiDir;
 }>;
 
+export type ListenCallback = (usedPort: number) => void;
 export type App = Omit<Express, 'listen'> & {
-  listen: (port: number) => Promise<Server>;
+  listen: (port: number, callback?: ListenCallback) => Promise<Server>;
 };

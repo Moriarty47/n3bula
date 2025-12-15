@@ -1,10 +1,10 @@
 import { registerRoutes } from '$deco/routing';
 
 import DefaultApi from '$util/default-api';
-import { errorLogger, logger } from '$util/log';
+import { logger } from '$util/log';
 
 import type { Express } from 'express';
-import type { AppConfig, RouteImporter } from '../types';
+import type { AppConfig, RouteImporter } from '$types';
 
 export default async function autoRegisterRoutes(app: Express, apiConfig: AppConfig) {
   const { apiDir, apis } = apiConfig;
@@ -27,6 +27,6 @@ export default async function autoRegisterRoutes(app: Express, apiConfig: AppCon
     const routeRegisters = apiImporteers.map(r => r());
     registerRoutes(app, '/api', ...(await Promise.all(routeRegisters)).map(m => m.default));
   } catch (error) {
-    errorLogger(error);
+    logger.error(error);
   }
 }

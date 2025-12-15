@@ -20,11 +20,13 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
+      "$types": ["./src/types.ts"],
       "$const": ["./src/utils/constants.ts"],
       "$deco/*": ["./src/decorators/*"],
       "$util/*": ["./src/utils/*"],
+      "$adapter/*": ["./src/adapters/*"],
       "$mw/*": ["./src/middlewares/*"]
     }
   },
-  "include": ["global.d.ts", "nova.config.ts", "virtual-api-resolver.ts", "src", "c:/Users/MillerWang/Desktop/Vue/n3bula-blog/server/loader"]
+  "include": ["global.d.ts", "nova.config.ts", "virtual-api-resolver.ts", "src"]
 }

@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { ResponseAdapter, errorHandler } from '$mw/response';
-
 import { logger } from '$util/log';
 import { assertsDefined } from '$util/utils';
 
 import type { Express, Router as ExpressRouter, RequestHandler } from 'express';
-import type { ExpNextFn, ExpRequest, ExpResponse } from '../types';
+import type { ExpNextFn, ExpRequest, ExpResponse } from '$types';
 import { TAG } from '$const';
+import { errorHandler } from '$util/error';
+import { getResponseAdapter } from '$adapter/response';
 
 export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
 
@@ -19,8 +19,9 @@ export type Route = {
 };
 
 export const BASE_PATH = Symbol('base-path');
+export const ROUTE_MWS = Symbol('route-mws');
 
-export function Route(basePath: string = '') {
+export function Route(basePath: string = '', ...middlewares: RequestHandler[]) {
   return function <T extends new (...rest: any[]) => any>(target: T, context: ClassDecoratorContext) {
     if (context.kind === 'class') {
       const Ctrl = class extends target {
@@ -28,6 +29,7 @@ export function Route(basePath: string = '') {
       };
       context.addInitializer(function () {
         (Ctrl as any).prototype[BASE_PATH] = basePath;
+        (Ctrl as any).prototype[ROUTE_MWS] = middlewares;
       });
       return Ctrl as T;
     }
@@ -74,6 +76,7 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
   controllers.forEach(Ctrl => {
     const inst = (typeof Ctrl === 'function' ? new Ctrl() : Ctrl) as {
       [BASE_PATH]: string;
+      [ROUTE_MWS]: RequestHandler[];
       router: ExpressRouter;
     } & {
       [k: string]: (req: ExpRequest, res: ExpResponse, next: ExpNextFn) => any;
@@ -84,18 +87,24 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
 
       assertsDefined(handler, `Handler ${route.handlerName} not found on controller ${inst.constructor.name}`);
 
-      const boundHandler: RequestHandler = (req, res, next) =>
-        Promise.resolve(handler.call(inst, req, res, next))
+      const boundHandler: RequestHandler = (req, res, next) => {
+        const responseAdapter = getResponseAdapter();
+        return Promise.resolve(handler.call(inst, req, res, next))
           .then(result => {
-            // console.log('result', result);
-            return ResponseAdapter.success(res, result);
+            // console.error('result', result);
+            return responseAdapter.success(res, result);
           })
           .catch(error => {
             // console.error('error', error);
-            return ResponseAdapter.error(res, error);
+            return responseAdapter.error(res, error);
           });
+      };
 
-      const finalMiddlewares: RequestHandler[] = [...(route.middlewares || []), boundHandler];
+      const finalMiddlewares: RequestHandler[] = [
+        ...(inst[ROUTE_MWS] || []),
+        ...(route.middlewares || []),
+        boundHandler,
+      ];
 
       inst.router[route.method](route.path, ...finalMiddlewares);
     });
