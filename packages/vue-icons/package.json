@@ -1,0 +1,78 @@
+{
+  "name": "@n3bula/vue-icons",
+  "version": "0.0.1-alpha.1",
+  "description": "Vue icon components based on Geist Design System Icons.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./index.css": "./dist/index.css",
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    }
+  },
+  "scripts": {
+    "build": "ts-node src/build.ts",
+    "update-icons": "ts-node src/update.ts",
+    "preview": "cd example && pnpm start"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "icon",
+    "geist",
+    "n3bula"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/vue-icons#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/vue-icons"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "vue": ">=3.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/plugin-transform-runtime": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "@types/babel__core": "^7.1.7",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^25.0.2",
+    "@types/node-fetch": "^2.6.13",
+    "@vue/babel-plugin-jsx": "^2.0.1",
+    "fs-extra": "^11.3.2",
+    "jsdom": "^27.3.0",
+    "node-fetch": "^3.3.2",
+    "svgo": "^1.3.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.9.3",
+    "vue": "^3.4.29"
+  }
+}
