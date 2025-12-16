@@ -2,7 +2,7 @@ export const moduleBabelConfig = {
   presets: [['@babel/preset-env', { modules: false }]],
   plugins: [
     ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
-    '@babel/plugin-transform-runtime',
+    ['@babel/plugin-transform-runtime', { helpers: true, regenerator: true }],
     ['@vue/babel-plugin-jsx', { optimize: true }],
   ],
   minified: true,
