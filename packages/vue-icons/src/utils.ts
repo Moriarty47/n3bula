@@ -47,25 +47,8 @@ export const parseStyles = (inlineStyle = '') =>
     return styleObject;
   }, {});
 
-export const parseSvg = (svg: string, styles: any) => {
-  // const getSpecifiedColorVar = (val: string | undefined, ident: string) => {
-  //   if (!val) return '""';
-  //   return val.includes(ident) ? '{color}' : '"var(--icon-background)"';
-  // };
-
+export const parseSvg = (svg: string, _styles: any) => {
   svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} height={size} width={size} style={{...style,color}}>`);
-
-  // const fillColor = getSpecifiedColorVar(styles['--geist-fill'], 'current');
-  // const strokeColor = getSpecifiedColorVar(styles['--geist-stroke'], 'current');
-
-  // svg = replaceAll(svg, '"var(--geist-foreground)"', '{color}');
-  // svg = replaceAll(svg, '"var(--geist-background)"', '"var(--icon-background)"');
-
-  // // Reset dynamic colors
-  // // In a few icons, the semantics of 'fill' and 'stroke' are not correct,
-  // // they maybe forced to override by style.
-  // svg = replaceAll(svg, '"var(--geist-fill)"', fillColor);
-  // svg = replaceAll(svg, '"var(--geist-stroke)"', strokeColor);
   return svg;
 };
 
