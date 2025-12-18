@@ -103,7 +103,7 @@ export default {
     },
     {
       removeAttrs: {
-        attrs: ['svg:width', 'svg:height', 'svg:style', 'svg:color'],
+        attrs: ['svg:width', 'svg:height', 'svg:style', 'svg:color', 'svg:data-testid'],
       },
     },
   ],

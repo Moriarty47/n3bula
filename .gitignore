@@ -115,3 +115,4 @@ tsdoc-metadata.json
 
 # wasted draft
 packages/wasted-*
+packages/**/wasted-*.*

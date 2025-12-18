@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import * as Icons from '@n3bula/vue-icons';
+
+const theme = ref(true);
+
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text);
@@ -24,9 +28,24 @@ const onClick = (e: PointerEvent) => {
 
   copyToClipboard(`import ${key} from '@n3bula/vue-icons/${camelCase2Dash(key)}';`);
 };
+
+onMounted(() => {
+  document.documentElement.classList.add(theme.value ? 'light' : 'dark');
+});
+
+const switchTheme = () => {
+  theme.value = !theme.value;
+  document.documentElement.classList.replace(
+    theme.value ? 'dark' : 'light',
+    theme.value ? 'light' : 'dark',
+  );
+};
 </script>
 
 <template>
+  <button class="switch" @click="switchTheme">
+    change to {{ theme ? 'dark' : 'light' }}
+  </button>
   <div class="icons flex-center" @click="onClick">
     <div v-for="(Icon, key) in Icons" class="icon-box flex-center" :data-key="key">
       <span class="icon flex-center">
@@ -43,6 +62,13 @@ const onClick = (e: PointerEvent) => {
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.switch {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .icons {
