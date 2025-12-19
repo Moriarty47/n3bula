@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/express",
-  "version": "0.0.2-alpha.3",
+  "version": "0.0.3-alpha.1",
   "description": "A Node.js server based on Express.js",
   "type": "module",
   "main": "dist/index.js",
@@ -25,9 +25,9 @@
     "global.d.ts"
   ],
   "scripts": {
-    "dev": "nova",
+    "dev": "nova -- --inspect-brk",
     "build": "nova build",
-    "start": "node dist/index.js"
+    "start": "cd example && pnpm start"
   },
   "keywords": [
     "Express.js",

@@ -18,6 +18,7 @@ export type OneOf<T extends Record<string, any>> = {
 
 export type AppConfig = {
   middlewares?: Record<string, RequestHandler | RequestHandler[] | [string, RequestHandler]>;
+  lang?: 'zh' | 'en';
 } & OneOf<{
   apiDir: ApiDir;
   apis: ApiDir;

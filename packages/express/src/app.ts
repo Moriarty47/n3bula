@@ -3,16 +3,18 @@ import compression from 'compression';
 import cookieParser from 'cookie-parser';
 
 import timeout from '$mw/timeout';
-import { isDev } from '$util/utils';
 import { logger } from '$util/log';
+import { isDev } from '$util/utils';
+import { initMsg } from '$util/msg/index';
 import findFreePort from '$util/find-free-port';
 import autoRegisterRoutes from '$mw/auto-register';
+import { NOOP } from '$const';
 
 import type { Server } from 'node:http';
 import type { App, AppConfig, ListenCallback } from '$types';
-import { NOOP } from '$const';
 
 export async function createApp(appConfig: AppConfig = {} as AppConfig): Promise<App> {
+  await initMsg(appConfig.lang || 'en');
   const app = express()
     .use(cookieParser())
     .use(compression())
@@ -98,5 +100,4 @@ export async function startServer(port: number = 3000, appConfig: AppConfig = {}
 
 if (isDev) {
   startServer();
-
 }

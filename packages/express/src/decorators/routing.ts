@@ -1,13 +1,13 @@
 import express from 'express';
 
 import { logger } from '$util/log';
+import { errorHandler } from '$util/error';
 import { assertsDefined } from '$util/utils';
+import { getResponseAdapter } from '$adapter/response';
+import { TAG } from '$const';
 
 import type { Express, Router as ExpressRouter, RequestHandler } from 'express';
 import type { ExpNextFn, ExpRequest, ExpResponse } from '$types';
-import { TAG } from '$const';
-import { errorHandler } from '$util/error';
-import { getResponseAdapter } from '$adapter/response';
 
 export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
 

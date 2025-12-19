@@ -1,56 +1,35 @@
 import { Msg } from '$util/msg';
+import { statusOk as _statusOk, statusFail as _statusFail } from '$util/msg/status';
+
 import type { Response } from 'express';
+import type { ResponseOk, ResponseFail } from './response';
+import type { StatusOk, StatusFail } from '$util/msg/status';
 
-let status = {
-  SUCCESS: 200,
-  FAIL: 400,
-  FILE_FILTER: 400,
-  UPLOAD_FAIL: 400,
-  MISSING_KEYS: 400,
-  TOKEN: 401,
-  CREDENTIALS: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND_DATA: 404,
-  NOT_FOUND_FILE: 404,
-} as const;
+let statusOk = { ..._statusOk };
+let statusFail = { ..._statusFail };
 
-type IsStringLiteral<T> = T extends string ? (string extends T ? false : true) : false;
-
-export type StatusKey<T extends string = string & {}> =
-  | keyof typeof status
-  | (IsStringLiteral<T> extends true ? T | (string & {}) : T);
-
-type StatusExtendFunc = (res: Response, message?: any) => Response<any, Record<string, any>>;
-
-export type StatusExtend = {
-  [key: string]: number | StatusExtendFunc;
-};
-
-type PickString<T extends any> = T extends string ? T : never;
-
-export type Status<T extends StatusExtend = StatusExtend> = {
-  [K in PickString<StatusKey>]: number | StatusExtendFunc;
-} & {
-  [K in keyof T]: T[K] extends number ? T[K] : T[K] extends StatusExtendFunc ? StatusExtendFunc : never;
-};
-
-export const getDispatchStatus = () => status;
-
-export function extendDispatchStatus<T extends StatusExtend>(patch: Partial<Status<T>>) {
-  status = {
-    ...status,
-    ...patch,
-  };
-  return dispatchStatus<T>;
+export function getDispatchStatus<T extends 0 | 1>(code: T): T extends 0 ? StatusOk : StatusFail {
+  return (code === 0 ? statusOk : statusFail) as any;
 }
 
-export function dispatchStatus<T, Type = T extends StatusExtend ? keyof Status<T> : StatusKey>(
-  res: Response,
-  type?: Type,
-  message?: any,
-) {
-  const handler = (status[(type ?? '') as keyof typeof status] ?? null) as StatusExtendFunc | number | null;
-  if (typeof handler === 'function') return handler(res, message);
-  if (typeof handler === 'number') return res.status(handler).json(message);
-  return res.status(500).json(type || message || Msg.FAIL());
+export function extendDispatchStatus<T extends Record<string, number>>(patchOk: T, patchFail: T) {
+  statusOk = { ...statusOk, ...patchOk };
+  statusFail = { ...statusFail, ...patchFail };
+
+  return dispatchStatus;
+}
+
+export function dispatchStatus<T extends ResponseOk | ResponseFail>(res: Response, payload: T) {
+  const { code, type, ...message } = payload;
+
+  const statusList = getDispatchStatus(code);
+  const status = (statusList as any)[type] as number | undefined;
+
+  if (status)
+    return res.status(status).json({
+      code,
+      ...message,
+    });
+
+  return res.status(500).json(message || Msg.FAIL());
 }
