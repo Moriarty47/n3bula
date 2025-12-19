@@ -1,5 +1,5 @@
-import { stat } from 'node:fs/promises';
 import { join } from 'node:path';
+import { stat } from 'node:fs/promises';
 
 import { cwd, cwdRelative, dynamicImport, logger, useDotEnv } from './util';
 

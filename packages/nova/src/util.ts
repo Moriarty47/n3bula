@@ -4,7 +4,7 @@ import { isAbsolute, join, relative, resolve } from 'node:path';
 import { config as dotEnvConfig } from 'dotenv';
 
 import type { DotenvParseOutput } from 'dotenv';
-import type { _RequiredNovaOptions, NovaOptions, RequiredNovaOptions } from './types';
+import type { RequiredNovaInnerOptions, NovaOptions, RequiredNovaOptions } from './types';
 
 export const NOVA = '@n3bula/nova';
 const PLACEHOLADER = NOVA.replace(/./g, ' ');
@@ -64,7 +64,7 @@ const getInput = (input?: string) => {
   return input;
 };
 
-export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _RequiredNovaOptions => {
+export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): RequiredNovaInnerOptions => {
   const {
     outputFile = 'dist/index.js',
     outputDtsFile = outputFile.replace(/(.*)\.(c|m)?js/, (_, $1) => `${$1}.d.ts`),
@@ -78,7 +78,6 @@ export const mergeDefaultNovaConfig = (cfg: NovaOptions['nova'] = {}): _Required
     alias: {},
     cjs: {},
     dts: {},
-    esbuild: {},
     externals: {},
     json: {},
     nodeResolve: {},
