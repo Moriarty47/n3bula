@@ -15,6 +15,17 @@ export function assertsError<T>(value: T | null, payload?: any): asserts value i
   if (value) throw payload;
 }
 
+// Nodejs Except for DOMException
+export const isError = (arg: unknown): arg is Error => {
+  try {
+    if (arg == null || typeof arg !== 'object') return false;
+
+    return structuredClone(arg) instanceof Error;
+  } catch {
+    return false;
+  }
+};
+
 export type RejectedResult = [Error, null];
 export type ResolvedResult<T> = [null, T];
 export type Result<T> = RejectedResult | ResolvedResult<T>;

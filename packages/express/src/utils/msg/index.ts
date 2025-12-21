@@ -1,8 +1,9 @@
+import { isError } from '$util/utils';
+
 import type { MessagesOk } from './en/ok';
 import type { MessagesFail } from './en/fail';
 
 export type { StatusOk, StatusFail } from './status';
-
 export type { MessagesOk, MessagesFail };
 
 export type MsgResult = {
@@ -19,11 +20,16 @@ export type MsgResultProxy = {
 export type MsgTemplateFn = ((payload?: any) => Omit<MsgResult, 'code'>) | string;
 export type MsgTemplates = Record<string, MsgTemplateFn>;
 
+const formatPayload = (payload: any) => {
+  if (isError(payload)) return `[${payload.name}] ${payload.message}`;
+  return payload;
+};
+
 export const defaultMsgFormatter = (code: number, type: string, msg: string, payload?: any): MsgResult => ({
   code,
   type,
   msg: String(msg ?? ''),
-  ...(payload !== undefined ? { data: payload } : {}),
+  ...(payload !== undefined ? { data: formatPayload(payload) } : {}),
 });
 
 export function createMessageProxy<T extends MsgTemplates>(

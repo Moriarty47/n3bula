@@ -1,8 +1,8 @@
 import express from 'express';
 
 import { logger } from '$util/log';
-import { errorHandler } from '$util/error';
 import { assertsDefined } from '$util/utils';
+import { errorHandler } from '$mw/error-handler';
 import { getResponseAdapter } from '$adapter/response';
 import { TAG } from '$const';
 

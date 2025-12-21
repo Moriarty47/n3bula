@@ -4,6 +4,7 @@ import { statusOk as _statusOk, statusFail as _statusFail } from '$util/msg/stat
 import type { Response } from 'express';
 import type { ResponseOk, ResponseFail } from './response';
 import type { StatusOk, StatusFail } from '$util/msg/status';
+import { isError } from '$util/utils';
 
 let statusOk = { ..._statusOk };
 let statusFail = { ..._statusFail };
@@ -18,8 +19,13 @@ export function extendDispatchStatus<T extends Record<string, number>>(patchOk: 
 
   return dispatchStatus;
 }
+const omitType = <T extends { type?: any }>(payload: T): Omit<T, 'type'> => {
+  const { type, ...result } = payload;
+  return result;
+};
+export function dispatchStatus<T extends ResponseOk | ResponseFail | Error>(res: Response, payload: T) {
+  if (isError(payload)) return res.status(500).json(omitType(Msg.FAIL(payload)));
 
-export function dispatchStatus<T extends ResponseOk | ResponseFail>(res: Response, payload: T) {
   const { code, type, ...message } = payload;
 
   const statusList = getDispatchStatus(code);
@@ -31,5 +37,5 @@ export function dispatchStatus<T extends ResponseOk | ResponseFail>(res: Respons
       ...message,
     });
 
-  return res.status(500).json(message || Msg.FAIL());
+  return res.status(500).json(message || omitType(Msg.FAIL()));
 }

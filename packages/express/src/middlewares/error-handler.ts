@@ -1,4 +1,4 @@
-import { logger } from './log';
+import { logger } from '$util/log';
 import { getResponseAdapter } from '$adapter/response';
 
 import type { Router } from 'express';
