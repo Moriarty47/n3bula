@@ -6,7 +6,7 @@ export const isMouseEvent = (e: ResizeEvent): e is MouseEvent => e.type.startsWi
 
 export const isPointerEvent = (e: ResizeEvent): e is PointerEvent => e.type.startsWith('pointer');
 
-export const getResizeEventCoordinate = (e: ResizeEvent): { x: number; y: number; } => {
+export const getResizeEventCoordinate = (e: ResizeEvent): { x: number; y: number } => {
   if (isPointerEvent(e)) {
     if (e.isPrimary) return { x: e.clientX, y: e.clientY };
   } else if (isMouseEvent(e)) {

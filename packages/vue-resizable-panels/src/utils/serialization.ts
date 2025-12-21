@@ -3,7 +3,7 @@ import type { PanelData } from '@/components/panel.vue';
 import type { ResizePanelStorage } from './storage';
 
 export type PanelConfigurationState = {
-  expandToSizes: { [panelId: string]: number; };
+  expandToSizes: { [panelId: string]: number };
   layout: Layout;
 };
 export type SerializedPanelGroupState = {
@@ -12,12 +12,16 @@ export type SerializedPanelGroupState = {
 
 const getPanelGroupKey = (autoSaveId: string): string => `vue-resize-panels:${autoSaveId}`;
 
-const getPanelKey = (panels: PanelData[]): string => panels
-  .map(({ id }) => id)
-  .sort((a, b) => a.localeCompare(b))
-  .join(',');
+const getPanelKey = (panels: PanelData[]): string =>
+  panels
+    .map(({ id }) => id)
+    .sort((a, b) => a.localeCompare(b))
+    .join(',');
 
-const loadSerializedPanelGroupState = (autoSaveId: string, storage: ResizePanelStorage): SerializedPanelGroupState | null => {
+const loadSerializedPanelGroupState = (
+  autoSaveId: string,
+  storage: ResizePanelStorage,
+): SerializedPanelGroupState | null => {
   try {
     const panelGroupKey = getPanelGroupKey(autoSaveId);
     const serialized = storage.getItem(panelGroupKey);
@@ -25,8 +29,7 @@ const loadSerializedPanelGroupState = (autoSaveId: string, storage: ResizePanelS
       const parsed = JSON.parse(serialized);
       if (parsed && typeof parsed === 'object') return parsed as SerializedPanelGroupState;
     }
-
-  } catch { }
+  } catch {}
   return null;
 };
 
@@ -35,7 +38,7 @@ export const savePanelGroupState = (
   panels: PanelData[],
   panelSizesBeforeCollapse: Map<string, number>,
   sizes: Layout,
-  storage: ResizePanelStorage
+  storage: ResizePanelStorage,
 ): void => {
   const panelGroupKey = getPanelGroupKey(autoSaveId);
   const panelKey = getPanelKey(panels);
@@ -55,7 +58,7 @@ export const savePanelGroupState = (
 export const loadPanelGroupState = (
   autoSaveId: string,
   panels: PanelData[],
-  storage: ResizePanelStorage
+  storage: ResizePanelStorage,
 ): PanelConfigurationState | null => {
   const state = loadSerializedPanelGroupState(autoSaveId, storage) ?? {};
   const panelKey = getPanelKey(panels);

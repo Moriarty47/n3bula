@@ -10,9 +10,4 @@ export const install = (app: App) => {
   app.component('ResizeHandle', ResizeHandle);
 };
 
-export {
-  ResizePanelGroup,
-  ResizePanel,
-  ResizeHandle
-}
-
+export { ResizePanelGroup, ResizePanel, ResizeHandle };

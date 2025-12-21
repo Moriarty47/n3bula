@@ -18,20 +18,21 @@ export const getCursorStyle = (state: CursorState, constraintFlags: number): Cur
       if (verticalMin) return 'se-resize';
       else if (verticalMax) return 'ne-resize';
       return 'e-resize';
-    }
-    else if (horizontalMax) {
+    } else if (horizontalMax) {
       if (verticalMin) return 'sw-resize';
       else if (verticalMax) return 'nw-resize';
       return 'w-resize';
-    }
-    else if (verticalMin) return 's-resize';
+    } else if (verticalMin) return 's-resize';
     else if (verticalMax) return 'n-resize';
   }
 
   switch (state) {
-    case 'horizontal': return 'ew-resize';
-    case 'intersection': return 'move';
-    case 'vertical': return 'ns-resize';
+    case 'horizontal':
+      return 'ew-resize';
+    case 'intersection':
+      return 'move';
+    case 'vertical':
+      return 'ns-resize';
   }
 };
 

@@ -26,8 +26,7 @@ const getAncestors = (node: HTMLElement | null): HTMLElement[] => {
 
 const getZIndex = (node: HTMLElement | null): number => (node && Number(getComputedStyle(node).zIndex)) || 0;
 
-const props =
-  /\b(?:position|zIndex|opacity|transform|webkitTransform|mixBlendMode|filter|webkitFilter|isolation)\b/;
+const props = /\b(?:position|zIndex|opacity|transform|webkitTransform|mixBlendMode|filter|webkitFilter|isolation)\b/;
 
 const isFlexItem = (node: HTMLElement): boolean => {
   // @ts-ignore
@@ -45,12 +44,11 @@ const createStackingContext = (node: HTMLElement): boolean => {
   //   (style.zIndex !== 'auto' && style.position !== 'static') ||
   //   isFlexItem(node)
   // )
-  if (style.zIndex !== 'auto' && style.position !== 'static' || isFlexItem(node)) return true;
+  if ((style.zIndex !== 'auto' && style.position !== 'static') || isFlexItem(node)) return true;
 
   if (+style.opacity < 1) return true;
   if ('transform' in style && style.transform !== 'none') return true;
-  if ('webkitTransform' in style && style.webkitTransform !== 'none')
-    return true;
+  if ('webkitTransform' in style && style.webkitTransform !== 'none') return true;
   if ('mixBlendMode' in style && style.mixBlendMode !== 'normal') return true;
   if ('filter' in style && style.filter !== 'none') return true;
   if ('webkitFilter' in style && style.webkitFilter !== 'none') return true;

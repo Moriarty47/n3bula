@@ -1,5 +1,5 @@
 export default function debounce<T extends Function>(fn: T, wait: number = 50): T {
-  let timeoutId: NodeJS.Timeout | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const callee = function (this: unknown, ...args: any) {
     if (timeoutId !== null) clearTimeout(timeoutId);

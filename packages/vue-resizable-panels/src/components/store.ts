@@ -2,12 +2,7 @@ import { ref, computed, watch } from 'vue';
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { assert } from '@/utils/error';
 import { isArrayShallowEqual as compareLayouts } from '@/utils';
-import {
-  isKeydown,
-  isMouseEvent,
-  isPointerEvent,
-  getResizeEventCursorPosition,
-} from '@/utils/event';
+import { isKeydown, isMouseEvent, isPointerEvent, getResizeEventCursorPosition } from '@/utils/event';
 import {
   getResizeHandle,
   getPivotIndices,
@@ -30,11 +25,12 @@ import {
 } from './resize-handle-registry';
 import debounce from '@/utils/debounce';
 import { fuzzyCompareNumbers, fuzzyNumbersEqual } from '@/utils/number';
+import { loadPanelGroupState, savePanelGroupState } from '@/utils/serialization';
+import { callCallbacks } from '@/utils/callCallbacks';
+
 import type { GroupData } from './panel-group.vue';
 import type { HandleData } from './resize-handle.vue';
 import type { PanelConstraint, PanelData } from './panel.vue';
-import { loadPanelGroupState, savePanelGroupState } from '@/utils/serialization';
-import { callCallbacks } from '@/utils/callCallbacks';
 
 export type Direction = 'vertical' | 'horizontal';
 export type ResizeEvent = KeyboardEvent | MouseEvent | PointerEvent;
@@ -55,7 +51,6 @@ const debounceMap = new Map<string, Function>();
 
 export const useStore = (groupData: GroupData) => {
   const createStore = defineStore(`resize-panel-store-${groupData.id}`, () => {
-
     const layoutRef = ref<Layout>([]);
     const panelsArrayChangedRef = ref<boolean>(false);
     const dragStateRef = ref<DragState | null>(null);
@@ -71,7 +66,7 @@ export const useStore = (groupData: GroupData) => {
       panelsArray: [],
     };
 
-    watch(panelsArrayChangedRef, (newValue) => {
+    watch(panelsArrayChangedRef, newValue => {
       if (!newValue) return;
       panelsArrayChangedRef.value = false;
 
@@ -91,22 +86,20 @@ export const useStore = (groupData: GroupData) => {
         unsafeLayout = calculateUnsafeDefaultLayout(panelsArray);
       }
 
-      const nextLayout = validatePanelGroupLayout(unsafeLayout, panelsArray.map(panel => panel.constraints));
+      const nextLayout = validatePanelGroupLayout(
+        unsafeLayout,
+        panelsArray.map(panel => panel.constraints),
+      );
 
       if (!compareLayouts(prevLayout, nextLayout)) {
         layoutRef.value = nextLayout;
         eagerValues.layout = nextLayout;
 
-        callCallbacks(
-          groupData,
-          panelsArray,
-          nextLayout,
-          panelIdToLastNotifiedSize,
-        );
+        callCallbacks(groupData, panelsArray, nextLayout, panelIdToLastNotifiedSize);
       }
     });
 
-    watch(layoutRef, (newValue) => {
+    watch(layoutRef, newValue => {
       if (!groupData.autoSaveId) return;
       if (newValue.length === 0 || newValue.length !== eagerValues.panelsArray.length) return;
 
@@ -142,12 +135,7 @@ export const useStore = (groupData: GroupData) => {
         layoutRef.value = safeLayout;
         eagerValues.layout = safeLayout;
 
-        callCallbacks(
-          groupData,
-          panelsArray,
-          safeLayout,
-          panelIdToLastNotifiedSize,
-        );
+        callCallbacks(groupData, panelsArray, safeLayout, panelIdToLastNotifiedSize);
       }
     };
 
@@ -160,10 +148,7 @@ export const useStore = (groupData: GroupData) => {
 
       const { collapsedSize = 0, panelSize, pivotIndices } = panelDataHelper(panelsArray, panelData, prevLayout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
       if (!fuzzyNumbersEqual(panelSize, collapsedSize)) {
         // Store size before collapse;
@@ -171,9 +156,7 @@ export const useStore = (groupData: GroupData) => {
         panelSizeBeforeCollapse.set(panelData.id, panelSize);
 
         const isLastPanel = getPanelDataIndex(panelsArray, panelData) === panelsArray.length - 1;
-        const delta = isLastPanel
-          ? panelSize - collapsedSize
-          : collapsedSize - panelSize;
+        const delta = isLastPanel ? panelSize - collapsedSize : collapsedSize - panelSize;
 
         const nextLayout = calculateLayoutByDelta({
           delta,
@@ -188,12 +171,7 @@ export const useStore = (groupData: GroupData) => {
           layoutRef.value = nextLayout;
           eagerValues.layout = nextLayout;
 
-          callCallbacks(
-            groupData,
-            panelsArray,
-            nextLayout,
-            panelIdToLastNotifiedSize,
-          );
+          callCallbacks(groupData, panelsArray, nextLayout, panelIdToLastNotifiedSize);
         }
       }
     };
@@ -212,10 +190,7 @@ export const useStore = (groupData: GroupData) => {
         pivotIndices,
       } = panelDataHelper(panelsArray, panelData, prevLayout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
       const minSize = minSizeOverride ?? minSizeFromProps;
 
@@ -223,13 +198,9 @@ export const useStore = (groupData: GroupData) => {
         // Restore this panel to the size it was before it was collapsed, if possible.
         const prevPanelSize = panelSizeBeforeCollapse.get(panelData.id);
 
-        const baseSize = prevPanelSize != null && prevPanelSize >= minSize
-          ? prevPanelSize
-          : minSize;
+        const baseSize = prevPanelSize != null && prevPanelSize >= minSize ? prevPanelSize : minSize;
         const isLastPanel = getPanelDataIndex(panelsArray, panelData) === panelsArray.length - 1;
-        const delta = isLastPanel
-          ? panelSize - baseSize
-          : baseSize - panelSize;
+        const delta = isLastPanel ? panelSize - baseSize : baseSize - panelSize;
 
         const nextLayout = calculateLayoutByDelta({
           delta,
@@ -244,12 +215,7 @@ export const useStore = (groupData: GroupData) => {
           layoutRef.value = nextLayout;
           eagerValues.layout = nextLayout;
 
-          callCallbacks(
-            groupData,
-            panelsArray,
-            nextLayout,
-            panelIdToLastNotifiedSize,
-          );
+          callCallbacks(groupData, panelsArray, nextLayout, panelIdToLastNotifiedSize);
         }
       }
     };
@@ -258,10 +224,7 @@ export const useStore = (groupData: GroupData) => {
       const { layout, panelsArray } = eagerValues;
       const { collapsedSize = 0, collapsible, panelSize } = panelDataHelper(panelsArray, panelData, layout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
       return collapsible === true && fuzzyNumbersEqual(panelSize, collapsedSize);
     };
@@ -270,10 +233,7 @@ export const useStore = (groupData: GroupData) => {
       const { layout, panelsArray } = eagerValues;
       const { collapsedSize = 0, collapsible, panelSize } = panelDataHelper(panelsArray, panelData, layout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
       return !collapsible || fuzzyCompareNumbers(panelSize, collapsedSize) > 0;
     };
@@ -282,10 +242,7 @@ export const useStore = (groupData: GroupData) => {
       const { layout, panelsArray } = eagerValues;
       const { panelSize } = panelDataHelper(panelsArray, panelData, layout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
       return panelSize;
     };
@@ -341,7 +298,7 @@ export const useStore = (groupData: GroupData) => {
           direction: groupData.direction,
           initialDragState: dragStateRef.value,
           keyboardResizeBy: groupData.keyboardResizeBy,
-          panelGroupElement
+          panelGroupElement,
         });
 
         if (delta === 0) return;
@@ -371,9 +328,7 @@ export const useStore = (groupData: GroupData) => {
             if (!hasLayoutChanged) {
               notifyConstraintsViolation(
                 handleData.id,
-                isHorizontal
-                  ? delta < 0 ? HORIZONTAL_MIN : HORIZONTAL_MAX
-                  : delta < 0 ? VERTICAL_MIN : VERTICAL_MAX
+                isHorizontal ? (delta < 0 ? HORIZONTAL_MIN : HORIZONTAL_MAX) : delta < 0 ? VERTICAL_MIN : VERTICAL_MAX,
               );
             } else {
               notifyConstraintsViolation(handleData.id, 0);
@@ -385,12 +340,7 @@ export const useStore = (groupData: GroupData) => {
           layoutRef.value = nextLayout;
           eagerValues.layout = nextLayout;
 
-          callCallbacks(
-            groupData,
-            eagerValues.panelsArray,
-            nextLayout,
-            panelIdToLastNotifiedSize,
-          );
+          callCallbacks(groupData, eagerValues.panelsArray, nextLayout, panelIdToLastNotifiedSize);
         }
       };
 
@@ -415,7 +365,7 @@ export const useStore = (groupData: GroupData) => {
       };
     };
 
-    const stopDragging = () => dragStateRef.value = null;
+    const stopDragging = () => (dragStateRef.value = null);
 
     const resizePanel = (panelData: PanelData, unsafePanelSize: number) => {
       const { layout: prevLayout, panelsArray } = eagerValues;
@@ -423,14 +373,9 @@ export const useStore = (groupData: GroupData) => {
 
       const { panelSize, pivotIndices, isLastPanel } = panelDataHelper(panelsArray, panelData, prevLayout);
 
-      assert(
-        panelSize != null,
-        `Panel size not found for panel "${panelData.id}"`
-      );
+      assert(panelSize != null, `Panel size not found for panel "${panelData.id}"`);
 
-      const delta = isLastPanel
-        ? panelSize - unsafePanelSize
-        : unsafePanelSize - panelSize;
+      const delta = isLastPanel ? panelSize - unsafePanelSize : unsafePanelSize - panelSize;
 
       const nextLayout = calculateLayoutByDelta({
         delta,
@@ -438,29 +383,21 @@ export const useStore = (groupData: GroupData) => {
         panelConstraints,
         pivotIndices,
         prevLayout,
-        trigger: 'imperative-api'
+        trigger: 'imperative-api',
       });
 
       if (!compareLayouts(prevLayout, nextLayout)) {
         layoutRef.value = nextLayout;
         eagerValues.layout = nextLayout;
 
-        callCallbacks(
-          groupData,
-          panelsArray,
-          nextLayout,
-          panelIdToLastNotifiedSize,
-        );
+        callCallbacks(groupData, panelsArray, nextLayout, panelIdToLastNotifiedSize);
       }
     };
 
     const reevaluatePanelConstraint = (panelData: PanelData, prevConstraint: PanelConstraint) => {
       const { layout, panelsArray } = eagerValues;
 
-      const {
-        collapsible: prevCollapsible,
-        collapsedSize: prevCollapsedSize = 0,
-      } = prevConstraint;
+      const { collapsible: prevCollapsible, collapsedSize: prevCollapsedSize = 0 } = prevConstraint;
 
       const {
         collapsible: nextCollapsible,
@@ -475,11 +412,7 @@ export const useStore = (groupData: GroupData) => {
       // It's possible that the panels in this group have changed since the last render
       if (prevPanelSize == null) return;
 
-      if (
-        prevCollapsible &&
-        nextCollapsible &&
-        fuzzyNumbersEqual(prevPanelSize, prevCollapsedSize)
-      ) {
+      if (prevCollapsible && nextCollapsible && fuzzyNumbersEqual(prevPanelSize, prevCollapsedSize)) {
         if (!fuzzyNumbersEqual(prevCollapsedSize, nextCollapsedSize)) {
           resizePanel(panelData, nextCollapsedSize);
         }

@@ -1,7 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import './style.css';
+
 import App from './app.vue';
+
+import './style.css';
 
 createApp(App)
   .use(createPinia())

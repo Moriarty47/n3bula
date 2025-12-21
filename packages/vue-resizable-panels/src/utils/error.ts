@@ -13,4 +13,4 @@ export function assert(expectedCondition: unknown, message: string): asserts exp
     const error = new AssertionError(message, assert);
     throw error;
   }
-};
+}

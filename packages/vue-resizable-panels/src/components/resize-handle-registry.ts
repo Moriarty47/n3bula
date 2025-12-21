@@ -1,16 +1,12 @@
 import { intersects } from '@/utils/rect';
 import { compareStackingOrder } from '@/utils/stacking-order';
-import { getInputType, getResizeEventCoordinate, } from '@/utils/event';
+import { getInputType, getResizeEventCoordinate } from '@/utils/event';
 import { resetGlobalCursorStyle, setGlobalCursorStyle } from '@/utils/cursor';
 import type { Direction, ResizeEvent } from './store';
 
 export type ResizeHandlerAction = 'down' | 'move' | 'up';
 export type ResizeHandlerState = 'drag' | 'hover' | 'inactive';
-export type SetResizeHandlerState = (
-  action: ResizeHandlerAction,
-  isActive: boolean,
-  e: ResizeEvent
-) => void;
+export type SetResizeHandlerState = (action: ResizeHandlerAction, isActive: boolean, e: ResizeEvent) => void;
 
 export type PointerHitAreaMargins = {
   coarse: number;
@@ -45,7 +41,7 @@ export const registerResizeHandle = (
   element: HTMLElement,
   direction: Direction,
   hitAreaMargins: PointerHitAreaMargins,
-  setResizeHandlerState: SetResizeHandlerState
+  setResizeHandlerState: SetResizeHandlerState,
 ) => {
   const { ownerDocument } = element;
 
@@ -56,10 +52,7 @@ export const registerResizeHandle = (
     setResizeHandlerState,
   };
 
-  ownerDocumentCounts.set(
-    ownerDocument,
-    (ownerDocumentCounts.get(ownerDocument) ?? 0) + 1
-  );
+  ownerDocumentCounts.set(ownerDocument, (ownerDocumentCounts.get(ownerDocument) ?? 0) + 1);
 
   registeredResizeHandlers.add(data);
 
@@ -124,9 +117,9 @@ function updateListeners() {
 
 function pointerDownHandler(e: ResizeEvent) {
   const { x, y } = getResizeEventCoordinate(e);
-  
+
   isPointerDown = true;
-  
+
   recalculateIntersectingHandles(e.target, x, y);
   updateListeners();
 
@@ -190,11 +183,7 @@ function recalculateIntersectingHandles(target: EventTarget | null, x: number, y
 
     const margin = isCoarsePointer ? hitAreaMargins.coarse : hitAreaMargins.fine;
 
-    const isEventIntersects =
-      x >= left - margin &&
-      x <= right + margin &&
-      y >= top - margin &&
-      y <= bottom + margin;
+    const isEventIntersects = x >= left - margin && x <= right + margin && y >= top - margin && y <= bottom + margin;
 
     if (!isEventIntersects) return;
 
@@ -224,9 +213,7 @@ function recalculateIntersectingHandles(target: EventTarget | null, x: number, y
       let didIntersect = false;
       while (currentElement) {
         if (currentElement.contains(dragHandleElement)) break;
-        else if (
-          intersects(currentElement.getBoundingClientRect(), dragHandleRect, true)
-        ) {
+        else if (intersects(currentElement.getBoundingClientRect(), dragHandleRect, true)) {
           didIntersect = true;
           break;
         }
@@ -259,7 +246,7 @@ function updateCursor() {
   });
 
   let constraintFlags = 0;
-  panelConstraintFlags.forEach(flag => constraintFlags |= flag);
+  panelConstraintFlags.forEach(flag => (constraintFlags |= flag));
 
   if (intersectsHorizontal && intersectsVertical) {
     setGlobalCursorStyle('intersection', constraintFlags);

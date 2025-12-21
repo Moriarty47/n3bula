@@ -1,5 +1,6 @@
 import { assert } from './error';
 import { fuzzyNumbersEqual } from './number';
+
 import type { Layout } from '@/components/store';
 import type { PanelData } from '@/components/panel.vue';
 import type { GroupData } from '@/components/panel-group.vue';
@@ -8,7 +9,7 @@ export const callCallbacks = (
   groupData: GroupData,
   panelsArray: PanelData[],
   layout: Layout,
-  panelIdToLastNotifiedSize: Map<string, number>
+  panelIdToLastNotifiedSize: Map<string, number>,
 ) => {
   groupData.onLayout(layout);
 
@@ -30,19 +31,11 @@ export const callCallbacks = (
 
       let isSameSize = fuzzyNumbersEqual(size, collapsedSize);
 
-      if (
-        (lastNotifiedSize == null ||
-          fuzzyNumbersEqual(lastNotifiedSize, collapsedSize)) &&
-        !isSameSize
-      ) {
+      if ((lastNotifiedSize == null || fuzzyNumbersEqual(lastNotifiedSize, collapsedSize)) && !isSameSize) {
         onExpand();
       }
 
-      if (
-        (lastNotifiedSize == null ||
-          !fuzzyNumbersEqual(lastNotifiedSize, collapsedSize)) &&
-        isSameSize
-      ) {
+      if ((lastNotifiedSize == null || !fuzzyNumbersEqual(lastNotifiedSize, collapsedSize)) && isSameSize) {
         onCollapse();
       }
     }

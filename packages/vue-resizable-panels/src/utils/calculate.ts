@@ -4,6 +4,7 @@ import { getPanelGroup, getResizeHandle } from './panel';
 import { getResizeEventCursorPosition, isKeydown } from './event';
 import { PERCISION } from '@/components/constant';
 import { fuzzyCompareNumbers, fuzzyLayoutEqual, fuzzyNumbersEqual } from './number';
+
 import type { PanelConstraint, PanelData } from '@/components/panel.vue';
 import type { Direction, DragState, Layout, ResizeEvent } from '@/components/store';
 
@@ -13,13 +14,13 @@ export const calculateDeltaPercentage = ({
   direction,
   initialDragState,
   keyboardResizeBy,
-  panelGroupElement
+  panelGroupElement,
 }: {
-  event: ResizeEvent,
-  dragHandleId: string,
-  direction: Direction,
-  initialDragState: DragState | null,
-  keyboardResizeBy: number | null,
+  event: ResizeEvent;
+  dragHandleId: string;
+  direction: Direction;
+  initialDragState: DragState | null;
+  keyboardResizeBy: number | null;
   panelGroupElement: HTMLElement;
 }): number => {
   if (isKeydown(event)) {
@@ -36,12 +37,24 @@ export const calculateDeltaPercentage = ({
 
     let movement = 0;
     switch (event.key) {
-      case 'ArrowUp': movement = isHorizontal ? 0 : -delta; break;
-      case 'ArrowRight': movement = isHorizontal ? delta : 0; break;
-      case 'ArrowDown': movement = isHorizontal ? 0 : delta; break;
-      case 'ArrowLeft': movement = isHorizontal ? -delta : 0; break;
-      case 'End': movement = 100; break;
-      case 'Home': movement = -100; break;
+      case 'ArrowUp':
+        movement = isHorizontal ? 0 : -delta;
+        break;
+      case 'ArrowRight':
+        movement = isHorizontal ? delta : 0;
+        break;
+      case 'ArrowDown':
+        movement = isHorizontal ? 0 : delta;
+        break;
+      case 'ArrowLeft':
+        movement = isHorizontal ? -delta : 0;
+        break;
+      case 'End':
+        movement = 100;
+        break;
+      case 'Home':
+        movement = -100;
+        break;
     }
 
     return movement;
@@ -57,7 +70,7 @@ export const calculateDragOffsetPercentage = (
   dragHandleId: string,
   direction: Direction,
   initialDragState: DragState,
-  panelGroupElement: HTMLElement
+  panelGroupElement: HTMLElement,
 ): number => {
   const isHorizontal = direction === 'horizontal';
 
@@ -82,26 +95,16 @@ export const calculateDragOffsetPercentage = (
   return (offsetPixels / groupSizeInPixels) * 100;
 };
 
-export const calculatePanelSize = (
-  panelConstraints: PanelConstraint[],
-  panelIndex: number,
-  size: number
-) => {
+export const calculatePanelSize = (panelConstraints: PanelConstraint[], panelIndex: number, size: number) => {
   const panelConstraint = panelConstraints[panelIndex];
   assert(panelConstraint != null, `Panel constraints not found for index ${panelIndex}`);
 
-  let {
-    collapsedSize = 0,
-    collapsible,
-    maxSize = 100,
-    minSize = 0,
-  } = panelConstraint;
+  let { collapsedSize = 0, collapsible, maxSize = 100, minSize = 0 } = panelConstraint;
 
   if (fuzzyCompareNumbers(size, minSize) < 0) {
     if (collapsible) {
       const halfwayPoint = (collapsedSize + minSize) / 2;
-      size =
-        fuzzyCompareNumbers(size, halfwayPoint) < 0 ? collapsedSize : minSize;
+      size = fuzzyCompareNumbers(size, halfwayPoint) < 0 ? collapsedSize : minSize;
     } else {
       size = minSize;
     }
@@ -121,12 +124,12 @@ export const calculateLayoutByDelta = ({
   prevLayout,
   trigger,
 }: {
-  delta: number,
-  initialLayout: Layout,
-  panelConstraints: PanelConstraint[],
-  pivotIndices: number[],
-  prevLayout: Layout,
-  trigger: 'imperative-api' | 'keyboard' | 'mouse-or-touch',
+  delta: number;
+  initialLayout: Layout;
+  panelConstraints: PanelConstraint[];
+  pivotIndices: number[];
+  prevLayout: Layout;
+  trigger: 'imperative-api' | 'keyboard' | 'mouse-or-touch';
 }): Layout => {
   if (fuzzyNumbersEqual(delta, 0)) return initialLayout;
 
@@ -152,23 +155,13 @@ export const calculateLayoutByDelta = ({
         // Check if we should expand a collapsed panel
         const index = delta < 0 ? nextPivotIndex : prevPivotIndex;
         const panelConstraint = panelConstraints[index];
-        assert(
-          panelConstraint,
-          `Panel constraints not found for index ${index}`
-        );
+        assert(panelConstraint, `Panel constraints not found for index ${index}`);
 
-        const {
-          collapsedSize = 0,
-          collapsible,
-          minSize = 0,
-        } = panelConstraint;
+        const { collapsedSize = 0, collapsible, minSize = 0 } = panelConstraint;
 
         if (collapsible) {
           const prevSize = initialLayout[index];
-          assert(
-            prevSize != null,
-            `Previous layout not found for panel index ${index}`
-          );
+          assert(prevSize != null, `Previous layout not found for panel index ${index}`);
 
           if (fuzzyNumbersEqual(prevSize, collapsedSize)) {
             const localDelta = minSize - prevSize;
@@ -184,23 +177,13 @@ export const calculateLayoutByDelta = ({
         // Check if we should collapse a panel at its minimum size
         const index = delta < 0 ? prevPivotIndex : nextPivotIndex;
         const panelConstraint = panelConstraints[index];
-        assert(
-          panelConstraint,
-          `No panel constraints found for index ${index}`
-        );
+        assert(panelConstraint, `No panel constraints found for index ${index}`);
 
-        const {
-          collapsedSize = 0,
-          collapsible,
-          minSize = 0,
-        } = panelConstraint;
+        const { collapsedSize = 0, collapsible, minSize = 0 } = panelConstraint;
 
         if (collapsible) {
           const prevSize = initialLayout[index];
-          assert(
-            prevSize != null,
-            `Previous layout not found for panel index ${index}`
-          );
+          assert(prevSize != null, `Previous layout not found for panel index ${index}`);
 
           if (fuzzyNumbersEqual(prevSize, minSize)) {
             const localDelta = prevSize - collapsedSize;
@@ -259,7 +242,10 @@ export const calculateLayoutByDelta = ({
 
         nextLayout[index] = safeSize;
 
-        if (deltaApplied.toPrecision(3).localeCompare(Math.abs(delta).toPrecision(3), undefined, { numeric: true }) >= 0) break;
+        if (
+          deltaApplied.toPrecision(3).localeCompare(Math.abs(delta).toPrecision(3), undefined, { numeric: true }) >= 0
+        )
+          break;
       }
 
       if (delta < 0) index--;
