@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/startup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "type": "module",
   "main": "lib/index.js",
@@ -10,11 +10,12 @@
   "files": [
     "bin",
     "lib",
-    "keys"
+    "scripts"
   ],
   "scripts": {
     "dev": "pnpm build && node lib/index.js",
-    "build": "node esbuild.config.ts"
+    "build": "node esbuild.config.ts",
+    "postinstall": "node scripts/gen-default-certs.js"
   },
   "keywords": [
     "static",
