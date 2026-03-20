@@ -112,7 +112,7 @@ onUnmounted(unregister);
 
 <template>
   <component :is="tagName" ref="handleRef" role="separator" tabindex="0"
-    class="flex-[0_0_.2rem] outline-none touch-none select-none items-stretch justify-stretch flex transition-[background-color] duration-200 ease-linear data-[resize-handle-active=pointer]:bg-slate-700 data-[resize-handle-active=keyboard]:bg-slate-700"
+    class="vrp-flex-[0_0_.2rem] vrp-outline-none vrp-touch-none vrp-select-none vrp-items-stretch vrp-justify-stretch vrp-flex vrp-transition-[background-color] vrp-duration-200 vrp-ease-linear data-[resize-handle-active=pointer]:vrp-bg-slate-700 data-[resize-handle-active=keyboard]:vrp-bg-slate-700"
     @focus="focusHandler" @blur="blurHandler" @mousedown="mousedownHandler" @mouseup="mouseupHandler"
     :data-resize-handle-id="handleId" :data-resize-handle-state="activeState"
     :data-resize-handle-active="activeState === 'drag' ? 'pointer' : isFocused ? 'keyboard' : undefined" />

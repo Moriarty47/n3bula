@@ -9,6 +9,7 @@ const flexCenterBase = {
 
 const config: Config = {
   corePlugins: { preflight: false },
+  prefix: 'vrp-',
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",

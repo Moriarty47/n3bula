@@ -84,8 +84,8 @@ onUpdated(() => {
 </script>
 
 <template>
-  <component :is="tagName" ref="panelGroupRef" class="w-full h-full flex"
-    :class="[direction === 'vertical' ? 'flex-col' : 'flex-row']" data-panel-group :data-panel-group-id="id">
+  <component :is="tagName" ref="panelGroupRef" class="vrp-w-full vrp-h-full vrp-flex"
+    :class="[direction === 'vertical' ? 'vrp-flex-col' : 'vrp-flex-row']" data-panel-group :data-panel-group-id="id">
     <template v-if="store">
       <template v-for="(slot, i) in computedSlots" :key="slot.key">
         <component :is="slot" :data-index="i" :data-panel-group-id="id"></component>

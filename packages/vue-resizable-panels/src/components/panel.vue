@@ -97,7 +97,7 @@ defineExpose({
 </script>
 
 <template>
-  <component :is="tagName" class="overflow-hidden flex" :style="store.getPanelStyle(panelData)" data-panel
+  <component :is="tagName" class="vrp-overflow-hidden vrp-flex" :style="store.getPanelStyle(panelData)" data-panel
     :data-panel-id="panelId">
     <slot />
   </component>

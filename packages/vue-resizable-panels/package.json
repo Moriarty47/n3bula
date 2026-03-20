@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/vue-resizable-panels",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -26,11 +26,8 @@
     "vue",
     "n3bula"
   ],
-  "dependencies": {
-    "pinia": "^2.1.7",
-    "vue": "^3.4.29"
-  },
   "peerDependencies": {
+    "vue": ">=3.4.29",
     "pinia": ">=2.1.7"
   },
   "devDependencies": {
@@ -41,7 +38,9 @@
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
     "vite-plugin-dts": "^4.5.4",
-    "vue-tsc": "^2.0.21"
+    "vue-tsc": "^2.0.21",
+    "vue": "^3.4.29",
+    "pinia": "^2.1.7"
   },
   "contributors": [
     {
