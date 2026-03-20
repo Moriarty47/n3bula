@@ -1,0 +1,3 @@
+{"cmd":"SET","key":"a","value":"a"}
+{"cmd":"SET","key":"a","value":"a a"}
+{"cmd":"SET","key":"123","value":"123"}

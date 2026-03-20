@@ -1,0 +1,54 @@
+{
+  "name": "@n3bula/mini-redis",
+  "version": "0.0.3-alpha.2",
+  "description": "A mini redis-like database",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "nova -- --inspect-brk",
+    "build": "nova build",
+    "start": "cd example && pnpm start"
+  },
+  "keywords": [
+    "Redis-Like",
+    "n3bula",
+    "database"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/mini-redis#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/mini-redis"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@n3bula/echo": "workspace:*",
+    "@n3bula/nova": "workspace:*",
+    "@types/node": "^25.0.3"
+  }
+}
