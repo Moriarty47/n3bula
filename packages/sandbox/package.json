@@ -1,0 +1,45 @@
+{
+  "name": "@n3bula/sandbox",
+  "version": "0.0.1-alpha.1",
+  "description": "Simple Sandbox for Node.js module quick test",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "typings": "dist/index.d.mts",
+  "scripts": {
+    "dev": "tsx --experimental-vm-modules example/server.ts",
+    "build": "tsdown"
+  },
+  "keywords": [
+    "sandbox",
+    "node"
+  ],
+  "contributors": [
+    {
+      "name": "Moriarty47",
+      "email": "wang_jn_xian@163.com"
+    }
+  ],
+  "homepage": "https://github.com/Moriarty47/n3bula/tree/main/packages/sandbox#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moriarty47/n3bula.git",
+    "directory": "packages/sandbox"
+  },
+  "author": {
+    "name": "Moriarty47",
+    "email": "wang_jn_xian@163.com"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "pnpm@10.26.1",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsdown": "^0.21.5"
+  },
+  "dependencies": {
+    "@n3bula/echo": "workspace:^"
+  }
+}
