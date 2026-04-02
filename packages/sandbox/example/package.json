@@ -1,0 +1,12 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "dev": "tsx --experimental-vm-modules --inspect server.ts"
+  },
+  "packageManager": "pnpm@10.26.1",
+  "devDependencies": {
+    "@n3bula/sandbox": "workspace:^"
+  }
+}

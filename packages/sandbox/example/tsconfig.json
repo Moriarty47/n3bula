@@ -4,7 +4,7 @@
     "target": "ES2022",
     "lib": ["ES2022"],
     "module": "es2022",
-    "types": ["node"],
+    "types": ["node", "@n3bula/sandbox/types"],
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "noEmit": true,
@@ -17,5 +17,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["tsdown.config.ts", "src"]
+  "include": ["*.ts"]
 }

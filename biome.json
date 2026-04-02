@@ -1,0 +1,108 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "source": [":URL:", ":NODE:"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": [":PACKAGE:", "!@n3bula/**"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": ["@n3bula/**"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": ["@/**", "!@/config", "!@/const", "!@/util/**"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": ["@/util/**"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": ["@/config", "@/const"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "source": [":PATH:"],
+                "type": false
+              },
+              ":BLANK_LINE:",
+              {
+                "type": false
+              }
+            ]
+          }
+        },
+        "useSortedAttributes": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    },
+    "enabled": true
+  },
+  "files": {
+    "includes": ["**", "!**/dist", "!**/*.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "trailingNewline": true
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "asNeeded",
+      "indentStyle": "space",
+      "jsxQuoteStyle": "single",
+      "operatorLinebreak": "before",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "trailingNewline": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "complexity": { "noUselessCatch": "off" },
+      "correctness": "off",
+      "recommended": true,
+      "style": {
+        "noNonNullAssertion": "off",
+        "useImportType": {
+          "fix": "safe",
+          "level": "error",
+          "options": {
+            "style": "separatedType"
+          }
+        },
+        "useNodejsImportProtocol": {
+          "fix": "safe",
+          "level": "error"
+        }
+      },
+      "suspicious": "off"
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
+}
