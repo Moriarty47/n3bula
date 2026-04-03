@@ -1,0 +1,50 @@
+{
+  "name": "@n3bula/{{packageName}}",
+  "version": "{{packageVersion}}",
+  "description": "{{libarayDesc}}",
+  "type": "module",
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    },
+    "./types": {
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [{{{packageKeywords}}}],
+  "contributors": [
+    {
+      "name": "{{gitAuthor}}",
+      "email": "{{gitAuthorEmail}}"
+    }
+  ],
+  "homepage": "https://github.com/{{gitAuthor}}/n3bula/tree/main/packages/{{packageName}}#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/{{gitAuthor}}/n3bula.git",
+    "directory": "packages/{{packageName}}"
+  },
+  "author": {
+    "name": "{{gitAuthor}}",
+    "email": "{{gitAuthorEmail}}"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "pnpm@10.26.1",
+  "sideEffects": false
+}
