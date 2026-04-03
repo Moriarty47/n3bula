@@ -12,14 +12,13 @@ export type DebounceFunc = (...rest: any[]) => void;
 export default function debounce(
   func: DebounceFunc,
   delay: number,
-  options?: DebounceOptions
+  options?: DebounceOptions,
 ): DebounceFunc {
   if (typeof func !== 'function') {
     throw new TypeError('Expected a function.');
   }
 
-  let
-    result: any,
+  let result: any,
     timerId: number | undefined,
     lastArgs: any[] | undefined,
     lastThis: any | undefined,
@@ -38,7 +37,8 @@ export default function debounce(
     maxDelay = maxing ? Math.max(options.maxDelay || 0, delay) : maxDelay;
   }
 
-  const useRAF = (!delay && delay !== 0 && typeof root.requestAnimationFrame === 'function');
+  const useRAF =
+    !delay && delay !== 0 && typeof root.requestAnimationFrame === 'function';
 
   function invokeFunc(time: number) {
     const args = lastArgs;
@@ -76,9 +76,12 @@ export default function debounce(
   function shouldInvoke(time: number) {
     const timeSinceLastCall = time - lastCallTime!;
     const timeSinceLastInvoke = time - lastInvokeTime;
-    return (lastCallTime === undefined || timeSinceLastCall >= delay)
-      || (timeSinceLastCall < 0)
-      || (maxing && timeSinceLastInvoke >= maxDelay);
+    return (
+      lastCallTime === undefined
+      || timeSinceLastCall >= delay
+      || timeSinceLastCall < 0
+      || (maxing && timeSinceLastInvoke >= maxDelay)
+    );
   }
 
   function timerExpired() {

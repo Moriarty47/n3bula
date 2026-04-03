@@ -15,25 +15,31 @@ const defaultOptions: Options = {
   padding: CryptoPad.Pkcs7,
 };
 
-function encAES(message: string, key: string, iv: string, options: Options = defaultOptions) {
-  return Crypto.AES
-    .encrypt(message, Crypto.enc.Utf8.parse(key), {
-      iv: Crypto.enc.Utf8.parse(iv),
-      ...options,
-    })
-    .toString();
+function encAES(
+  message: string,
+  key: string,
+  iv: string,
+  options: Options = defaultOptions,
+) {
+  return Crypto.AES.encrypt(message, Crypto.enc.Utf8.parse(key), {
+    iv: Crypto.enc.Utf8.parse(iv),
+    ...options,
+  }).toString();
 }
 
-function decAES(message: string, key: string, iv: string, options: Options = defaultOptions) {
-  return Crypto.AES
-    .decrypt(message, Crypto.enc.Utf8.parse(key), {
-      iv: Crypto.enc.Utf8.parse(iv),
-      ...options,
-    })
-    .toString(Crypto.enc.Utf8);
+function decAES(
+  message: string,
+  key: string,
+  iv: string,
+  options: Options = defaultOptions,
+) {
+  return Crypto.AES.decrypt(message, Crypto.enc.Utf8.parse(key), {
+    iv: Crypto.enc.Utf8.parse(iv),
+    ...options,
+  }).toString(Crypto.enc.Utf8);
 }
 
-export const AES = { en: encAES, de: decAES };
+export const AES = { de: decAES, en: encAES };
 
 function enBase64(message: string) {
   return Crypto.enc.Base64.stringify(Crypto.enc.Utf8.parse(message));
@@ -43,7 +49,7 @@ function deBase64(message: string) {
   return Crypto.enc.Base64.parse(message).toString(Crypto.enc.Utf8);
 }
 
-export const Base64 = { en: enBase64, de: deBase64 };
+export const Base64 = { de: deBase64, en: enBase64 };
 
 export function SHA256(message: string, cfg?: object) {
   return Crypto.SHA256(message, cfg).toString();

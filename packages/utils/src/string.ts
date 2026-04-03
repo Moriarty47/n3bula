@@ -21,8 +21,7 @@ export const camel2kebab = (str: string = '') => {
 
 export const kebab2camel = (str: string = '') => {
   if (!str) return '';
-  return (str || '')
-    .replace(/[-_](\w)/g, (_, p1) => p1.toUpperCase());
+  return (str || '').replace(/[-_](\w)/g, (_, p1) => p1.toUpperCase());
 };
 
 export const is32Bit = (char: string, i: number): boolean => {
@@ -58,7 +57,12 @@ export const padEnd = (str: string, length: number, char: string): string => {
   return str + padding;
 };
 
-export const padStartEnd = (str: string, length: number, char1: string = '', char2: string = char1): string => {
+export const padStartEnd = (
+  str: string,
+  length: number,
+  char1: string = '',
+  char2: string = char1,
+): string => {
   const strLen = getCodePointLength(str);
   const paddingLen = Math.max(0, length - strLen);
   const leftPadingLen = Math.floor(paddingLen / 2);
@@ -66,7 +70,11 @@ export const padStartEnd = (str: string, length: number, char1: string = '', cha
   return char1.repeat(leftPadingLen) + str + char2.repeat(rightPadingLen);
 };
 
-export const emptyPadStart = (length: number, str: string = '', pad: string = ''): string => {
+export const emptyPadStart = (
+  length: number,
+  str: string = '',
+  pad: string = '',
+): string => {
   return padStart(str, length, pad);
 };
 

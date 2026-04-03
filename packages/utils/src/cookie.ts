@@ -6,16 +6,20 @@ type CookieOptions = {
 };
 
 type CookiesProps = {
-  options?: CookieOptions,
+  options?: CookieOptions;
   transformer?: {
-    read: (value: string) => string,
-    write: (value: string) => string,
+    read: (value: string) => string;
+    write: (value: string) => string;
   };
 };
 
 type CookiesReturn = {
   has: (name: string) => boolean;
-  set: (name: string, value: string, options?: CookieOptions) => string | undefined;
+  set: (
+    name: string,
+    value: string,
+    options?: CookieOptions,
+  ) => string | undefined;
   get: (...names: string[]) => Record<string, Array<string>>;
   size: () => number;
   delete(name: string, attributes: CookieOptions): void;
@@ -23,10 +27,15 @@ type CookiesReturn = {
 
 // /(?![ ;])([^=]+)=([^;]+)/g
 
-export default function useCookies({ options, transformer }: CookiesProps = {}): CookiesReturn | undefined {
+export default function useCookies({
+  options,
+  transformer,
+}: CookiesProps = {}): CookiesReturn | undefined {
   if (typeof document === 'undefined' || typeof window === 'undefined') return;
   if (!window.navigator.cookieEnabled) {
-    throw new Error('The browser does not support or is blocking cookies from being set.');
+    throw new Error(
+      'The browser does not support or is blocking cookies from being set.',
+    );
   }
 
   function read(value: string) {
@@ -38,7 +47,7 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
   function write(value: string) {
     return encodeURIComponent(value).replace(
       /%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,
-      decodeURIComponent
+      decodeURIComponent,
     );
   }
 
@@ -73,7 +82,7 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
     let serializedString = '';
     for (const attr in options) {
       if (Object.prototype.hasOwnProperty.call(options, attr)) {
-        if (!(options[attr])) continue;
+        if (!options[attr]) continue;
 
         serializedString += `; ${attr}`;
 
@@ -83,11 +92,13 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
       }
     }
 
-    return (document.cookie =
-      `${name}=${transformer!.write(value)}${serializedString}`);
+    return (document.cookie = `${name}=${transformer!.write(value)}${serializedString}`);
   }
 
-  function getAll(cookies: string[], result: Record<string, Set<string> | Array<string>>) {
+  function getAll(
+    cookies: string[],
+    result: Record<string, Set<string> | Array<string>>,
+  ) {
     for (let i = 0, len = cookies.length; i < len; i += 1) {
       const cookieParts = cookies[i].split('=');
       const value = cookieParts.slice(1).join('=');
@@ -98,7 +109,7 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
           result[key] = new Set();
         }
         (result[key] as Set<string>).add(transformer!.read(value));
-      } catch { }
+      } catch {}
     }
   }
 
@@ -123,7 +134,7 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
             result[key] = new Set();
           }
           (result[key] as Set<string>).add(transformer!.read(value));
-        } catch { }
+        } catch {}
       }
     }
 
@@ -150,12 +161,12 @@ export default function useCookies({ options, transformer }: CookiesProps = {}):
   }
 
   return {
-    has,
-    set,
-    get,
-    size,
     delete(name: string, attributes: CookieOptions) {
       set(name, '', { ...attributes, expires: -1 });
     },
+    get,
+    has,
+    set,
+    size,
   };
 }

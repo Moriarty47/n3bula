@@ -8,29 +8,29 @@ export default defineConfig(({ mode }) => {
   const srcFiles = fs.readdirSync(srcDirPath);
 
   return {
-    resolve: {
-      alias: {
-        '@': srcDirPath,
-      },
-    },
     build: {
-      outDir: path.resolve(__dirname, './lib'),
       emptyOutDir: true,
-      rollupOptions: {
-        external: ['path'],
-      },
       lib: {
         entry: srcFiles.map(pt => path.resolve(srcDirPath, pt)),
-        formats: ['es', 'cjs'],
         fileName: (format, entryName) => {
           if (format === 'cjs') {
             return `cjs/${entryName}.cjs`;
           }
           return `esm/${entryName}.mjs`;
         },
+        formats: ['es', 'cjs'],
+      },
+      minify: mode === 'development' ? false : 'esbuild',
+      outDir: path.resolve(__dirname, './lib'),
+      rollupOptions: {
+        external: ['path'],
       },
       sourcemap: mode === 'development',
-      minify: mode === 'development' ? false : 'esbuild',
+    },
+    resolve: {
+      alias: {
+        '@': srcDirPath,
+      },
     },
   };
 });

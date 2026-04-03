@@ -2,7 +2,7 @@
  * Parse numeric range such as '1-4','1,2', etc.
  */
 export const numericRangeParser = (input: string): number[] => {
-  let output: number[] = [];
+  const output: number[] = [];
   let matched: RegExpMatchArray | null;
 
   const inputArr = input.split(',').map(i => i.trim());
@@ -11,11 +11,17 @@ export const numericRangeParser = (input: string): number[] => {
 
   const dashNumberRegex = new RegExp(`^${dashNumberStr}$`);
   const dotNumberRegex = new RegExp(
-    '^' +
-    '(' + dashNumberStr + ')' +
-    '(' + '-|\\.\\.\\.?|\\u2025|\\u2026|\\u22EF' + ')' +
-    '(' + dashNumberStr + ')' +
-    '$'
+    '^'
+      + '('
+      + dashNumberStr
+      + ')'
+      + '('
+      + '-|\\.\\.\\.?|\\u2025|\\u2026|\\u22EF'
+      + ')'
+      + '('
+      + dashNumberStr
+      + ')'
+      + '$',
   );
 
   inputArr.forEach(str => {
@@ -24,8 +30,8 @@ export const numericRangeParser = (input: string): number[] => {
     } else if ((matched = str.match(dotNumberRegex))) {
       let lt: string | number;
       let rt: string | number;
-      let sep: string;
-      [, lt, sep, rt] = matched;
+      [, lt, , rt] = matched;
+      const sep: string = matched[2];
       if (!lt || !rt) return;
       lt = parseInt(lt, 10);
       rt = parseInt(rt, 10);

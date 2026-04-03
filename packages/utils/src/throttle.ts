@@ -1,14 +1,15 @@
+import debounce, { type DebounceFunc, type DebounceOptions } from './debounce';
 import { isObject } from './is';
-import debounce, {
-  type DebounceOptions,
-  type DebounceFunc
-} from './debounce';
 
 type ThrottleOptions = DebounceOptions;
 
 type ThrottleFunc = DebounceFunc;
 
-export default function throttle(func: ThrottleFunc, delay: number, options: ThrottleOptions) {
+export default function throttle(
+  func: ThrottleFunc,
+  delay: number,
+  options: ThrottleOptions,
+) {
   let leading = true;
   let trailing = true;
 
@@ -23,7 +24,7 @@ export default function throttle(func: ThrottleFunc, delay: number, options: Thr
 
   return debounce(func, delay, {
     leading,
+    maxDelay: delay,
     trailing,
-    maxDelay: delay
   });
-};
+}

@@ -1,9 +1,11 @@
-const theGlobal = typeof global === 'object'
+const theGlobal =
+  typeof global === 'object'
   && global !== null
   && global.Object === Object
   && global;
 
-const theGlobalThis = typeof globalThis === 'object'
+const theGlobalThis =
+  typeof globalThis === 'object'
   && globalThis !== null
   && globalThis.Object === Object
   && globalThis;

@@ -23,7 +23,6 @@ const methodMap: readonly string[][] = [
     'webkitFullscreenEnabled',
     'webkitfullscreenchange',
     'webkitfullscreenerror',
-
   ],
   // Old WebKit
   [
@@ -33,7 +32,6 @@ const methodMap: readonly string[][] = [
     'webkitCancelFullScreen',
     'webkitfullscreenchange',
     'webkitfullscreenerror',
-
   ],
   [
     'mozRequestFullScreen',
@@ -56,7 +54,10 @@ const methodMap: readonly string[][] = [
 const exist = Symbol('exist');
 
 const nativeAPI = (() => {
-  const apis = { [exist]: 'false' } as unknown as Record<CommonMethod | symbol, string>;
+  const apis = { [exist]: 'false' } as unknown as Record<
+    CommonMethod | symbol,
+    string
+  >;
   if (typeof document === 'undefined') return apis;
 
   apis[exist] = 'true';
@@ -90,7 +91,9 @@ class Fullscreen {
 
       this.on('change', onFullscreenEntered);
 
-      const requestFullscreenMethod = element[nativeAPI.requestFullscreen as keyof HTMLElement] as (options?: FullscreenOptions) => Promise<void> | void;
+      const requestFullscreenMethod = element[
+        nativeAPI.requestFullscreen as keyof HTMLElement
+      ] as (options?: FullscreenOptions) => Promise<void> | void;
 
       Promise.resolve(requestFullscreenMethod.call(element, options))
         .then(onFullscreenEntered)
@@ -109,7 +112,9 @@ class Fullscreen {
 
       this.on('change', onFullscreenExited);
 
-      const exitFullscreenMethod = document[nativeAPI.exitFullscreen as keyof Document] as () => Promise<void> | void;
+      const exitFullscreenMethod = document[
+        nativeAPI.exitFullscreen as keyof Document
+      ] as () => Promise<void> | void;
 
       Promise.resolve(exitFullscreenMethod.call(document))
         .then(onFullscreenExited)
@@ -141,7 +146,9 @@ class Fullscreen {
     document.removeEventListener(eventName, handler, false);
   }
 
-  get __rawMap() { return nativeAPI; }
+  get __rawMap() {
+    return nativeAPI;
+  }
 
   get enabled() {
     return Boolean(document[nativeAPI.fullscreenEnabled as keyof Document]);
@@ -156,6 +163,9 @@ class Fullscreen {
   }
 }
 
-const fullscreen = nativeAPI[exist] === 'true' ? new Fullscreen() : { enabled: false } as unknown as Fullscreen;
+const fullscreen =
+  nativeAPI[exist] === 'true'
+    ? new Fullscreen()
+    : ({ enabled: false } as unknown as Fullscreen);
 
 export default fullscreen;

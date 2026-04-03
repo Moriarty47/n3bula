@@ -4,8 +4,13 @@ export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Record<string, any> ? DeepPartial<T[P]> : T[P];
 };
 
-export type UnionToIntersection<T> =
-  (T extends any ? (k: T) => void : never) extends ((k: infer U) => void) ? U : never;
+export type UnionToIntersection<T> = (
+  T extends any
+    ? (k: T) => void
+    : never
+) extends (k: infer U) => void
+  ? U
+  : never;
 
 export const simpleMerge = <T extends Record<string, any>>(
   source: T,
@@ -25,7 +30,13 @@ export const simpleMerge = <T extends Record<string, any>>(
   return merged;
 };
 
-export const assignMerge = <T extends Record<string, any>, U extends Array<Record<string, any>>>(target: T, ...rest: U): T & UnionToIntersection<U[number]> => {
+export const assignMerge = <
+  T extends Record<string, any>,
+  U extends Array<Record<string, any>>,
+>(
+  target: T,
+  ...rest: U
+): T & UnionToIntersection<U[number]> => {
   for (let i = 0, len = rest.length; i < len; i += 1) {
     const source = rest[i];
     (Object.keys(source) as (keyof T)[]).forEach(key => {

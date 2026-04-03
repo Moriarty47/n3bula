@@ -1,10 +1,14 @@
 import yaml from 'js-yaml';
-import type { LoadOptions, DumpOptions } from 'js-yaml';
+
+import type { DumpOptions, LoadOptions } from 'js-yaml';
 
 const optionalByteOrderMark = '\\ufeff?';
 const platform = typeof process !== 'undefined' ? process.platform : '';
 const isWin32 = platform === 'win32';
-const regex = new RegExp(`^(${optionalByteOrderMark}(= yaml =|---)$([\\s\\S]*?)^(?:\\2|\\.\\.\\.)\\s*$${isWin32 ? '\\r?' : ''}(?:\\n)?)`, 'm');
+const regex = new RegExp(
+  `^(${optionalByteOrderMark}(= yaml =|---)$([\\s\\S]*?)^(?:\\2|\\.\\.\\.)\\s*$${isWin32 ? '\\r?' : ''}(?:\\n)?)`,
+  'm',
+);
 
 export type ExtractOptions = LoadOptions;
 export type SerializeOptions = DumpOptions;
@@ -29,31 +33,35 @@ const getBodyBegin = (content: string, matched: RegExpExecArray) => {
 
 const parse = (content: string, options: ExtractOptions): ExtractResult => {
   const matched = regex.exec(content);
-  if (!matched) return {
-    frontmatter: {},
-    body: content,
-    bodyBegin: 1,
-  };
+  if (!matched)
+    return {
+      body: content,
+      bodyBegin: 1,
+      frontmatter: {},
+    };
 
   const str = matched[matched.length - 1].replace(/^\s+|\s+$/g, '');
   const frontmatter = yaml.load(str, options) as Frontmatter;
   return {
-    frontmatter,
     body: content.replace(matched[0], ''),
     bodyBegin: getBodyBegin(content, matched),
+    frontmatter,
   };
 };
 
 /**
- * extract the markdown frontmatter from the contents 
+ * extract the markdown frontmatter from the contents
  * @param content content to extract
  * @param options extract options
  * @returns extracted result
  */
-export const extract = (content: string, options: ExtractOptions = {}): ExtractResult => {
+export const extract = (
+  content: string,
+  options: ExtractOptions = {},
+): ExtractResult => {
   const _options: ExtractOptions = {
     json: true,
-    ...options
+    ...options,
   };
 
   const [line] = content.split(/(\r?\n)/);
@@ -61,9 +69,9 @@ export const extract = (content: string, options: ExtractOptions = {}): ExtractR
     return parse(content, _options);
   }
   return {
-    frontmatter: {},
     body: content,
     bodyBegin: 1,
+    frontmatter: {},
   };
 };
 

@@ -1,17 +1,19 @@
 import { JSEncrypt as Encrypt } from 'jsencrypt';
+
 import { getRandomStr } from './string';
 
 export const JSEncrypt = Encrypt;
 
 export class RSA {
-  keyCodeMap: Record<string, { key: string; iv: string; }> = {};
+  keyCodeMap: Record<string, { key: string; iv: string }> = {};
   encryptor: Encrypt;
   constructor(publicKey: string) {
     this.encryptor = new Encrypt();
     this.encryptor.setPublicKey(
       `-----BEGIN PUBLIC KEY-----
 ${publicKey}
------END PUBLIC KEY-----`);
+-----END PUBLIC KEY-----`,
+    );
   }
 
   encrypt(message: string) {
@@ -19,11 +21,11 @@ ${publicKey}
   }
 
   getKeyCode(length: number = 16) {
-    const keyIv = { key: getRandomStr(length), iv: getRandomStr(length) };
+    const keyIv = { iv: getRandomStr(length), key: getRandomStr(length) };
     const code = this.encrypt(`${keyIv.key},${keyIv.iv}`);
     if (code === false) return;
     this.keyCodeMap[code] = keyIv;
-    return { key: keyIv, code };
+    return { code, key: keyIv };
   }
 
   getAESKey(aes: string) {

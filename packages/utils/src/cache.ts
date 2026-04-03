@@ -43,8 +43,8 @@ export class NCache {
     }
 
     const record = {
-      value,
       expire: Date.now() + (Number.isNaN(Number(time)) ? this.maxAge : time),
+      value,
     };
 
     if (this.cache.size + 1 > this.maxCacheSize) {
@@ -81,7 +81,7 @@ export class NCache {
   }
 
   keys(): Promise<string[]> {
-    return Promise.resolve((Array.from(this.cache.keys())));
+    return Promise.resolve(Array.from(this.cache.keys()));
   }
 
   clear(): void {
@@ -115,10 +115,9 @@ export class NCache {
     return stringify
       ? `cache size: ${this.cache.size}, hit count: ${this._hitCount}, miss count: ${this._missCount}`
       : {
-        cacheSize: this.cache.size,
-        hitCount: this._hitCount,
-        missCount: this._missCount,
-      };
+          cacheSize: this.cache.size,
+          hitCount: this._hitCount,
+          missCount: this._missCount,
+        };
   }
 }
-
