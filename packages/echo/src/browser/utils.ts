@@ -1,9 +1,12 @@
-import { isBrowser, NArray, Store as CommonStore } from '../common/utils';
+import { Store as CommonStore, isBrowser, NArray } from '../common/utils';
 
 import type { PropertiesHyphen } from 'csstype';
 import type { TStyle } from './types';
 
-export function getBase64Image(url: string, height: number = 100): Promise<PropertiesHyphen> {
+export function getBase64Image(
+  url: string,
+  height: number = 100,
+): Promise<PropertiesHyphen> {
   if (isBrowser()) {
     const image = new Image();
     image.crossOrigin = 'anonymous';
@@ -16,10 +19,10 @@ export function getBase64Image(url: string, height: number = 100): Promise<Prope
         ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
         const dataUrl = canvas.toDataURL();
         resolve({
-          'font-size': '1px',
-          padding: `${canvas.height}px ${canvas.width}px`,
           background: `url(${dataUrl}) no-repeat`,
           'background-size': 'cover',
+          'font-size': '1px',
+          padding: `${canvas.height}px ${canvas.width}px`,
         });
       };
       image.onerror = reject;
@@ -30,7 +33,11 @@ export function getBase64Image(url: string, height: number = 100): Promise<Prope
 }
 
 export const stringifyCSS = (css: PropertiesHyphen) =>
-  Object.keys(css).reduce((cssStr, key) => (cssStr += `${key}:${css[key as keyof PropertiesHyphen]};`), '');
+  Object.keys(css).reduce(
+    (cssStr, key) =>
+      (cssStr += `${key}:${css[key as keyof PropertiesHyphen]};`),
+    '',
+  );
 
 export class Store extends CommonStore<TStyle> {
   promisify: boolean = false;
@@ -65,6 +72,12 @@ export class Store extends CommonStore<TStyle> {
     this.styles.length = 0;
   }
   print() {
-    return [this.cmds.copy, this.css.copy, this.fg.copy, this.bg.copy, this.styles.copy];
+    return [
+      this.cmds.copy,
+      this.css.copy,
+      this.fg.copy,
+      this.bg.copy,
+      this.styles.copy,
+    ];
   }
 }

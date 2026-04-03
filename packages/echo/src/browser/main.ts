@@ -1,22 +1,30 @@
-import { type CSS_PROP, CssProp, ECHO_TAG, EMPTY_SPACE, ENABLE_TRACE, SPACE, Style } from '../common/constants';
+import {
+  CssProp,
+  ECHO_TAG,
+  EMPTY_SPACE,
+  SPACE,
+  Style,
+} from '../common/constants';
 import {
   debugLog,
+  defineProperties,
+  errorLog,
   isColorProp,
-  isMethodProp,
   isCSSProp,
-  printStackLine,
+  isMethodProp,
+  isStaticProp,
+  isString,
   isStyleKey,
   isTextDecoProp,
-  isStaticProp,
-  errorLog,
-  defineProperties,
-  isString,
+  printStackLine,
   toNumber,
+  toStringResult,
 } from '../common/utils';
 import { getBase64Image, Store, stringifyCSS } from './utils';
 
+import type { CSS_PROP } from '../common/constants';
+import type { EchoMethod } from '../common/types';
 import type { Echo, EchoFunc } from './types';
-import type { EchoMethod, MaybePromise } from '../common/types';
 
 async function processImage(store: Store) {
   const { css } = store;
@@ -25,7 +33,10 @@ async function processImage(store: Store) {
       const { url, ...s } = css[i] || {};
       if (url) {
         css[i] = {
-          ...(await getBase64Image(url, s.height ? toNumber(s.height) : undefined)),
+          ...(await getBase64Image(
+            url,
+            s.height ? toNumber(s.height) : undefined,
+          )),
           ...s,
         };
       }
@@ -83,18 +94,22 @@ function transformColor(store: Store, argArray: any[]) {
   return argArray;
 }
 
-function transform(store: Store, argArray: any[], promisify: true): Promise<any[]>;
-function transform(store: Store, argArray: any[], promisify?: boolean): any[];
-function transform(store: Store, argArray: any[], promisify = false): MaybePromise<any[]> {
-  if (promisify) {
-    return processImage(store).then(() => transformColor(store, argArray));
-  }
+function transform(store: Store, argArray: any[]): Promise<any[]> {
+  return processImage(store).then(() => transformColor(store, argArray));
+}
+
+function transformAsync(store: Store, argArray: any[]): any[] {
   return transformColor(store, argArray);
 }
 
 function createCSSProxy(store: Store, method: string, proxy: EchoFunc) {
   store.addCmd(method);
   return new Proxy(() => {}, {
+    apply(_target, thisArg, argArray) {
+      if (!argArray.length) return thisArg;
+      store.addArgs(...argArray);
+      return (...args: any[]) => (proxy as any)['#excute'](args);
+    },
     get(_target, prop, receiver) {
       if (isStyleKey(prop)) {
         if (isTextDecoProp(prop)) {
@@ -109,25 +124,21 @@ function createCSSProxy(store: Store, method: string, proxy: EchoFunc) {
 
       return Reflect.get(proxy, prop);
     },
-    apply(_target, thisArg, argArray) {
-      if (!argArray.length) return thisArg;
-      store.addArgs(...argArray);
-      return (...args: any[]) => (proxy as any)['#excute'](args);
-    },
   });
 }
 
 function createColorProxy(store: Store, method: string, proxy: EchoFunc) {
   store.addCmd(method);
   return new Proxy(() => {}, {
-    get(_target, prop) {
-      store.addArgs(prop);
-      return proxy;
-    },
     apply(_target, _thisArg, argArray) {
-      if (!argArray.length) throw new TypeError(`${store.cmds.at(-1)} require arguments`);
+      if (!argArray.length)
+        throw new TypeError(`${store.cmds.at(-1)} require arguments`);
 
       store.addArgs(...argArray);
+      return proxy;
+    },
+    get(_target, prop) {
+      store.addArgs(prop);
       return proxy;
     },
   });
@@ -137,29 +148,46 @@ function createEcho(type: EchoMethod = 'log') {
   const store = new Store();
   let proxy: EchoFunc;
 
-  const excute = (args: any[]) => {
+  const excute = (args: any[], output = true) => {
     if (store.promisify) {
       return (async () => {
-        const result = await transform(store, args, true);
-        (console[type as keyof Console] as any).call(console, ...result);
+        const result = await transform(store, args);
+        printStackLine(3);
+        debugLog('EXCUTE', ...store.print(), args)();
+        if (output)
+          return (console[type as keyof Console] as any).call(
+            console,
+            ...result,
+          );
+        return toStringResult(result);
       })();
     }
-    const result = transform(store, args);
-    (console[type as keyof Console] as any).call(console, ...result);
+    const result = transformAsync(store, args);
+    printStackLine();
+    debugLog('EXCUTE', ...store.print(), args)();
+    if (output)
+      return (console[type as keyof Console] as any).call(console, ...result);
+    return toStringResult(result);
   };
 
   const echoTag = () => ECHO_TAG;
+  const toString = (...args: any[]) => excute(args, false);
   const conditions = new Map<string | symbol, any>([
     ['then', undefined],
     ['prototype', {}],
     [Symbol.toStringTag, ECHO_TAG],
     [Symbol.toPrimitive, echoTag],
-    ['toString', echoTag],
-    ['valueOf', echoTag],
+    ['toString', toString],
+    ['valueOf', toString],
     ['#excute', excute],
   ]);
 
+  const origin = () => {};
+
   const handler: ProxyHandler<EchoFunc> = {
+    apply(_target, _thisArg, args) {
+      return excute(args);
+    },
     get(target, prop, receiver) {
       if (conditions.has(prop)) return conditions.get(prop);
       if (isStaticProp(prop)) return Reflect.get(target, prop);
@@ -173,21 +201,12 @@ function createEcho(type: EchoMethod = 'log') {
 
       return Reflect.get(target, prop);
     },
-    apply(_target, _thisArg, args) {
-      printStackLine(echo[ENABLE_TRACE]);
-
-      debugLog('EXCUTE', ...store.print(), args)();
-
-      return excute(args);
-    },
   };
 
-  proxy = new Proxy((() => {}) as EchoFunc, handler);
+  proxy = new Proxy(origin as EchoFunc, handler);
   return proxy;
 }
 
 export const echo: Echo = createEcho() as Echo;
 
 defineProperties(echo, createEcho);
-
-// echo[ENABLE_TRACE] = true;

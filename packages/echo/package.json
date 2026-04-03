@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/echo",
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "description": "Colorized log",
   "type": "module",
   "main": "./dist/index.js",
@@ -13,10 +13,10 @@
       "default": "./dist/index.js"
     },
     "./node": {
-      "types": "./dist/node.d.ts",
-      "import": "./dist/node.js",
-      "require": "./dist/node.js",
-      "default": "./dist/node.js"
+      "types": "./dist/node.d.mts",
+      "import": "./dist/node.mjs",
+      "require": "./dist/node.mjs",
+      "default": "./dist/node.mjs"
     }
   },
   "files": [
@@ -32,12 +32,12 @@
     "dev:browser": "vite",
     "dev:node": "cross-env DEV=true nova",
     "build:browser": "tsc && vite build",
-    "build:node": "cross-env DEV=false nova build",
-    "build": "pnpm run build:browser && pnpm run build:node"
+    "build:node": "cross-env DEV=false tsdown",
+    "build": "pnpm build:browser && pnpm build:node"
   },
   "devDependencies": {
     "@n3bula/nova": "workspace:*",
-    "typescript": "^5.2.2",
+    "typescript": "^5.9.3",
     "vite": "^5.2.0"
   },
   "contributors": [

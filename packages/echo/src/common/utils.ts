@@ -1,22 +1,19 @@
 import {
-  HEX_COLOR_KEYS,
+  ASCII_END,
+  ASCII_START,
+  ASCII_Style,
   ECHO_TAG,
+  ENABLE_TRACE,
   HEX_COLORS,
   isDev,
   METHODS,
-  Style,
-  STLYE_KEYS,
-  textDecoration,
-  ENABLE_TRACE,
-  SPACE_KEY,
   SPACE,
-  ASCII_START,
-  ASCII_END,
-  ASCIISTYLE_KEYS,
-  ASCII_Style,
-  isNode,
+  SPACE_KEY,
+  Style,
+  textDecoration,
 } from './constants';
 
+import type { ASCIISTYLE_KEYS, HEX_COLOR_KEYS, STLYE_KEYS } from './constants';
 import type { Command, EchoMethod } from './types';
 
 export const NOOP = () => {};
@@ -35,26 +32,33 @@ export const debugLog = isDev
       const params: any[] = [];
       for (let i = 0; i < args.length; i += 1) {
         if (typeof args[i] === 'string') {
-          params[strIdx] = `${params[strIdx] || ''}${params[strIdx] ? ' | ' : ''}${args[i]}`.replace(/\x1b/gi, '\\x1b');
+          params[strIdx] =
+            `${params[strIdx] || ''}${params[strIdx] ? ' $ ' : ''}${args[i]}`.replace(
+              /\x1b/gi,
+              '\\x1b',
+            );
         } else {
           strIdx++;
-          params.push('|', args[i]);
+          params.push(' $ ', args[i]);
         }
       }
-      return console.log.bind(console, `${ASCII_START}4;53;32mDEBUG${ASCII_END}`, ...params);
+      return console.log.bind(
+        console,
+        `${ASCII_START}4;53;32mDEBUG${ASCII_END}`,
+        ...params,
+      );
     }
   : () => NOOP;
 
-export const printStackLine = (enable?: boolean) => {
-  if (!enable) return;
+export const printStackLine = (level = 4) => {
+  if (!GLOBAL_CONFIGS[ENABLE_TRACE]) return;
   const e = new Error();
-  const stack = (e.stack?.split('\n')[3] || '').trim();
-  let stackPath = stack.split(' ')[isNode ? 2 : 1];
-  stackPath = isNode ? stackPath.slice(1, -1) : stackPath;
-  console.log('↑ ' + stackPath);
+  const stack = (e.stack?.split('\n')[level] || '').trim();
+  const stackPath = stack.match(/(\w+:[^())]*)/)?.[0];
+  console.log(`⬇️ ${stackPath}`);
 };
 
-export const sample = <T extends any>(arr: T[], k: number): T[] => {
+export const sample = <T>(arr: T[], k: number): T[] => {
   const n = arr.length;
   if (k <= 0) return [];
   const res = new Array(k);
@@ -68,13 +72,15 @@ export const isNumber = (v: unknown) => typeof v === 'number';
 
 export const isString = (v: unknown) => typeof v === 'string';
 
-export const isHex = (value: string) => /^(#[0-9A-F]{8}|#[0-9A-F]{6}|#[0-9A-F]{4}|#[0-9A-F]{3})$/i.test(value);
+export const isHex = (value: string) =>
+  /^(#[0-9A-F]{8}|#[0-9A-F]{6}|#[0-9A-F]{4}|#[0-9A-F]{3})$/i.test(value);
 
-export const isRgb = (value: string) => value && value.startsWith('rgb(');
+export const isRgb = (value: string) => !!value?.startsWith('rgb(');
 
-export const isHsl = (value: string) => value && value.startsWith('hsl(');
+export const isHsl = (value: string) => !!value?.startsWith('hsl(');
 
-export const isStaticProp = (prop: unknown) => prop === ENABLE_TRACE || prop === SPACE_KEY;
+export const isStaticProp = (prop: unknown) =>
+  prop === ENABLE_TRACE || prop === SPACE_KEY;
 
 export const isMethodProp = (prop: unknown) => METHODS.some(m => m === prop);
 
@@ -84,16 +90,22 @@ export const isColorProp = (prop: unknown) => prop === 'fg' || prop === 'bg';
 
 export const isCSSProp = (prop: unknown) => prop === 'css';
 
-export const isStyleKey = (prop: unknown): prop is STLYE_KEYS => !!Style[prop as STLYE_KEYS];
+export const isStyleKey = (prop: unknown): prop is STLYE_KEYS =>
+  !!Style[prop as STLYE_KEYS];
 
-export const isASCIIStyleKey = (prop: unknown): prop is ASCIISTYLE_KEYS => !!ASCII_Style[prop as ASCIISTYLE_KEYS];
+export const isASCIIStyleKey = (prop: unknown): prop is ASCIISTYLE_KEYS =>
+  !!ASCII_Style[prop as ASCIISTYLE_KEYS];
 
-export const isTextDecoProp = (prop: unknown) => textDecoration.has(prop as any);
+export const isTextDecoProp = (prop: unknown) =>
+  textDecoration.has(prop as any);
 
-export const isPresetColorProp = (prop: unknown) => !!HEX_COLORS[prop as HEX_COLOR_KEYS];
+export const isPresetColorProp = (prop: unknown) =>
+  !!HEX_COLORS[prop as HEX_COLOR_KEYS];
 
 export const toNumber = (num: string | number, float = false) => {
-  let val = float ? Number.parseFloat(num as string) : Number.parseInt(num as string, 10);
+  const val = float
+    ? Number.parseFloat(num as string)
+    : Number.parseInt(num as string, 10);
   if (Number.isFinite(val)) return val;
   return 0;
 };
@@ -102,13 +114,20 @@ export const toFixed = (num: number, digit = 0) => Number(num.toFixed(digit));
 
 export const hexToRgb = (color: string): [number, number, number] => {
   const fullReg = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const full = color.replace(fullReg, (_, r, g, b) => `${r}${r}${g}${g}${b}${b}`);
+  const full = color.replace(
+    fullReg,
+    (_, r, g, b) => `${r}${r}${g}${g}${b}${b}`,
+  );
   const values = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(full);
   if (!values) {
     errorLog(`Unsupported [${color}] color`);
     return [0, 0, 0];
   }
-  return [Number.parseInt(values[1], 16), Number.parseInt(values[2], 16), Number.parseInt(values[3], 16)];
+  return [
+    Number.parseInt(values[1], 16),
+    Number.parseInt(values[2], 16),
+    Number.parseInt(values[3], 16),
+  ];
 };
 
 export function hsl2rgb(hsl: number[]): number[] {
@@ -223,39 +242,58 @@ export class Store<T = string[]> {
   }
 }
 
-export const defineProperties = (echo: any, createEcho: (type: EchoMethod) => any) => {
+export const GLOBAL_CONFIGS = {
+  [ENABLE_TRACE]: false,
+};
+
+export const defineProperties = (
+  echo: any,
+  createEcho: (type: EchoMethod) => any,
+) => {
   Object.defineProperties(echo, {
     [ENABLE_TRACE]: {
       configurable: false,
       enumerable: false,
-      writable: true,
-      value: false,
+      get() {
+        return GLOBAL_CONFIGS[ENABLE_TRACE];
+      },
+      set(v: boolean) {
+        GLOBAL_CONFIGS[ENABLE_TRACE] = v;
+      },
     },
     __TAG: {
       configurable: false,
       enumerable: false,
-      writable: false,
       value: ECHO_TAG,
+      writable: false,
     },
     [SPACE_KEY]: {
       configurable: false,
       enumerable: true,
-      writable: false,
       value(count: number = 0) {
         count = toNumber(count);
         if (!Number.isFinite(count)) count = 0;
         if (count > 2) count -= 2;
         return SPACE.repeat(count);
       },
+      writable: false,
     },
-    ...METHODS.reduce((props, m) => {
-      props[m] = {
-        configurable: false,
-        enumerable: true,
-        writable: false,
-        value: createEcho(m),
-      };
-      return props;
-    }, {} as Record<EchoMethod, any>),
+    ...METHODS.reduce(
+      (props, m) => {
+        props[m] = {
+          configurable: false,
+          enumerable: true,
+          value: createEcho(m),
+          writable: false,
+        };
+        return props;
+      },
+      {} as Record<EchoMethod, any>,
+    ),
   });
 };
+
+export function toStringResult(result: any[]) {
+  result = result.filter(r => typeof r === 'string');
+  return result.join(' ');
+}

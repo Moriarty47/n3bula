@@ -1,9 +1,8 @@
 export const isNode = typeof process === 'object';
 
-export const isDev = (() => {
-  if (isNode) return (process.env.DEV as unknown as string) === 'true';
-  return (import.meta as any)?.env.DEV;
-})();
+export const isDev = isNode
+  ? (process.env.DEV as unknown as string) === 'true'
+  : import.meta.env.DEV;
 
 export const ECHO_TAG = '@n3bula/echo';
 export const ENABLE_TRACE = '__enable_trace';
@@ -16,15 +15,15 @@ export const ASCII_END = '\x1b[m';
 export const Style = {
   bold: 'font-weight:bold',
   bolder: 'font-weight:bolder',
-  lighter: 'font-weight:lighter',
+  dashed: 'dashed',
+  dotted: 'dotted',
+  double: 'double',
   italic: 'font-style:italic',
-  underline: 'underline',
+  lighter: 'font-weight:lighter',
   linethrough: 'line-through',
   overline: 'overline',
   solid: 'solid',
-  double: 'double',
-  dotted: 'dotted',
-  dashed: 'dashed',
+  underline: 'underline',
   wavy: 'wavy',
 };
 export const textDecoration = new Set([
@@ -39,19 +38,19 @@ export const textDecoration = new Set([
 ]);
 
 export const ASCII_Style = {
-  bold: '1',
-  lighter: '2',
-  italic: '3',
-  underline: '4',
   blink: '5',
-  reverse: '7',
+  bold: '1',
   hidden: '8',
+  italic: '3',
+  lighter: '2',
   linethrough: '9',
   overline: '53',
+  reverse: '7',
+  underline: '4',
 } as const;
 export const ASCII_RGB = {
-  fg: '38;2',
   bg: '48;2',
+  fg: '38;2',
 } as const;
 
 export const HEX_COLORS = {
@@ -80,8 +79,8 @@ export const HEX_COLORS = {
   darkCyan: '008B8B',
   darkGoldenRod: 'B8860B',
   darkGray: 'A9A9A9',
-  darkGrey: 'A9A9A9',
   darkGreen: '006400',
+  darkGrey: 'A9A9A9',
   darkKhaki: 'BDB76B',
   darkMagenta: '8B008B',
   darkOliveGreen: '556B2F',
@@ -109,9 +108,9 @@ export const HEX_COLORS = {
   gold: 'FFD700',
   goldenRod: 'DAA520',
   gray: '808080',
-  grey: '808080',
   green: '008000',
   greenYellow: 'ADFF2F',
+  grey: '808080',
   honeyDew: 'F0FFF0',
   hotPink: 'FF69B4',
   indianRed: 'CD5C5C',
@@ -127,8 +126,8 @@ export const HEX_COLORS = {
   lightCyan: 'E0FFFF',
   lightGoldenRodYellow: 'FAFAD2',
   lightGray: 'D3D3D3',
-  lightGrey: 'D3D3D3',
   lightGreen: '90EE90',
+  lightGrey: 'D3D3D3',
   lightPink: 'FFB6C1',
   lightSalmon: 'FFA07A',
   lightSeaGreen: '20B2AA',
@@ -206,8 +205,8 @@ export const HEX_COLORS = {
 } as const;
 
 export const CssProp = {
-  fg: 'color',
   bg: 'background-color',
+  fg: 'color',
 };
 
 export type CSS_PROP = keyof typeof CssProp;

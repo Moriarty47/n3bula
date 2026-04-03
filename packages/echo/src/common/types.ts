@@ -1,11 +1,12 @@
-import { HEX_COLOR_KEYS } from './constants';
+import type { HEX_COLOR_KEYS } from './constants';
 
 export type EchoMethod = 'log' | 'info' | 'warn' | 'trace' | 'error';
 
 export type MaybePromise<T = void> = Promise<T> | T;
 
-export type CallRun<R = void> = {
-  (...args: any[]): R;
+export type CallRun<R = void> = ((...args: any[]) => R) & {
+  toString: (...args: any[]) => string;
+  valueOf: (...args: any[]) => string;
 };
 
 export type Command = 'css' | 'fg' | 'bg';
