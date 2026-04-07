@@ -1,5 +1,5 @@
 import type { Server } from 'node:http';
-import type { RequestHandler, Express } from 'express';
+import type { Express, RequestHandler } from 'express';
 
 export type ExpRequest = Parameters<RequestHandler>[0];
 export type ExpResponse = Parameters<RequestHandler>[1];
@@ -17,7 +17,11 @@ export type OneOf<T extends Record<string, any>> = {
 }[keyof T];
 
 export type AppConfig = {
-  middlewares?: Record<string, RequestHandler | RequestHandler[] | [string, RequestHandler]>;
+  logTag?: string;
+  middlewares?: Record<
+    string,
+    RequestHandler | RequestHandler[] | [string, RequestHandler]
+  >;
   lang?: 'zh' | 'en';
 } & OneOf<{
   apiDir: ApiDir;

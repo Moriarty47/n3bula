@@ -1,14 +1,17 @@
-import { logger } from '$util/log';
-import { getResponseAdapter } from '$adapter/response';
+import { getResponseAdapter } from '@/adapter/response';
+
+import { logger } from '@/util/log';
 
 import type { Router } from 'express';
-import type { ExpNextFn, ExpRequest, ExpResponse } from '$types';
+import type { ExpNextFn, ExpRequest, ExpResponse } from '@/types';
 
 export function errorHandler(register: () => Router): Router {
   const router = register();
-  router.use((err: any, _req: ExpRequest, res: ExpResponse, _next: ExpNextFn) => {
-    logger.error('Router Error ', err.stack);
-    getResponseAdapter().error(res, err);
-  });
+  router.use(
+    (err: any, _req: ExpRequest, res: ExpResponse, _next: ExpNextFn) => {
+      logger.error('Router Error ', err.stack);
+      getResponseAdapter().error(res, err);
+    },
+  );
   return router;
 }

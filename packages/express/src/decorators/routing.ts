@@ -1,15 +1,24 @@
 import express from 'express';
 
-import { logger } from '$util/log';
-import { assertsDefined } from '$util/utils';
-import { errorHandler } from '$mw/error-handler';
-import { getResponseAdapter } from '$adapter/response';
-import { TAG } from '$const';
+import { getResponseAdapter } from '@/adapter/response';
+import { errorHandler } from '@/mw/error-handler';
+
+import { logger } from '@/util/log';
+import { assertsDefined } from '@/util/utils';
+
+import { TAG } from '@/const';
 
 import type { Express, Router as ExpressRouter, RequestHandler } from 'express';
-import type { ExpNextFn, ExpRequest, ExpResponse } from '$types';
+import type { ExpNextFn, ExpRequest, ExpResponse } from '@/types';
 
-export type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
+export type HttpMethod =
+  | 'get'
+  | 'post'
+  | 'put'
+  | 'delete'
+  | 'patch'
+  | 'options'
+  | 'head';
 
 export type Route = {
   path: string;
@@ -22,12 +31,15 @@ export const BASE_PATH = Symbol('base-path');
 export const ROUTE_MWS = Symbol('route-mws');
 
 export function Route(basePath: string = '', ...middlewares: RequestHandler[]) {
-  return function <T extends new (...rest: any[]) => any>(target: T, context: ClassDecoratorContext) {
+  return <T extends new (...rest: any[]) => any>(
+    target: T,
+    context: ClassDecoratorContext,
+  ) => {
     if (context.kind === 'class') {
       const Ctrl = class extends target {
         router: ExpressRouter = express.Router();
       };
-      context.addInitializer(function () {
+      context.addInitializer(() => {
         (Ctrl as any).prototype[BASE_PATH] = basePath;
         (Ctrl as any).prototype[ROUTE_MWS] = middlewares;
       });
@@ -44,20 +56,22 @@ const addRoute = (basePath: string, routeMeta: Route) => {
 };
 
 function createHttpMethodDecorator(method: HttpMethod) {
-  return function (path: string, ...middlewares: RequestHandler[]) {
-    return function (_target: Function, context: ClassMethodDecoratorContext) {
+  return (path: string, ...middlewares: RequestHandler[]) =>
+    (
+      _target: (...args: any[]) => any,
+      context: ClassMethodDecoratorContext,
+    ) => {
       if (context.kind === 'method') {
         context.addInitializer(function () {
           addRoute((this as any)[BASE_PATH], {
-            path,
-            method,
             handlerName: context.name as string,
+            method,
             middlewares: middlewares.length ? middlewares : undefined,
+            path,
           });
         });
       }
     };
-  };
 }
 
 export const Get = createHttpMethodDecorator('get');
@@ -85,7 +99,10 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
     routes.forEach(route => {
       const handler = inst[route.handlerName];
 
-      assertsDefined(handler, `Handler ${route.handlerName} not found on controller ${inst.constructor.name}`);
+      assertsDefined(
+        handler,
+        `Handler ${route.handlerName} not found on controller ${inst.constructor.name}`,
+      );
 
       const boundHandler: RequestHandler = (req, res, next) => {
         const responseAdapter = getResponseAdapter();
@@ -112,8 +129,12 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
     const SPACE = ' '.repeat(TAG.length + 1);
     const routePath = `${basePath}${inst[BASE_PATH]}`;
     logger(
-      `register api: ${routePath}\n` +
-        routes.map(r => `${SPACE}\x1B[92m${r.method} -> "${routePath}${r.path}"\x1B[m`).join('\n'),
+      `register api: ${routePath}\n`
+        + routes
+          .map(
+            r => `${SPACE}\x1B[92m${r.method} -> "${routePath}${r.path}"\x1B[m`,
+          )
+          .join('\n'),
     );
     app.use(
       routePath,

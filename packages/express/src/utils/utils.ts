@@ -7,11 +7,17 @@ export const cwd = process.cwd();
 
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export function assertsDefined<T>(value: T | undefined | null, msg?: any): asserts value is T {
+export function assertsDefined<T>(
+  value: T | undefined | null,
+  msg?: any,
+): asserts value is T {
   if (!value) throw new Error(msg || 'Value is not defined.');
 }
 
-export function assertsError<T>(value: T | null, payload?: any): asserts value is null {
+export function assertsError<T>(
+  value: T | null,
+  payload?: any,
+): asserts value is null {
   if (value) throw payload;
 }
 
@@ -41,10 +47,10 @@ type PickSecondLevel<T, K extends SecondLevelKeys<T>> = {
   [P in keyof T]: T[P] extends object ? Omit<T[P], K> : never;
 };
 
-export function filterKeys<T extends Record<string, any>, K extends SecondLevelKeys<T>>(
-  obj: T,
-  keys: readonly (K | (string & {}))[],
-): PickSecondLevel<T, K> {
+export function filterKeys<
+  T extends Record<string, any>,
+  K extends SecondLevelKeys<T>,
+>(obj: T, keys: readonly (K | (string & {}))[]): PickSecondLevel<T, K> {
   return Object.keys(obj).reduce(
     (o, key) => {
       const sub = obj[key];

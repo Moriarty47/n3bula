@@ -1,19 +1,24 @@
-import express from 'express';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import express from 'express';
 
-import timeout from '$mw/timeout';
-import { logger } from '$util/log';
-import { isDev } from '$util/utils';
-import { initMsg } from '$util/msg/index';
-import findFreePort from '$util/find-free-port';
-import autoRegisterRoutes from '$mw/auto-register';
-import { NOOP } from '$const';
+import autoRegisterRoutes from '@/mw/auto-register';
+import timeout from '@/mw/timeout';
+
+import findFreePort from '@/util/find-free-port';
+import { changeTag, logger } from '@/util/log';
+import { initMsg } from '@/util/msg/index';
+import { isDev } from '@/util/utils';
+
+import { NOOP } from '@/const';
 
 import type { Server } from 'node:http';
-import type { App, AppConfig, ListenCallback } from '$types';
+import type { App, AppConfig, ListenCallback } from '@/types';
 
-export async function createApp(appConfig: AppConfig = {} as AppConfig): Promise<App> {
+export async function createApp(
+  appConfig: AppConfig = {} as AppConfig,
+): Promise<App> {
+  changeTag(appConfig.logTag);
   await initMsg(appConfig.lang || 'en');
   const app = express()
     .use(cookieParser())
@@ -90,7 +95,10 @@ function addServerListener(port: number, server: Server) {
   return server;
 }
 
-export async function startServer(port: number = 3000, appConfig: AppConfig = {} as AppConfig) {
+export async function startServer(
+  port: number = 3000,
+  appConfig: AppConfig = {} as AppConfig,
+) {
   const app: App = await createApp(appConfig);
   const server = await app.listen(port, usedPort => {
     logger(`Server is running on \x1B[92mhttp://localhost:${usedPort}\x1B[m`);

@@ -1,10 +1,10 @@
-import { isError } from '$util/utils';
+import { isError } from '@/util/utils';
 
-import type { MessagesOk } from './en/ok';
 import type { MessagesFail } from './en/fail';
+import type { MessagesOk } from './en/ok';
 
-export type { StatusOk, StatusFail } from './status';
-export type { MessagesOk, MessagesFail };
+export type { StatusFail, StatusOk } from './status';
+export type { MessagesFail, MessagesOk };
 
 export type MsgResult = {
   code: number;
@@ -17,7 +17,9 @@ export type MsgResultProxy = {
   (message?: string): MsgResult;
   (message?: string | Record<string, any>): MsgResult;
 };
-export type MsgTemplateFn = ((payload?: any) => Omit<MsgResult, 'code'>) | string;
+export type MsgTemplateFn =
+  | ((payload?: any) => Omit<MsgResult, 'code'>)
+  | string;
 export type MsgTemplates = Record<string, MsgTemplateFn>;
 
 const formatPayload = (payload: any) => {
@@ -25,10 +27,15 @@ const formatPayload = (payload: any) => {
   return payload;
 };
 
-export const defaultMsgFormatter = (code: number, type: string, msg: string, payload?: any): MsgResult => ({
+export const defaultMsgFormatter = (
+  code: number,
+  type: string,
+  msg: string,
+  payload?: any,
+): MsgResult => ({
   code,
-  type,
   msg: String(msg ?? ''),
+  type,
   ...(payload !== undefined ? { data: formatPayload(payload) } : {}),
 });
 
@@ -42,7 +49,8 @@ export function createMessageProxy<T extends MsgTemplates>(
   function targetFn(payload?: Record<string, any>): MsgResult;
   function targetFn(message?: string): MsgResult;
   function targetFn(message?: string | Record<string, any>): MsgResult {
-    if (typeof message === 'string') return msgFormatter(code, 'default', message);
+    if (typeof message === 'string')
+      return msgFormatter(code, 'default', message);
 
     const defaultMsg = (messages as any).default as MsgTemplateFn;
     const msg = typeof defaultMsg === 'string' ? defaultMsg : defaultMsg().msg;
@@ -62,7 +70,8 @@ export function createMessageProxy<T extends MsgTemplates>(
           };
         };
       }
-      if (!Object.prototype.hasOwnProperty.call(messages, prop)) return Reflect.get(target, prop, receiver);
+      if (!Object.prototype.hasOwnProperty.call(messages, prop))
+        return Reflect.get(target, prop, receiver);
 
       const fn = messages[prop];
       if (typeof fn === 'string') {
@@ -84,13 +93,21 @@ export function createMessageProxy<T extends MsgTemplates>(
 
 type MsgType = {
   OK: ReturnType<typeof createMessageProxy<Record<MessagesOk, MsgTemplateFn>>>;
-  FAIL: ReturnType<typeof createMessageProxy<Record<MessagesFail, MsgTemplateFn>>>;
+  FAIL: ReturnType<
+    typeof createMessageProxy<Record<MessagesFail, MsgTemplateFn>>
+  >;
 };
 
 export const Msg = {} as MsgType;
 
 export const initMsg = async (lang: 'zh' | 'en') => {
   if (lang !== 'zh' && lang !== 'en') lang = 'en';
-  Msg.OK = createMessageProxy(0, (await import(`./${lang}/ok.js`)).Messages) as unknown as MsgType['OK'];
-  Msg.FAIL = createMessageProxy(1, (await import(`./${lang}/fail.js`)).Messages) as unknown as MsgType['FAIL'];
+  Msg.OK = createMessageProxy(
+    0,
+    (await import(`./${lang}/ok.js`)).Messages,
+  ) as unknown as MsgType['OK'];
+  Msg.FAIL = createMessageProxy(
+    1,
+    (await import(`./${lang}/fail.js`)).Messages,
+  ) as unknown as MsgType['FAIL'];
 };

@@ -33,7 +33,7 @@
               },
               ":BLANK_LINE:",
               {
-                "source": ["@/config", "@/const"],
+                "source": ["@/config", "@/const", "$const"],
                 "type": false
               },
               ":BLANK_LINE:",

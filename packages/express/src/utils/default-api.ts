@@ -1,7 +1,8 @@
-import { Msg } from '$util/msg';
-import { Route, Get } from '$deco/routing';
+import { Get, Route } from '@/deco/routing';
 
-import type { ExpRequest, ExpResponse } from '$types';
+import { Msg } from '@/util/msg';
+
+import type { ExpRequest, ExpResponse } from '@/types';
 
 @Route('/test')
 export default class DefaultApi {

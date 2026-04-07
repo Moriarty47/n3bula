@@ -4,7 +4,6 @@ import type { MessagesOk } from './en/ok';
 export type StatusOk = Record<MessagesOk, number>;
 
 export const statusOk: StatusOk = {
-  default: 200,
   accepted: 202,
   alreadyUploaded: 208,
   apiKeyCreated: 201,
@@ -22,6 +21,7 @@ export const statusOk: StatusOk = {
   created: 201,
   cronRun: 200,
   cronScheduled: 201,
+  default: 200,
   deleted: 200,
   delivered: 200,
   deploySucceeded: 200,
@@ -50,8 +50,8 @@ export const statusOk: StatusOk = {
   rateLimitedReset: 200,
   refundProcessed: 200,
   rejectedSuccess: 200,
-  restorePointCreated: 201,
   restored: 200,
+  restorePointCreated: 201,
   roleAssigned: 201,
   roleRemoved: 200,
   saved: 200,
@@ -77,7 +77,6 @@ export const statusOk: StatusOk = {
 export type StatusFail = Record<MessagesFail, number>;
 
 export const statusFail: StatusFail = {
-  default: 400,
   acceptFailed: 400,
   alreadyUploadedFail: 409,
   apiKeyCreateFailed: 400,
@@ -100,6 +99,7 @@ export const statusFail: StatusFail = {
   createFailed: 400,
   cronRunFailed: 500,
   cronScheduleFailed: 400,
+  default: 400,
   deleteFailed: 400,
   deliverFailed: 500,
   dependencyFailed: 424,
