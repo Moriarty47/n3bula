@@ -3,11 +3,9 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    // 如果没有默认导出模块
-    // typescript会自动合成一个默认导出，即可通过默认导入的方式引入该模块
     "strict": true,
     "module": "esnext",
-    "esModuleInterop": true, // 允许通过import方式引入commonjs模块
+    "esModuleInterop": true,
     "moduleResolution": "bundler",
     "target": "esnext",
     "declaration": true,
@@ -17,10 +15,6 @@
     "preserveSymlinks": false,
     "noEmitOnError": false
   },
-  "include": [
-    "src",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "tsdown.config.ts"],
+  "exclude": ["node_modules"]
 }

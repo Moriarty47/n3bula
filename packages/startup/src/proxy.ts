@@ -1,11 +1,12 @@
 import path from 'node:path';
+
 import proxy from 'http-proxy-middleware';
 
 import log from './log';
 
-import { Server } from 'connect';
-import { ParsedArgs } from 'minimist';
-import { WebpackConfiguration } from 'webpack-cli';
+import type { Server } from 'connect';
+import type { ParsedArgs } from 'minimist';
+import type { WebpackConfiguration } from 'webpack-cli';
 
 export default async (argv: ParsedArgs, app: Server) => {
   if (argv.proxy) {
@@ -23,7 +24,9 @@ export default async (argv: ParsedArgs, app: Server) => {
 };
 
 type RemoveUndefined<T> = T extends undefined ? never : T;
-type DevServerConfiguration = RemoveUndefined<WebpackConfiguration['devServer']>;
+type DevServerConfiguration = RemoveUndefined<
+  WebpackConfiguration['devServer']
+>;
 type ProxyConfigs = DevServerConfiguration['proxy'];
 
 async function loadConfig(argv: ParsedArgs, app: Server) {

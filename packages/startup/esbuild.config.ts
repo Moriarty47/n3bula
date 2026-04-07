@@ -2,12 +2,12 @@ import { build } from 'esbuild';
 import nodeExternals from 'esbuild-plugin-node-externals';
 
 build({
-  entryPoints: ['src/index.ts'],
   bundle: true,
-  outfile: 'lib/index.js',
+  entryPoints: ['src/index.ts'],
   format: 'esm',
-  platform: 'node',
   minify: true,
+  outfile: 'lib/index.js',
+  platform: 'node',
   plugins: [nodeExternals()],
 }).catch(error => {
   console.error(error);

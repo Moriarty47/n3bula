@@ -5,23 +5,23 @@ const INDENT = '      ';
 
 const argv = minimist(process.argv.slice(2), {
   alias: {
+    cert: 'c',
+    fallback: 'f',
+    help: 'h',
+    key: 'k',
+    log: 'l',
+    name: 'n',
     open: 'o',
     port: 'p',
-    name: 'n',
-    help: 'h',
-    root: 'r',
     proxy: 'x',
-    log: 'l',
-    fallback: 'f',
-    key: 'k',
-    cert: 'c',
+    root: 'r',
   },
-  string: ['port', 'name', 'open', 'fallback'],
   boolean: ['log'],
   default: {
     port: DEFAULT_PORT,
     root: process.cwd(),
   },
+  string: ['port', 'name', 'open', 'fallback'],
 });
 
 if (argv.help) {

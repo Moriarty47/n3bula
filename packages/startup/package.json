@@ -1,11 +1,11 @@
 {
   "name": "@n3bula/startup",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "type": "module",
-  "main": "lib/index.js",
+  "main": "./lib/index.mjs",
   "bin": {
-    "startup": "bin/index.js"
+    "startup": "./bin/index.mjs"
   },
   "files": [
     "bin",
@@ -13,9 +13,10 @@
     "scripts"
   ],
   "scripts": {
-    "dev": "pnpm build && node lib/index.js",
-    "build": "node esbuild.config.ts",
-    "postinstall": "node scripts/gen-default-certs.js"
+    "dev": " node --watch  ./lib/index.mjs",
+    "dev:build": "tsdown --watch",
+    "build": "tsdown",
+    "postinstall": "node ./scripts/gen-default-certs.js"
   },
   "keywords": [
     "static",
