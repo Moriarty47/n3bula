@@ -9,7 +9,11 @@ export function errorHandler(register: () => Router): Router {
   const router = register();
   router.use(
     (err: any, _req: ExpRequest, res: ExpResponse, _next: ExpNextFn) => {
-      logger.error('Router Error ', err.stack);
+      if (err.stack) {
+        logger.error('Router Error ', err.stack);
+      } else {
+        logger.info(err.type, err.data || err.msg);
+      }
       getResponseAdapter().error(res, err);
     },
   );

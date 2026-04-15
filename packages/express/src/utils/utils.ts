@@ -1,6 +1,8 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { SPACE } from './constants';
+
 export const isDev = process.env.NOVA_MODE === 'DEV';
 
 export const cwd = process.cwd();
@@ -69,3 +71,5 @@ export function filterKeys<
     {} as PickSecondLevel<T, K>,
   );
 }
+
+export const spaces = (count: number) => SPACE.repeat(count);

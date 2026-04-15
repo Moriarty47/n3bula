@@ -17,6 +17,10 @@ export type OneOf<T extends Record<string, any>> = {
 }[keyof T];
 
 export type AppConfig = {
+  /** base path for all routes, default '/api' */
+  basePath?: string;
+  /** find new port if current port is unavailable */
+  findNewPort?: boolean;
   logTag?: string;
   middlewares?: Record<
     string,

@@ -4,7 +4,7 @@ import { getResponseAdapter } from '@/adapter/response';
 import { errorHandler } from '@/mw/error-handler';
 
 import { logger } from '@/util/log';
-import { assertsDefined } from '@/util/utils';
+import { assertsDefined, spaces } from '@/util/utils';
 
 import { TAG } from '@/const';
 
@@ -27,10 +27,10 @@ export type Route = {
   middlewares?: RequestHandler[];
 };
 
-export const BASE_PATH = Symbol('base-path');
+export const PREFIX = Symbol('route-prefix');
 export const ROUTE_MWS = Symbol('route-mws');
 
-export function Route(basePath: string = '', ...middlewares: RequestHandler[]) {
+export function Route(prefix: string = '', ...middlewares: RequestHandler[]) {
   return <T extends new (...rest: any[]) => any>(
     target: T,
     context: ClassDecoratorContext,
@@ -40,7 +40,7 @@ export function Route(basePath: string = '', ...middlewares: RequestHandler[]) {
         router: ExpressRouter = express.Router();
       };
       context.addInitializer(() => {
-        (Ctrl as any).prototype[BASE_PATH] = basePath;
+        (Ctrl as any).prototype[PREFIX] = prefix;
         (Ctrl as any).prototype[ROUTE_MWS] = middlewares;
       });
       return Ctrl as T;
@@ -50,9 +50,9 @@ export function Route(basePath: string = '', ...middlewares: RequestHandler[]) {
 
 const routeMap: Record<string, Route[]> = Object.create(null);
 
-const addRoute = (basePath: string, routeMeta: Route) => {
-  if (!routeMap[basePath]) routeMap[basePath] = [];
-  routeMap[basePath].push(routeMeta);
+const addRoute = (prefix: string, routeMeta: Route) => {
+  if (!routeMap[prefix]) routeMap[prefix] = [];
+  routeMap[prefix].push(routeMeta);
 };
 
 function createHttpMethodDecorator(method: HttpMethod) {
@@ -63,7 +63,7 @@ function createHttpMethodDecorator(method: HttpMethod) {
     ) => {
       if (context.kind === 'method') {
         context.addInitializer(function () {
-          addRoute((this as any)[BASE_PATH], {
+          addRoute((this as any)[PREFIX], {
             handlerName: context.name as string,
             method,
             middlewares: middlewares.length ? middlewares : undefined,
@@ -89,13 +89,13 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
 ) {
   controllers.forEach(Ctrl => {
     const inst = (typeof Ctrl === 'function' ? new Ctrl() : Ctrl) as {
-      [BASE_PATH]: string;
+      [PREFIX]: string;
       [ROUTE_MWS]: RequestHandler[];
       router: ExpressRouter;
     } & {
       [k: string]: (req: ExpRequest, res: ExpResponse, next: ExpNextFn) => any;
     };
-    const routes = routeMap[inst[BASE_PATH]];
+    const routes = routeMap[inst[PREFIX]];
     routes.forEach(route => {
       const handler = inst[route.handlerName];
 
@@ -126,13 +126,13 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
       inst.router[route.method](route.path, ...finalMiddlewares);
     });
 
-    const SPACE = ' '.repeat(TAG.length + 1);
-    const routePath = `${basePath}${inst[BASE_PATH]}`;
+    const routePath = `${basePath}${inst[PREFIX]}`;
     logger(
       `register api: ${routePath}\n`
         + routes
           .map(
-            r => `${SPACE}\x1B[92m${r.method} -> "${routePath}${r.path}"\x1B[m`,
+            r =>
+              `${spaces(TAG.length + 1)}\x1B[92m${r.method} -> "${routePath}${r.path}"\x1B[m`,
           )
           .join('\n'),
     );

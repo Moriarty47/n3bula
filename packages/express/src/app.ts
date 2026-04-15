@@ -30,9 +30,7 @@ export async function createApp(
 
   const middlewares = appConfig.middlewares || {};
 
-  Object.values(middlewares).forEach(mw => {
-    app.use(mw as any);
-  });
+  Object.values(middlewares).forEach(mw => app.use(mw as any));
 
   await autoRegisterRoutes(app, appConfig);
 
@@ -41,7 +39,12 @@ export async function createApp(
   Object.defineProperty(app, 'listen', {
     value: async (port: number, callback: ListenCallback = NOOP) => {
       const PORT = await findFreePort(port);
+
       if (PORT !== port) {
+        if (!appConfig.findNewPort) {
+          logger.error(`port ${port} is unavailable, please try another`);
+          process.exit(1);
+        }
         logger.warn(`port ${port} is unavailable, using port ${PORT}`);
       }
       return new Promise((resolve, reject) => {
