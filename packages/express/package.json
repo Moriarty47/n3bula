@@ -1,6 +1,6 @@
 {
   "name": "@n3bula/express",
-  "version": "0.0.3-alpha.4",
+  "version": "0.0.4-alpha.1",
   "description": "A Node.js server based on Express.js",
   "type": "module",
   "main": "dist/index.js",

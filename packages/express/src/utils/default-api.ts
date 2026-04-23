@@ -4,9 +4,9 @@ import { Msg } from '@/util/msg';
 
 import type { ExpRequest, ExpResponse } from '@/types';
 
-@Route('/test')
+@Route('')
 export default class DefaultApi {
-  @Get('')
+  @Get('/ping')
   async handleGetNote(req: ExpRequest, _res: ExpResponse) {
     const query = req.query as Record<string, any>;
 

@@ -1,5 +1,7 @@
 import express from 'express';
 
+import { echo } from '@n3bula/echo/node';
+
 import { getResponseAdapter } from '@/adapter/response';
 import { errorHandler } from '@/mw/error-handler';
 
@@ -27,8 +29,8 @@ export type Route = {
   middlewares?: RequestHandler[];
 };
 
-export const PREFIX = Symbol('route-prefix');
-export const ROUTE_MWS = Symbol('route-mws');
+export const ROUTE_PREFIX = Symbol('route-prefix');
+export const ROUTE_MIDDLEWARES = Symbol('route-mws');
 
 export function Route(prefix: string = '', ...middlewares: RequestHandler[]) {
   return <T extends new (...rest: any[]) => any>(
@@ -40,8 +42,8 @@ export function Route(prefix: string = '', ...middlewares: RequestHandler[]) {
         router: ExpressRouter = express.Router();
       };
       context.addInitializer(() => {
-        (Ctrl as any).prototype[PREFIX] = prefix;
-        (Ctrl as any).prototype[ROUTE_MWS] = middlewares;
+        (Ctrl as any).prototype[ROUTE_PREFIX] = prefix;
+        (Ctrl as any).prototype[ROUTE_MIDDLEWARES] = middlewares;
       });
       return Ctrl as T;
     }
@@ -63,7 +65,7 @@ function createHttpMethodDecorator(method: HttpMethod) {
     ) => {
       if (context.kind === 'method') {
         context.addInitializer(function () {
-          addRoute((this as any)[PREFIX], {
+          addRoute((this as any)[ROUTE_PREFIX], {
             handlerName: context.name as string,
             method,
             middlewares: middlewares.length ? middlewares : undefined,
@@ -89,13 +91,13 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
 ) {
   controllers.forEach(Ctrl => {
     const inst = (typeof Ctrl === 'function' ? new Ctrl() : Ctrl) as {
-      [PREFIX]: string;
-      [ROUTE_MWS]: RequestHandler[];
+      [ROUTE_PREFIX]: string;
+      [ROUTE_MIDDLEWARES]: RequestHandler[];
       router: ExpressRouter;
     } & {
       [k: string]: (req: ExpRequest, res: ExpResponse, next: ExpNextFn) => any;
     };
-    const routes = routeMap[inst[PREFIX]];
+    const routes = routeMap[inst[ROUTE_PREFIX]];
     routes.forEach(route => {
       const handler = inst[route.handlerName];
 
@@ -104,35 +106,38 @@ export function registerRoutes<T extends readonly (new () => any)[]>(
         `Handler ${route.handlerName} not found on controller ${inst.constructor.name}`,
       );
 
-      const boundHandler: RequestHandler = (req, res, next) => {
+      const boundHandler: RequestHandler = async (req, res, next) => {
         const responseAdapter = getResponseAdapter();
-        return Promise.resolve(handler.call(inst, req, res, next))
-          .then(result => {
-            // console.error('result', result);
-            return responseAdapter.success(res, result);
-          })
-          .catch(error => {
-            // console.error('error', error);
-            return responseAdapter.error(res, error);
-          });
+        try {
+          return responseAdapter.success(
+            res,
+            await Promise.resolve(handler.call(inst, req, res, next)),
+          );
+        } catch (error: any) {
+          return responseAdapter.error(res, error);
+        }
       };
 
-      const finalMiddlewares: RequestHandler[] = [
-        ...(inst[ROUTE_MWS] || []),
+      if (!inst.router[route.method]) {
+        logger.warn(`${route.method} not supported.`);
+        return;
+      }
+
+      inst.router[route.method](
+        route.path,
+        ...(inst[ROUTE_MIDDLEWARES] || []),
         ...(route.middlewares || []),
         boundHandler,
-      ];
-
-      inst.router[route.method](route.path, ...finalMiddlewares);
+      );
     });
 
-    const routePath = `${basePath}${inst[PREFIX]}`;
+    const routePath = `${basePath}${inst[ROUTE_PREFIX]}`;
     logger(
-      `register api: ${routePath}\n`
+      `register api: ${echo.fg.lightGreen.toString(routePath)}\n`
         + routes
           .map(
             r =>
-              `${spaces(TAG.length + 1)}\x1B[92m${r.method} -> "${routePath}${r.path}"\x1B[m`,
+              `${spaces(TAG.length + 1)}${echo.fg.lightGreen.toString(`${r.method} -> ${routePath}${r.path}`)}`,
           )
           .join('\n'),
     );

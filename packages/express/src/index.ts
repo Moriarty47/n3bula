@@ -17,6 +17,7 @@ export {
   Route,
 } from '@/deco/routing';
 
+export { autoImportApis } from '@/util/autoload-apis';
 export {
   createMessageProxy as createMessage,
   defaultMsgFormatter as msgFormatter,

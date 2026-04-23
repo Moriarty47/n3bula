@@ -2,10 +2,10 @@
   "name": "example",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "dev": "tsx --watch index.ts"
   },
   "keywords": [],
   "author": "",

@@ -10,24 +10,25 @@ export default async function autoRegisterRoutes(
   app: Express,
   apiConfig: AppConfig,
 ) {
-  const { apiDir, apis, basePath = '/api' } = apiConfig;
+  const { apiDir, apis: inputApis, basePath = '/api' } = apiConfig;
 
-  let apiImporteers: RouteImporter[] = [];
-  if (apiDir) {
-    // auto
-    apiImporteers = Object.values(apiDir || {});
-  } else if (apis) {
-    // manual
-    apiImporteers = Object.values(apis || {});
+  let apiImporters: RouteImporter[] = [];
+
+  let apis = inputApis || apiDir;
+  if (typeof apis === 'function') {
+    apis = await apis();
+  } else if (typeof apis.then === 'function') {
+    apis = await apis;
   }
+  apiImporters = Object.values(apis || {});
 
-  if (apiImporteers.length === 0) {
+  if (apiImporters.length === 0) {
     logger('No apis folder found, registering default test api');
     registerRoutes(app, basePath, DefaultApi);
     return;
   }
   try {
-    const routeRegisters = apiImporteers.map(r => r());
+    const routeRegisters = apiImporters.map(r => r());
     registerRoutes(
       app,
       basePath,

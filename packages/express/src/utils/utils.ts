@@ -28,7 +28,7 @@ export const isError = (arg: unknown): arg is Error => {
   try {
     if (arg == null || typeof arg !== 'object') return false;
 
-    return structuredClone(arg) instanceof Error;
+    return arg instanceof Error;
   } catch {
     return false;
   }

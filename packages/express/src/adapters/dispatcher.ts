@@ -34,8 +34,9 @@ const omitType = <T extends { type?: any }>(payload: T): Omit<T, 'type'> => {
 export function dispatchStatus<T extends ResponseOk | ResponseFail | Error>(
   res: Response,
   payload: T,
-) {
-  if (isError(payload))
+): Response<any, Record<string, any>> {
+  if (res.headersSent) return {} as Response<any, Record<string, any>>;
+  if (!payload || isError(payload))
     return res.status(500).json(omitType(Msg.FAIL(payload)));
 
   const { code, type, ...message } = payload;

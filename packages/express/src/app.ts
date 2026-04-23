@@ -5,6 +5,7 @@ import express from 'express';
 import autoRegisterRoutes from '@/mw/auto-register';
 import timeout from '@/mw/timeout';
 
+import { autoImportApis } from '@/util/autoload-apis';
 import findFreePort from '@/util/find-free-port';
 import { changeTag, logger } from '@/util/log';
 import { initMsg } from '@/util/msg/index';
@@ -25,7 +26,7 @@ export async function createApp(
     .use(compression())
     .use(express.json())
     .use(express.urlencoded({ extended: true }))
-    .use(timeout)
+    .use(timeout())
     .disable('x-powered-by');
 
   const middlewares = appConfig.middlewares || {};
@@ -99,7 +100,7 @@ function addServerListener(port: number, server: Server) {
 }
 
 export async function startServer(
-  port: number = 3000,
+  port: number = 8050,
   appConfig: AppConfig = {} as AppConfig,
 ) {
   const app: App = await createApp(appConfig);
@@ -110,5 +111,7 @@ export async function startServer(
 }
 
 if (isDev) {
-  startServer();
+  startServer(8000, {
+    apis: autoImportApis(['./src/apis']),
+  });
 }

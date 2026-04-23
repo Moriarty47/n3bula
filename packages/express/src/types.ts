@@ -10,7 +10,10 @@ export type RouteRegister = {
 };
 
 export type RouteImporter = () => Promise<RouteRegister>;
-export type ApiDir = Record<string, RouteImporter>;
+export type ApiDir =
+  | Record<string, RouteImporter>
+  | Promise<Record<string, RouteImporter>>
+  | (() => Promise<Record<string, RouteImporter>>);
 
 export type OneOf<T extends Record<string, any>> = {
   [K in keyof T]: { [P in K]: T[K] } & { [P in Exclude<keyof T, K>]?: never };
@@ -28,6 +31,9 @@ export type AppConfig = {
   >;
   lang?: 'zh' | 'en';
 } & OneOf<{
+  /**
+   * @deprecated using 'apis' instead
+   */
   apiDir: ApiDir;
   apis: ApiDir;
 }>;
