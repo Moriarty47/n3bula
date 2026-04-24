@@ -13,7 +13,6 @@ async function autoImport(
   apis: Record<string, () => Promise<any>>,
 ) {
   dir = path.resolve(cwd(), dir);
-  console.log(dir);
   if (!fs.existsSync(dir)) {
     logger.warn(`Path not exists`, dir);
     return;
