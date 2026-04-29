@@ -1,18 +1,16 @@
 import { ENABLE_TRACE } from '../common/constants';
 
 import type { PropertiesHyphen } from 'csstype';
-import type { HEX_COLOR_KEYS, STLYE_KEYS } from '../common/constants';
+import type { HexColorKeyType } from './../common/types';
 import type {
   CallRun,
   Color,
-  Command as CommonCommand,
-  EchoMethod,
+  EchoMethodType,
+  StyleKeyType,
 } from '../common/types';
 
-export type Command = 'css' | CommonCommand;
-
 export type ColorOption<OmitKey extends keyof IColorOptions> = {
-  [K in HEX_COLOR_KEYS]: Pick<IColorOptions, OmitKey> & CallRun;
+  [K in HexColorKeyType]: Pick<IColorOptions, OmitKey> & CallRun;
 };
 export interface IColorOption<
   OmitKey extends keyof IColorOptions,
@@ -22,7 +20,7 @@ export interface IColorOption<
 }
 
 export type StyleOptions = {
-  [K in STLYE_KEYS]: Omit<IColorOptions, 'css'> & StyleOptions;
+  [K in StyleKeyType]: Omit<IColorOptions, 'css'> & StyleOptions;
 };
 
 export type TStyle = (PropertiesHyphen & { url?: string }) | null;
@@ -59,7 +57,7 @@ export type IColorOptions = {
 export type EchoFunc = ((...args: any[]) => void) & IColorOptions;
 
 export type Echo = EchoFunc &
-  Record<EchoMethod, EchoFunc> & {
+  Record<EchoMethodType, EchoFunc> & {
     [ENABLE_TRACE]?: boolean;
     __TAG: string;
   };

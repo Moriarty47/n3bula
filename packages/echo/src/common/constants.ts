@@ -1,8 +1,26 @@
-export const isNode = typeof process === 'object';
+import type { EchoMethodType, StyleMethodType } from './types';
 
-export const isDev = isNode
-  ? (process.env.DEV as unknown as string) === 'true'
-  : import.meta.env.DEV;
+export const isDev =
+  typeof process === 'object'
+    ? (process.env.MODE as unknown as string) === 'dev'
+    : import.meta.env.MODE === 'dev';
+
+const environment = (() => {
+  if (
+    typeof process !== 'undefined'
+    && process.versions
+    && process.versions.node
+  ) {
+    return 'node';
+  } else if (
+    typeof window !== 'undefined'
+    && typeof window.document !== 'undefined'
+  ) {
+    return 'browser';
+  }
+})();
+
+export const isNode = environment === 'node';
 
 export const ECHO_TAG = '@n3bula/echo';
 export const ENABLE_TRACE = '__enable_trace';
@@ -26,7 +44,7 @@ export const Style = {
   underline: 'underline',
   wavy: 'wavy',
 };
-export const textDecoration = new Set([
+export const TextDecoration = new Set([
   'underline',
   'linethrough',
   'overline',
@@ -37,7 +55,7 @@ export const textDecoration = new Set([
   'wavy',
 ]);
 
-export const ASCII_Style = {
+export const AsciiStyle = {
   blink: '5',
   bold: '1',
   hidden: '8',
@@ -48,12 +66,13 @@ export const ASCII_Style = {
   reverse: '7',
   underline: '4',
 } as const;
-export const ASCII_RGB = {
+
+export const AsciiRgb = {
   bg: '48;2',
   fg: '38;2',
 } as const;
 
-export const HEX_COLORS = {
+export const HexColors = {
   aliceBlue: 'F0F8FF',
   antiqueWhite: 'FAEBD7',
   aqua: '00FFFF',
@@ -209,12 +228,12 @@ export const CssProp = {
   fg: 'color',
 };
 
-export type CSS_PROP = keyof typeof CssProp;
+export const StyleMethods = new Set<StyleMethodType>(['bg', 'fg', 'css']);
 
-export const METHODS = ['log', 'info', 'warn', 'trace', 'error'] as const;
-
-export type STLYE_KEYS = keyof typeof Style;
-
-export type ASCIISTYLE_KEYS = keyof typeof ASCII_Style;
-
-export type HEX_COLOR_KEYS = keyof typeof HEX_COLORS;
+export const EchoMethods = new Set<EchoMethodType>([
+  'log',
+  'info',
+  'warn',
+  'trace',
+  'error',
+]);

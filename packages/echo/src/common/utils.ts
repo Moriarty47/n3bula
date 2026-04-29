@@ -1,26 +1,27 @@
 import {
   ASCII_END,
   ASCII_START,
-  ASCII_Style,
+  AsciiStyle,
   ECHO_TAG,
+  EchoMethods,
   ENABLE_TRACE,
-  HEX_COLORS,
+  HexColors,
   isDev,
-  METHODS,
-  SPACE,
-  SPACE_KEY,
   Style,
-  textDecoration,
+  StyleMethods,
 } from './constants';
 
-import type { ASCIISTYLE_KEYS, HEX_COLOR_KEYS, STLYE_KEYS } from './constants';
-import type { Command, EchoMethod } from './types';
+import type { PropertiesHyphen } from 'csstype';
+import type {
+  AsciiStyleKeyType,
+  EchoMethodType,
+  HexColorKeyType,
+  StyleKeyType,
+  StyleMethodType,
+} from './types';
 
 export const NOOP = () => {};
-
-export function isBrowser(): boolean {
-  return !!(typeof window !== 'undefined' && window?.document?.createElement);
-}
+export const echoTag = () => ECHO_TAG;
 
 export const errorLog = (...messages: any[]) => {
   console.error(`${ASCII_START}32m${ECHO_TAG}${ASCII_END}`, ...messages);
@@ -72,6 +73,8 @@ export const isNumber = (v: unknown) => typeof v === 'number';
 
 export const isString = (v: unknown) => typeof v === 'string';
 
+export const isSymbol = (v: unknown) => typeof v === 'symbol';
+
 export const isHex = (value: string) =>
   /^(#[0-9A-F]{8}|#[0-9A-F]{6}|#[0-9A-F]{4}|#[0-9A-F]{3})$/i.test(value);
 
@@ -79,28 +82,17 @@ export const isRgb = (value: string) => !!value?.startsWith('rgb(');
 
 export const isHsl = (value: string) => !!value?.startsWith('hsl(');
 
-export const isStaticProp = (prop: unknown) =>
-  prop === ENABLE_TRACE || prop === SPACE_KEY;
-
-export const isMethodProp = (prop: unknown) => METHODS.some(m => m === prop);
-
-export const isColorArgs = (arg: unknown) => arg === 'rgb' || arg === 'hsl';
+export const isMethodProp = (prop: unknown) => EchoMethods.has(prop as any);
 
 export const isColorProp = (prop: unknown) => prop === 'fg' || prop === 'bg';
 
 export const isCSSProp = (prop: unknown) => prop === 'css';
 
-export const isStyleKey = (prop: unknown): prop is STLYE_KEYS =>
-  !!Style[prop as STLYE_KEYS];
+export const isStyleKey = (prop: unknown): prop is StyleKeyType =>
+  !!Style[prop as StyleKeyType];
 
-export const isASCIIStyleKey = (prop: unknown): prop is ASCIISTYLE_KEYS =>
-  !!ASCII_Style[prop as ASCIISTYLE_KEYS];
-
-export const isTextDecoProp = (prop: unknown) =>
-  textDecoration.has(prop as any);
-
-export const isPresetColorProp = (prop: unknown) =>
-  !!HEX_COLORS[prop as HEX_COLOR_KEYS];
+export const isAsciiStyleKey = (prop: unknown): prop is AsciiStyleKeyType =>
+  !!AsciiStyle[prop as AsciiStyleKeyType];
 
 export const toNumber = (num: string | number, float = false) => {
   const val = float
@@ -174,7 +166,7 @@ const getColorNumbers = (color: string) =>
     .split(',')
     .map(i => Number(i.trim()));
 
-export const getRGB = (color: string | HEX_COLOR_KEYS) => {
+export const getRGB = (color: string | HexColorKeyType) => {
   let rgb: number[];
   if (isHex(color)) {
     rgb = hexToRgb(color);
@@ -182,118 +174,61 @@ export const getRGB = (color: string | HEX_COLOR_KEYS) => {
     rgb = getColorNumbers(color);
   } else if (isHsl(color)) {
     rgb = hsl2rgb(getColorNumbers(color));
-  } else if (HEX_COLORS[color as HEX_COLOR_KEYS]) {
-    rgb = hexToRgb(HEX_COLORS[color as HEX_COLOR_KEYS]);
+  } else if (HexColors[color as HexColorKeyType]) {
+    rgb = hexToRgb(HexColors[color as HexColorKeyType]);
   } else {
     rgb = [255, 255, 255];
   }
   return rgb;
 };
 
-export const fillIn = (template: string, array: any[]) => {
-  const len = array.length;
-  const result = template.replace(/\$(\d+)/g, (_, n) => {
-    const idx = Number(n) - 1;
-    return idx >= 0 && idx < len ? String(array[idx]) : '';
-  });
-  return result;
-};
+export const isStyleMethod = (prop: any): prop is StyleMethodType =>
+  StyleMethods.has(prop);
 
-type WrapArray<T> = T extends (infer U)[] ? U : T;
-export const withArray = <T>(value: T) => {
-  if (Array.isArray(value)) return value as WrapArray<T>[];
-  return [value] as WrapArray<T>[];
-};
+export const isEchoMethod = (prop: any): prop is EchoMethodType =>
+  EchoMethods.has(prop);
 
-export class NArray<T> extends Array<T> {
-  get copy() {
-    return [...this];
-  }
+export function toArray<T>(value: T | T[]): T[] {
+  return Array.isArray(value) ? value : [value];
 }
 
-export class Store<T = string[]> {
-  cmds: NArray<Command> = new NArray();
-  fg: NArray<any> = new NArray();
-  bg: NArray<any> = new NArray();
-  css: NArray<T> = new NArray();
-  addCmd(cmd: string) {
-    this.cmds.push(cmd as Command);
-  }
-  addArgs(...args: any[]) {
-    if (!this.cmds.length) return;
-    const lastCmd = this.cmds.at(-1);
-    if (!lastCmd) return;
-
-    this[lastCmd as Command].push(...args);
-  }
-  addCSS(prop: string | string[][], index?: number) {
-    if (!isNumber(index)) {
-      this.css.push(...(prop as T[]));
-      return;
-    }
-    this.css[index] ||= [] as T;
-    (this.css[index] as string[]).push(prop as string);
-  }
-  clear() {
-    this.cmds.length = this.fg.length = this.bg.length = this.css.length = 0;
-  }
-  print() {
-    return [this.cmds.copy, this.fg.copy, this.bg.copy, this.css.copy];
-  }
+export function truthy<T>(v: T): boolean {
+  return !!v;
 }
 
 export const GLOBAL_CONFIGS = {
   [ENABLE_TRACE]: false,
 };
 
-export const defineProperties = (
-  echo: any,
-  createEcho: (type: EchoMethod) => any,
-) => {
-  Object.defineProperties(echo, {
-    [ENABLE_TRACE]: {
-      configurable: false,
-      enumerable: false,
-      get() {
-        return GLOBAL_CONFIGS[ENABLE_TRACE];
-      },
-      set(v: boolean) {
-        GLOBAL_CONFIGS[ENABLE_TRACE] = v;
-      },
-    },
-    __TAG: {
-      configurable: false,
-      enumerable: false,
-      value: ECHO_TAG,
-      writable: false,
-    },
-    [SPACE_KEY]: {
-      configurable: false,
-      enumerable: true,
-      value(count: number = 0) {
-        count = toNumber(count);
-        if (!Number.isFinite(count)) count = 0;
-        if (count > 2) count -= 2;
-        return SPACE.repeat(count);
-      },
-      writable: false,
-    },
-    ...METHODS.reduce(
-      (props, m) => {
-        props[m] = {
-          configurable: false,
-          enumerable: true,
-          value: createEcho(m),
-          writable: false,
-        };
-        return props;
-      },
-      {} as Record<EchoMethod, any>,
-    ),
+export function getBase64Image(
+  url: string,
+  height: number = 100,
+): Promise<PropertiesHyphen> {
+  const image = new Image();
+  image.crossOrigin = 'anonymous';
+  return new Promise((resolve, reject) => {
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.height = height || image.naturalHeight;
+      canvas.width = (height * image.naturalWidth) / image.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL();
+      resolve({
+        background: `url(${dataUrl}) no-repeat`,
+        'background-size': 'cover',
+        'font-size': '1px',
+        padding: `${canvas.height}px ${canvas.width}px`,
+      });
+    };
+    image.onerror = reject;
+    image.src = url;
   });
-};
-
-export function toStringResult(result: any[]) {
-  result = result.filter(r => typeof r === 'string');
-  return result.join(' ');
 }
+
+export const stringifyCSS = (css: PropertiesHyphen) =>
+  Object.keys(css).reduce(
+    (cssStr, key) =>
+      (cssStr += `${key}:${css[key as keyof PropertiesHyphen]};`),
+    '',
+  );

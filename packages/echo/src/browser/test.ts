@@ -1,4 +1,4 @@
-import { HEX_COLORS } from '../common/constants';
+import { HexColors } from '../common/constants';
 import { sample } from '../common/utils';
 import { echo } from './index';
 
@@ -28,7 +28,7 @@ echo.css(
   },
 )(echo.__TAG, echo.SPACE(30), echo.__TAG.split('').reverse().join(''));
 
-const colors = sample(Object.keys(HEX_COLORS), 10);
+const colors = sample(Object.keys(HexColors), 10);
 for (let i = 0, len = colors.length; i < len; i += 2) {
   const j = colors[i] as keyof IColorOption<'bg', 'fg'>;
   const k = colors[i + 1] as keyof IColorOption<'bg', 'fg'>;

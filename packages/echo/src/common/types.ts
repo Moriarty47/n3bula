@@ -1,14 +1,22 @@
-import type { HEX_COLOR_KEYS } from './constants';
+import type { AsciiStyle, CssProp, HexColors, Style } from './constants';
 
-export type EchoMethod = 'log' | 'info' | 'warn' | 'trace' | 'error';
+export type AnyFunc<T = void> = (...args: any[]) => T;
 
-export type MaybePromise<T = void> = Promise<T> | T;
-
-export type CallRun<R = void> = ((...args: any[]) => R) & {
-  toString: (...args: any[]) => string;
-  valueOf: (...args: any[]) => string;
+export type CallRun<R = void> = AnyFunc<R> & {
+  toString: AnyFunc<string>;
+  valueOf: AnyFunc<string>;
 };
 
-export type Command = 'css' | 'fg' | 'bg';
+export type EchoMethodType = 'log' | 'info' | 'warn' | 'trace' | 'error';
 
-export type Color = (string & {}) | HEX_COLOR_KEYS;
+export type StyleMethodType = 'css' | 'fg' | 'bg';
+
+export type CssPropType = keyof typeof CssProp;
+
+export type StyleKeyType = keyof typeof Style;
+
+export type AsciiStyleKeyType = keyof typeof AsciiStyle;
+
+export type HexColorKeyType = keyof typeof HexColors;
+
+export type Color = (string & {}) | HexColorKeyType;

@@ -1,10 +1,15 @@
 import { ENABLE_TRACE } from '../common/constants';
 
-import type { ASCIISTYLE_KEYS, HEX_COLOR_KEYS } from '../common/constants';
-import type { CallRun, Color, EchoMethod } from '../common/types';
+import type {
+  AsciiStyleKeyType,
+  CallRun,
+  Color,
+  EchoMethodType,
+  HexColorKeyType,
+} from '../common/types';
 
 export type ColorOption<OmitKey extends keyof IColorOptions> = {
-  [K in HEX_COLOR_KEYS]: Pick<IColorOptions, OmitKey> & CallRun;
+  [K in HexColorKeyType]: Pick<IColorOptions, OmitKey> & CallRun;
 };
 
 export interface IColorOption<
@@ -15,7 +20,7 @@ export interface IColorOption<
 }
 
 export type StyleOptions = {
-  [K in ASCIISTYLE_KEYS]: Omit<IColorOptions, 'css'> & StyleOptions & CallRun;
+  [K in AsciiStyleKeyType]: Omit<IColorOptions, 'css'> & StyleOptions & CallRun;
 };
 
 export type IColorOptions = {
@@ -31,7 +36,7 @@ export type IColorOptions = {
 export type EchoFunc = ((...args: any[]) => void) & IColorOptions;
 
 export type Echo = EchoFunc &
-  Record<EchoMethod, EchoFunc> & {
+  Record<EchoMethodType, EchoFunc> & {
     [ENABLE_TRACE]?: boolean;
     __TAG: string;
   };

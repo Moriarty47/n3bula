@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      * {
-        padding: 0;
-        margin: 0;
-      }
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-      }
-      .box {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-      }
-      button {
-        padding: 8px;
-        font-size: 8em;
-      }
-    </style>
-    <script src="../dist/index.umd.cjs"></script>
-    <script src="main.js"></script>
-    <script src="index.js"></script>
-    <script type="module" src="index.mjs"></script>
-  </head>
-  <body>
-    <div class="box">
-      <button id="esm" type="button">ESM</button>
-      <button id="cjs" type="button">CJS</button>
-    </div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    .box {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    button {
+      padding: 8px;
+      font-size: 8em;
+    }
+  </style>
+  <script src="../dist/browser/index.umd.js"></script>
+  <script type="module" src="esm.mjs"></script>
+  <script src="cjs.js"></script>
+  <script src="umd.js"></script>
+  <script src="invoke.js"></script>
+</head>
+
+<body>
+  <div class="box">
+    <button id="esm" type="button">ESM</button>
+    <button id="cjs" type="button">CJS</button>
+    <button id="umd" type="button">UMD</button>
+  </div>
+  <script>var exports = {};</script>
+  <script src="../dist/browser/index.cjs"></script>
+</body>
+
 </html>
