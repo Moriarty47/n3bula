@@ -1,9 +1,8 @@
-import { isError } from '@/util/utils';
+import { isError } from '@/util/errors';
 
-import type { MessagesFail } from './en/fail';
-import type { MessagesOk } from './en/ok';
+import type { MessagesFail, MessagesOk } from './types';
 
-export type { StatusFail, StatusOk } from './status';
+export type { StatusFail, StatusOk } from './types';
 export type { MessagesFail, MessagesOk };
 
 export type MsgResult = {
@@ -27,7 +26,7 @@ const formatPayload = (payload: any) => {
   return payload;
 };
 
-export const defaultMsgFormatter = (
+const defaultMsgFormatter = (
   code: number,
   type: string,
   msg: string,
@@ -39,7 +38,12 @@ export const defaultMsgFormatter = (
   ...(payload !== undefined ? { data: formatPayload(payload) } : {}),
 });
 
-export function createMessageProxy<T extends MsgTemplates>(
+export {
+  createMessageProxy as createMessage,
+  defaultMsgFormatter as msgFormatter,
+};
+
+function createMessageProxy<T extends MsgTemplates>(
   code: number,
   messages: T,
   msgFormatter = defaultMsgFormatter,
@@ -102,12 +106,11 @@ export const Msg = {} as MsgType;
 
 export const initMsg = async (lang: 'zh' | 'en') => {
   if (lang !== 'zh' && lang !== 'en') lang = 'en';
-  Msg.OK = createMessageProxy(
-    0,
-    (await import(`./${lang}/ok.js`)).Messages,
-  ) as unknown as MsgType['OK'];
-  Msg.FAIL = createMessageProxy(
-    1,
-    (await import(`./${lang}/fail.js`)).Messages,
-  ) as unknown as MsgType['FAIL'];
+
+  const { Fail, Ok } = (await import(`./i18n/${lang}.js`)) as {
+    Fail: Record<MessagesFail, string>;
+    Ok: Record<MessagesOk, string>;
+  };
+  Msg.OK = createMessageProxy(0, Ok) as unknown as MsgType['OK'];
+  Msg.FAIL = createMessageProxy(1, Fail) as unknown as MsgType['FAIL'];
 };

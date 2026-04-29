@@ -6,8 +6,6 @@ import { pathToFileURL } from 'node:url';
 
 import { logger } from './log';
 
-const DEFAULT_APIS_DIR = path.resolve(cwd(), 'src/apis');
-
 async function autoImport(
   dir: string,
   apis: Record<string, () => Promise<any>>,
@@ -29,8 +27,8 @@ async function autoImport(
     }, apis);
 }
 
-export async function autoImportApis(
-  dirPaths: string | string[] = DEFAULT_APIS_DIR,
+export async function apiAutoImporter(
+  dirPaths: string | string[] = path.resolve(cwd(), 'src/apis'),
 ) {
   let paths;
   if (typeof dirPaths === 'string') paths = [dirPaths];

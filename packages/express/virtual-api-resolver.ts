@@ -19,8 +19,7 @@ const getCode = async (
   });
 
   const imports = entries.map(entry => {
-    const tempPath =
-      `./${posix.join(relative(cwd(), dir).split(sep).join(posix.sep), entry)}`;
+    const tempPath = `./${posix.join(relative(cwd(), dir).split(sep).join(posix.sep), entry)}`;
     const filePath = isDevMode ? pathToFileURL(tempPath).href : tempPath;
     const key = mapKey(entry.replace(/\\/g, '/'));
     return `  '${key}': () => import(${JSON.stringify(filePath)})`;

@@ -1,12 +1,12 @@
+import { isError, isRequiredError } from '@/util/errors';
 import { Msg } from '@/util/msg';
 import {
   statusFail as _statusFail,
   statusOk as _statusOk,
 } from '@/util/msg/status';
-import { isError } from '@/util/utils';
 
 import type { Response } from 'express';
-import type { StatusFail, StatusOk } from '@/util/msg/status';
+import type { StatusFail, StatusOk } from '@/util/msg/types';
 import type { ResponseFail, ResponseOk } from './response';
 
 let statusOk = { ..._statusOk };
@@ -36,8 +36,17 @@ export function dispatchStatus<T extends ResponseOk | ResponseFail | Error>(
   payload: T,
 ): Response<any, Record<string, any>> {
   if (res.headersSent) return {} as Response<any, Record<string, any>>;
-  if (!payload || isError(payload))
+
+  if (!payload) return res.status(500).json(omitType(Msg.FAIL()));
+
+  if (isError(payload)) {
+    if (isRequiredError(payload)) {
+      return res
+        .status(400)
+        .json(omitType(Msg.FAIL.badRequest(payload.message)));
+    }
     return res.status(500).json(omitType(Msg.FAIL(payload)));
+  }
 
   const { code, type, ...message } = payload;
 

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "ESNext.Decorators"],
     "module": "es2022",
     "types": ["node"],
     "skipLibCheck": true,

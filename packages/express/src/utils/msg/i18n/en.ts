@@ -1,88 +1,6 @@
-export type MessagesFail =
-  | 'default'
-  | 'alreadyUploadedFail'
-  | 'cancel2FAFail'
-  | 'chunksUploadError'
-  | 'confirmUploadFail'
-  | 'deleteFailed'
-  | 'generatePDFFail'
-  | 'sendUnlockFail'
-  | 'setup2FAFail'
-  | 'unlockFail'
-  | 'uploadFail'
-  | 'verify2FAFail'
-  | 'testFail'
-  | 'createFailed'
-  | 'updateFailed'
-  | 'saveFailed'
-  | 'fetchFailed'
-  | 'listFailed'
-  | 'restoreFailed'
-  | 'moveFailed'
-  | 'copyFailed'
-  | 'importFailed'
-  | 'exportFailed'
-  | 'subscribeFailed'
-  | 'unsubscribeFailed'
-  | 'connectFailed'
-  | 'disconnectFailed'
-  | 'sendFailed'
-  | 'deliverFailed'
-  | 'acceptFailed'
-  | 'rejectFailed'
-  | 'passwordChangeFailed'
-  | 'emailSendFailed'
-  | 'verifyFailed'
-  | 'loginFailed'
-  | 'logoutFailed'
-  | 'permissionGrantFailed'
-  | 'permissionRevokeFailed'
-  | 'tokenIssueFailed'
-  | 'tokenRevokeFailed'
-  | 'roleAssignFailed'
-  | 'roleRemoveFailed'
-  | 'invitationSendFailed'
-  | 'onboardingFailed'
-  | 'paymentFailed'
-  | 'refundFailed'
-  | 'billingUpdateFailed'
-  | 'profileUpdateFailed'
-  | 'avatarUploadFailed'
-  | 'avatarRemoveFailed'
-  | 'wallpaperUpdateFailed'
-  | 'cacheClearFailed'
-  | 'cronScheduleFailed'
-  | 'cronRunFailed'
-  | 'rateLimited'
-  | 'apiKeyCreateFailed'
-  | 'apiKeyDeleteFailed'
-  | 'webhookRegisterFailed'
-  | 'webhookUnregisterFailed'
-  | 'encryptionEnableFailed'
-  | 'encryptionDisableFailed'
-  | 'licenseActivateFailed'
-  | 'licenseDeactivateFailed'
-  | 'syncFailed'
-  | 'migrationFailed'
-  | 'buildFailed'
-  | 'deployFailed'
-  | 'restorePointCreateFailed'
-  | 'validationError'
-  | 'authenticationError'
-  | 'authorizationError'
-  | 'notFound'
-  | 'conflictError'
-  | 'badRequest'
-  | 'serverError'
-  | 'timeout'
-  | 'networkError'
-  | 'unsupportedMediaType'
-  | 'quotaExceeded'
-  | 'insufficientStorage'
-  | 'dependencyFailed'
-  | 'concurrencyError';
+import type { MessagesFail, MessagesOk } from '../types';
 
-export const Messages: Record<MessagesFail, string> = {
+export const Fail: Record<MessagesFail, string> = {
   acceptFailed: 'Accept failed.',
   alreadyUploadedFail: 'Upload failed: file already uploaded.',
   apiKeyCreateFailed: 'Failed to create API key.',
@@ -165,4 +83,75 @@ export const Messages: Record<MessagesFail, string> = {
   wallpaperUpdateFailed: 'Failed to update wallpaper.',
   webhookRegisterFailed: 'Failed to register webhook.',
   webhookUnregisterFailed: 'Failed to unregister webhook.',
+};
+
+export const Ok: Record<MessagesOk, string> = {
+  accepted: 'Accepted successfully.',
+  alreadyUploaded: 'Already uploaded.',
+  apiKeyCreated: 'API key created successfully.',
+  apiKeyDeleted: 'API key deleted successfully.',
+  avatarRemoved: 'Avatar removed successfully.',
+  avatarUploaded: 'Avatar uploaded successfully.',
+  billingUpdated: 'Billing information updated successfully.',
+  buildSucceeded: 'Build succeeded.',
+  cacheCleared: 'Cache cleared successfully.',
+  cancel2FA: 'Two-factor authentication cancelled successfully.',
+  chunksUploaded: 'All chunks received. Upload complete.',
+  confirmUploaded: 'Uploaded file confirmed successfully.',
+  connected: 'Connected successfully.',
+  copied: 'Copied successfully.',
+  created: 'Created successfully.',
+  cronRun: 'Task executed successfully.',
+  cronScheduled: 'Task scheduled successfully.',
+  default: 'Successfully retrieved.',
+  deleted: 'Deleted successfully.',
+  delivered: 'Delivered successfully.',
+  deploySucceeded: 'Deployment succeeded.',
+  disconnected: 'Disconnected successfully.',
+  emailSent: 'Email sent successfully.',
+  encryptionDisabled: 'Encryption disabled successfully.',
+  encryptionEnabled: 'Encryption enabled successfully.',
+  exported: 'Exported successfully.',
+  fetched: 'Fetched successfully.',
+  generatePDF: 'PDF generated successfully.',
+  imported: 'Imported successfully.',
+  invitationSent: 'Invitation sent successfully.',
+  licenseActivated: 'License activated successfully.',
+  licenseDeactivated: 'License deactivated successfully.',
+  listed: 'List retrieved successfully.',
+  loggedIn: 'Logged in successfully.',
+  loggedOut: 'Logged out successfully.',
+  migrationCompleted: 'Migration completed successfully.',
+  moved: 'Moved successfully.',
+  onboardingComplete: 'Onboarding completed successfully.',
+  passwordChanged: 'Password changed successfully.',
+  paymentProcessed: 'Payment processed successfully.',
+  permissionGranted: 'Permission granted.',
+  permissionRevoked: 'Permission revoked.',
+  profileUpdated: 'Profile updated successfully.',
+  rateLimitedReset: 'Rate limit reset.',
+  refundProcessed: 'Refund processed successfully.',
+  rejectedSuccess: 'Rejected successfully.',
+  restored: 'Restored successfully.',
+  restorePointCreated: 'Restore point created successfully.',
+  roleAssigned: 'Role assigned successfully.',
+  roleRemoved: 'Role removed successfully.',
+  saved: 'Saved successfully.',
+  sent: 'Sent successfully.',
+  sentUnlock: 'Unlock request sent successfully.',
+  setup2FA: 'Two-factor authentication set up successfully.',
+  subscribed: 'Subscription successful.',
+  syncCompleted: 'Synchronization completed successfully.',
+  test: 'Test successful.',
+  tokenIssued: 'Token issued successfully.',
+  tokenRevoked: 'Token revoked successfully.',
+  unlock: 'Unlocked successfully.',
+  unsubscribed: 'Unsubscribed successfully.',
+  updated: 'Updated successfully.',
+  uploaded: 'Uploaded successfully.',
+  verified: 'Verified successfully.',
+  verify2FA: 'Two-factor authentication verified successfully.',
+  wallpaperUpdated: 'Wallpaper updated successfully.',
+  webhookRegistered: 'Webhook registered successfully.',
+  webhookUnregistered: 'Webhook unregistered successfully.',
 };

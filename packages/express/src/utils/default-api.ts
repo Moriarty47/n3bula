@@ -1,13 +1,14 @@
-import { Get, Route } from '@/deco/routing';
+import { Get } from '@/deco/methods';
+import { Route } from '@/deco/route';
 
 import { Msg } from '@/util/msg';
 
-import type { ExpRequest, ExpResponse } from '@/types';
+import type { ExpApiArgs } from '@/types';
 
 @Route('')
 export default class DefaultApi {
   @Get('/ping')
-  async handleGetNote(req: ExpRequest, _res: ExpResponse) {
+  async handleGetNote(...[req, _res]: ExpApiArgs) {
     const query = req.query as Record<string, any>;
 
     // throw Msg.FAIL.apiKeyCreateFailed({

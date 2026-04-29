@@ -9,30 +9,7 @@ export const cwd = process.cwd();
 
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export function assertsDefined<T>(
-  value: T | undefined | null,
-  msg?: any,
-): asserts value is T {
-  if (!value) throw new Error(msg || 'Value is not defined.');
-}
-
-export function assertsError<T>(
-  value: T | null,
-  payload?: any,
-): asserts value is null {
-  if (value) throw payload;
-}
-
-// Nodejs Except for DOMException
-export const isError = (arg: unknown): arg is Error => {
-  try {
-    if (arg == null || typeof arg !== 'object') return false;
-
-    return arg instanceof Error;
-  } catch {
-    return false;
-  }
-};
+export const spaces = (count: number) => SPACE.repeat(count);
 
 export type RejectedResult = [Error, null];
 export type ResolvedResult<T> = [null, T];
@@ -71,5 +48,3 @@ export function filterKeys<
     {} as PickSecondLevel<T, K>,
   );
 }
-
-export const spaces = (count: number) => SPACE.repeat(count);

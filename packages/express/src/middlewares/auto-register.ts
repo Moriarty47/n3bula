@@ -1,16 +1,15 @@
 import { registerRoutes } from '@/deco/routing';
 
-import DefaultApi from '@/util/default-api';
 import { logger } from '@/util/log';
 
 import type { Express } from 'express';
-import type { AppConfig, RouteImporter } from '@/types';
+import type { AppConfig, RouteConstructor, RouteImporter } from '@/types';
 
 export default async function autoRegisterRoutes(
   app: Express,
-  apiConfig: AppConfig,
+  appConfig: AppConfig,
 ) {
-  const { apiDir, apis: inputApis, basePath = '/api' } = apiConfig;
+  const { apiDir, apis: inputApis } = appConfig;
 
   let apiImporters: RouteImporter[] = [];
 
@@ -24,14 +23,18 @@ export default async function autoRegisterRoutes(
 
   if (apiImporters.length === 0) {
     logger('No apis folder found, registering default test api');
-    registerRoutes(app, basePath, DefaultApi);
+    registerRoutes(
+      app,
+      appConfig,
+      (await import('@/util/default-api')).default as RouteConstructor,
+    );
     return;
   }
   try {
     const routeRegisters = apiImporters.map(r => r());
     registerRoutes(
       app,
-      basePath,
+      appConfig,
       ...(await Promise.all(routeRegisters)).map(m => m.default),
     );
   } catch (error) {

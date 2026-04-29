@@ -3,11 +3,11 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 
 import autoRegisterRoutes from '@/mw/auto-register';
-import timeout from '@/mw/timeout';
+import { timeoutMwPlugin } from '@/mw/timeout';
 
-import { autoImportApis } from '@/util/autoload-apis';
-import findFreePort from '@/util/find-free-port';
-import { changeTag, logger } from '@/util/log';
+import { apiAutoImporter } from '@/util/apis-auto-importer';
+import { findFreePort } from '@/util/find-free-port';
+import { changeTag, logger, memoryUsage } from '@/util/log';
 import { initMsg } from '@/util/msg/index';
 import { isDev } from '@/util/utils';
 
@@ -16,18 +16,35 @@ import { NOOP } from '@/const';
 import type { Server } from 'node:http';
 import type { App, AppConfig, ListenCallback } from '@/types';
 
+const initConfig = (config: AppConfig): AppConfig => ({
+  basePath: '/api',
+  findNewPort: false,
+  printApis: true,
+  timeoutOptions: true,
+  urlencodedOptions: { extended: true },
+  ...config,
+});
+
 export async function createApp(
   appConfig: AppConfig = {} as AppConfig,
 ): Promise<App> {
+  appConfig = initConfig(appConfig);
   changeTag(appConfig.logTag);
   await initMsg(appConfig.lang || 'en');
+
   const app = express()
-    .use(cookieParser())
-    .use(compression())
-    .use(express.json())
-    .use(express.urlencoded({ extended: true }))
-    .use(timeout())
+    .use(
+      cookieParser(
+        appConfig.cookieParserOptions?.secret,
+        appConfig.cookieParserOptions,
+      ),
+    )
+    .use(compression(appConfig.compressionOptions))
+    .use(express.json(appConfig.jsonOptions))
+    .use(express.urlencoded(appConfig.urlencodedOptions))
     .disable('x-powered-by');
+
+  timeoutMwPlugin(app, appConfig.timeoutOptions);
 
   const middlewares = appConfig.middlewares || {};
 
@@ -39,15 +56,15 @@ export async function createApp(
 
   Object.defineProperty(app, 'listen', {
     value: async (port: number, callback: ListenCallback = NOOP) => {
-      const PORT = await findFreePort(port);
+      const PORT = await findFreePort(
+        port,
+        appConfig.host,
+        appConfig.findNewPort,
+      );
 
-      if (PORT !== port) {
-        if (!appConfig.findNewPort) {
-          logger.error(`port ${port} is unavailable, please try another`);
-          process.exit(1);
-        }
+      if (PORT !== port)
         logger.warn(`port ${port} is unavailable, using port ${PORT}`);
-      }
+
       return new Promise((resolve, reject) => {
         const server = originAppListen.call(app, PORT, error => {
           if (error) return reject(error);
@@ -67,9 +84,6 @@ function addServerListener(port: number, server: Server) {
     .on('dropRequest', req => {
       logger('dropRequest', req.url);
     })
-    // .on('connection', _socket => {
-    //   logger('connection');
-    // })
     .on('close', () => {
       logger('Server is closed.');
     })
@@ -105,13 +119,16 @@ export async function startServer(
 ) {
   const app: App = await createApp(appConfig);
   const server = await app.listen(port, usedPort => {
-    logger(`Server is running on \x1B[92mhttp://localhost:${usedPort}\x1B[m`);
+    logger(
+      `Server is running on \x1b[92mhttp://${appConfig.host || 'localhost'}:${usedPort}\x1b[m`,
+    );
   });
   return server;
 }
 
 if (isDev) {
   startServer(8000, {
-    apis: autoImportApis(['./src/apis']),
+    apis: apiAutoImporter(['./src/apis']),
   });
+  memoryUsage();
 }

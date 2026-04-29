@@ -5,7 +5,7 @@ import { logger } from '@/util/log';
 import type { Router } from 'express';
 import type { ExpNextFn, ExpRequest, ExpResponse } from '@/types';
 
-export function errorHandler(register: () => Router): Router {
+export function errorHandlerMw(register: () => Router): Router {
   const router = register();
   router.use(
     (err: any, _req: ExpRequest, res: ExpResponse, _next: ExpNextFn) => {

@@ -1,7 +1,4 @@
-import type { MessagesFail } from './en/fail';
-import type { MessagesOk } from './en/ok';
-
-export type StatusOk = Record<MessagesOk, number>;
+import type { StatusFail, StatusOk } from './types';
 
 export const statusOk: StatusOk = {
   accepted: 202,
@@ -73,8 +70,6 @@ export const statusOk: StatusOk = {
   webhookRegistered: 201,
   webhookUnregistered: 200,
 };
-
-export type StatusFail = Record<MessagesFail, number>;
 
 export const statusFail: StatusFail = {
   acceptFailed: 400,

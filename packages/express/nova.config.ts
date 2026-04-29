@@ -7,12 +7,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const config: NovaOptions = {
   input: {
-    'en/fail': resolve(__dirname, 'src/utils/msg/en/fail.ts'),
-    'en/ok': resolve(__dirname, 'src/utils/msg/en/ok.ts'),
+    'i18n/en': resolve(__dirname, 'src/utils/msg/i18n/en.ts'),
+    'i18n/zh': resolve(__dirname, 'src/utils/msg/i18n/zh.ts'),
     index: resolve(__dirname, 'src/index.ts'),
     status: resolve(__dirname, 'src/utils/msg/status.ts'),
-    'zh/fail': resolve(__dirname, 'src/utils/msg/zh/fail.ts'),
-    'zh/ok': resolve(__dirname, 'src/utils/msg/zh/ok.ts'),
   },
   nova: {
     input: resolve(__dirname, 'src/index.ts'),

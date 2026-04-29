@@ -1,10 +1,10 @@
-import { autoImportApis, createApp } from '@n3bula/express';
+import { apiAutoImporter, createApp } from '@n3bula/express';
 
 const PORT = 8000;
 
 async function startServer() {
   const app = await createApp({
-    apis: await autoImportApis(['./apis']),
+    apis: await apiAutoImporter(['./apis']),
   });
   const server = await app.listen(PORT, usedPort => {
     console.log(

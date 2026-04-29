@@ -87,6 +87,9 @@ importers:
       terser-webpack-plugin:
         specifier: ^5.3.9
         version: 5.3.16(esbuild@0.25.12)(webpack@5.104.1(webpack-cli@5.1.4))
+      tree-kill:
+        specifier: ^1.2.2
+        version: 1.2.2
       ts-loader:
         specifier: ^9.4.4
         version: 9.5.4(typescript@5.9.3)(webpack@5.104.1)
@@ -194,15 +197,9 @@ importers:
 
   packages/echo:
     devDependencies:
-      '@n3bula/nova':
-        specifier: workspace:*
-        version: link:../nova
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-      vite:
-        specifier: ^5.2.0
-        version: 5.4.21(@types/node@25.5.0)(sass@1.97.1)(terser@5.44.1)
 
   packages/eslint-config:
     dependencies:
@@ -292,6 +289,9 @@ importers:
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
 
   packages/express/example:
     dependencies:
@@ -396,6 +396,12 @@ importers:
       '@types/minimist':
         specifier: ^1.2.5
         version: 1.2.5
+
+  packages/nova/example:
+    dependencies:
+      '@n3bula/nova':
+        specifier: link:..
+        version: link:..
 
   packages/npm-commands:
     devDependencies:
@@ -10008,6 +10014,9 @@ packages:
   zod@4.2.1:
     resolution: {integrity: sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==}
 
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
   zustand@3.7.2:
     resolution: {integrity: sha512-PIJDIZKtokhof+9+60cpockVOq05sJzHCriyvaLBmEJixseQ1a5Kdov6fWZfWOu5SK9c+FhH1jU0tntLxRJYMA==}
     engines: {node: '>=12.7.0'}
@@ -12799,25 +12808,25 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/bonjour@3.5.13':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/compression@1.8.1':
     dependencies:
       '@types/express': 5.0.6
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
       '@types/express-serve-static-core': 5.1.0
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/cookie-parser@1.4.10(@types/express@5.0.6)':
     dependencies:
@@ -12847,14 +12856,14 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.7':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
 
   '@types/express-serve-static-core@5.1.0':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -12875,13 +12884,13 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/http-errors@2.0.5': {}
 
   '@types/http-proxy@1.17.17':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/inquirer@8.2.12':
     dependencies:
@@ -12892,7 +12901,7 @@ snapshots:
 
   '@types/jsdom@27.0.0':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       '@types/tough-cookie': 4.0.5
       parse5: 7.3.0
 
@@ -12902,11 +12911,11 @@ snapshots:
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -12926,12 +12935,12 @@ snapshots:
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       form-data: 4.0.5
 
   '@types/node-forge@1.3.14':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/node@20.19.27':
     dependencies:
@@ -12976,18 +12985,18 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/retry@0.12.2': {}
 
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/serve-index@1.9.4':
     dependencies:
@@ -12996,21 +13005,21 @@ snapshots:
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/sockjs@0.3.36':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/through@0.0.33':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@types/tough-cookie@4.0.5': {}
 
@@ -13018,7 +13027,7 @@ snapshots:
 
   '@types/webpack@5.28.5(esbuild@0.25.12)(webpack-cli@5.1.4(webpack@5.104.1))':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       tapable: 2.3.0
       webpack: 5.104.1(esbuild@0.25.12)(webpack-cli@5.1.4(webpack@5.104.1))
     transitivePeerDependencies:
@@ -13029,7 +13038,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
 
   '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)':
     dependencies:
@@ -16797,7 +16806,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 25.0.3
+      '@types/node': 25.5.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -20739,6 +20748,8 @@ snapshots:
       commander: 9.5.0
 
   zod@4.2.1: {}
+
+  zod@4.3.6: {}
 
   zustand@3.7.2(react@18.3.1):
     optionalDependencies:
