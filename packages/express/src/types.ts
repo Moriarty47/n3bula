@@ -38,11 +38,11 @@ export type ExpApiArgs<ReqBody = any, ReqQuery = ParsedQs, ResBody = any> = [
   ExpNextFn,
 ];
 
-export type ExpRequestHandler<R = any> = (
-  req: ExpRequest,
-  res: ExpResponse,
-  next: ExpNextFn,
-) => R;
+export type ExpRequestHandler<R = any> =
+  | (() => R)
+  | ((req: ExpRequest) => R)
+  | ((req: ExpRequest, res: ExpResponse) => R)
+  | ((req: ExpRequest, res: ExpResponse, next: ExpNextFn) => R);
 
 export type RouteInstance = {
   [k: string]: ExpRequestHandler;

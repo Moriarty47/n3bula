@@ -15,8 +15,8 @@ export type HttpMethod =
   | 'head';
 
 function createHttpMethodDecorator(method: HttpMethod) {
-  return (path: string, ...middlewares: RequestHandler[]) =>
-    (target: ExpRequestHandler, context: ClassMethodDecoratorContext) => {
+  return <T extends ExpRequestHandler>(path: string, ...middlewares: RequestHandler[]) =>
+    (target: T, context: ClassMethodDecoratorContext) => {
       context.addInitializer(() => {
         assertsRouteMethodDecorator(context, capitalize(method));
         const metadata = context.metadata as Record<symbol | string, any>;
@@ -31,6 +31,7 @@ function createHttpMethodDecorator(method: HttpMethod) {
       return target;
     };
 }
+
 
 export const Get = createHttpMethodDecorator('get');
 export const Post = createHttpMethodDecorator('post');
