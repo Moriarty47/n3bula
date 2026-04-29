@@ -3,13 +3,13 @@ import { isObject } from './is';
 
 type ThrottleOptions = DebounceOptions;
 
-type ThrottleFunc = DebounceFunc;
+type ThrottleFunc<T> = DebounceFunc<T>;
 
-export default function throttle(
-  func: ThrottleFunc,
+export default function throttle<T extends (...rest: any[]) => void>(
+  func: T,
   delay: number,
   options: ThrottleOptions,
-) {
+): ThrottleFunc<T> {
   let leading = true;
   let trailing = true;
 
@@ -22,7 +22,7 @@ export default function throttle(
     trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
 
-  return debounce(func, delay, {
+  return debounce<T>(func, delay, {
     leading,
     maxDelay: delay,
     trailing,

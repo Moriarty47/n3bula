@@ -7,13 +7,17 @@ export type DebounceOptions = Partial<{
   maxDelay: number;
 }>;
 
-export type DebounceFunc = (...rest: any[]) => void;
+export type DebounceFunc<T> = T & {
+  cancel(): void;
+  flush(): void;
+  pending(): boolean;
+};
 
-export default function debounce(
-  func: DebounceFunc,
+export default function debounce<T extends (...rest: any[]) => void>(
+  func: T,
   delay: number,
   options?: DebounceOptions,
-): DebounceFunc {
+): DebounceFunc<T> {
   if (typeof func !== 'function') {
     throw new TypeError('Expected a function.');
   }
@@ -49,7 +53,7 @@ export default function debounce(
     return result;
   }
 
-  function startTimer(pendingFunc: DebounceFunc, delay: number) {
+  function startTimer(pendingFunc: () => void, delay: number) {
     if (useRAF) {
       root.cancelAnimationFrame(timerId);
       return root.requestAnimationFrame(pendingFunc);
@@ -143,5 +147,5 @@ export default function debounce(
   debounced.cancel = cancel;
   debounced.flush = flush;
   debounced.pending = pending;
-  return debounced;
+  return debounced as DebounceFunc<T>;
 }
